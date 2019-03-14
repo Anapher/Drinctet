@@ -11,6 +11,7 @@ import Welcome from "./routes/welcome";
 import store from "./store";
 import "typeface-roboto";
 import "./index.css";
+import {addSource, loadSourceAsync} from "./features/settings/actions";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 const Root = () => (
@@ -22,5 +23,8 @@ const Root = () => (
         </Provider>
     </div>
 );
+
+store.dispatch(addSource("http://localhost:3000/bullshitfact.xml"));
+store.dispatch(loadSourceAsync.request("http://localhost:3000/bullshitfact.xml"));
 
 render(<Root />, document.getElementById("root"));

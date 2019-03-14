@@ -33,7 +33,7 @@ export default () => (
         <DrinctetHeader />
       </Grid>
     </Grid>
-    <div style={{ flexGrow: 1, marginTop: 20, marginBottom: 20, height: 0 }}>
+    <div style={{ flexGrow: 1, marginBottom: 20, height: 0 }}>
       <Grid container justify="center" style={{ height: "100%"}}>
         <Grid item xs={12} md={6}>
           <SettingsView />

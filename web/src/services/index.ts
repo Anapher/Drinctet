@@ -1,7 +1,7 @@
-import * as cardsClient from "./api/cards-client";
+import * as cardsLoader from "./api/cards-loader";
 
 export default {
     api: {
-        cardsClient
-    }
+        cardsLoader,
+    },
 };

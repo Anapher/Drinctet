@@ -1,4 +1,5 @@
 import { RootAction } from "DrinctetTypes";
+import { SourceInfo } from "SettingsModels";
 import { combineReducers } from "redux";
 import { getType } from "typesafe-actions";
 import { PlayerArrangement } from "../../core/player-arrangement";
@@ -12,6 +13,7 @@ export type SettingsState = Readonly<{
     preferOppositeGenders: boolean;
     slides: SlideSetting[];
     socialMediaPlatform: string;
+    sources: SourceInfo[];
 }>;
 
 export default combineReducers<SettingsState, RootAction>({
@@ -22,10 +24,40 @@ export default combineReducers<SettingsState, RootAction>({
             case getType(actions.removePlayer):
                 return state.filter(x => x.id !== action.payload);
             case getType(actions.updatePlayer):
-                const players = [...state];
-                const index = players.findIndex(x => x.id === action.payload.id);
-                players[index] = action.payload;
-                return players;
+                return state.map(player =>
+                    player.id === action.payload.id ? action.payload : player,
+                );
+            default:
+                return state;
+        }
+    },
+    sources: (state = [], action) => {
+        switch (action.type) {
+            case getType(actions.addSource):
+                return [...state, action.payload];
+            case getType(actions.removeSource):
+                return state.filter(x => x.url !== action.payload);
+            case getType(actions.loadSourceAsync.request):
+                return state.map(item =>
+                    item.url === action.payload ? { ...item, isLoading: true } : item,
+                );
+            case getType(actions.loadSourceAsync.success):
+                return state.map(item =>
+                    item.url === action.payload.url
+                        ? {
+                              ...item,
+                              cards: action.payload.cards,
+                              errorMessage: undefined,
+                              isLoading: false,
+                          }
+                        : item,
+                );
+            case getType(actions.loadSourceAsync.failure):
+                return state.map(item =>
+                    item.url === action.payload.url
+                        ? { ...item, isLoading: false, errorMessage: action.payload.message }
+                        : item,
+                );
             default:
                 return state;
         }
@@ -39,7 +71,7 @@ export default combineReducers<SettingsState, RootAction>({
     slides: (state = [], _action) => {
         return state;
     },
-    socialMediaPlatform: (state = 'Snapchat', _action) => {
+    socialMediaPlatform: (state = "Snapchat", _action) => {
         return state;
-    }
+    },
 });

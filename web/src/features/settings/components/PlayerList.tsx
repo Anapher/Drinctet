@@ -1,13 +1,13 @@
-import * as React from "react";
-import { RootState } from "DrinctetTypes";
-import * as selectors from "../selectors";
-import { removePlayer, updatePlayer } from "../actions";
-import PlayerListItem from "./PlayerListItem";
-import { PlayerInfo } from "../../../core/player-info";
-import { connect } from "react-redux";
+import { ListItemText } from "@material-ui/core";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import {  ListItemText } from "@material-ui/core";
+import { RootState } from "DrinctetTypes";
+import * as React from "react";
+import { connect } from "react-redux";
+import { PlayerInfo } from "../../../core/player-info";
+import { removePlayer, updatePlayer } from "../actions";
+import * as selectors from "../selectors";
+import PlayerListItem from "./PlayerListItem";
 
 const mapStateToProps = (state: RootState) => ({
   players: selectors.getPlayers(state.settings),

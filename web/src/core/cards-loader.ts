@@ -76,7 +76,7 @@ export class CardsLoader {
             referenceRequests.push(idAttr);
         }
 
-        let deckWhitelist: string[];
+        let deckWhitelist: string[] | undefined;
         if (referenceRequests.length === 0) {
             deckWhitelist = requestedCards;
         } else {

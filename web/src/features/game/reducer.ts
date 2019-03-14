@@ -1,15 +1,17 @@
 import { PlayerInfo } from "../../core/player-info";
 
 export type GameState = Readonly<{
-  selectedSlide: string;
-  selectedCard: string;
-  selectedPlayers: PlayerInfo[];
+    isStarted: boolean;
 
-  currentWillPower: number;
-  isWillPowerLocked: boolean;
+    selectedSlide: string;
+    selectedCard: string;
+    selectedPlayers: PlayerInfo[];
 
-  startTime: string;
-  
-  slidesHistory: string[];
-  cardsHistory: string[];
+    currentWillPower: number;
+    isWillPowerLocked: boolean;
+
+    startTime: string;
+
+    slidesHistory: string[];
+    cardsHistory: string[];
 }>;

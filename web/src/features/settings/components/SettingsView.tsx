@@ -5,6 +5,8 @@ import SwipeableViews from "react-swipeable-views";
 import { Direction, withStyles } from "@material-ui/core/styles";
 import AddPlayerForm from "./AddPlayerForm";
 import PlayerList from "./PlayerList";
+import AddSourceForm from "./AddSourceForm";
+import SourcesList from "./SourcesList";
 
 function TabContainer({ children, dir }: { children: any; dir: Direction }) {
   return (
@@ -86,7 +88,22 @@ class SettingsView extends React.Component<Props, State> {
               <PlayerList />
             </div>
           </Grid>
-          <TabContainer dir={theme.direction}>aas</TabContainer>
+          <Grid
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              height: "100%",
+            }}
+          >
+            <div style={{ marginTop: 24, marginLeft: 24, marginRight: 24 }}>
+              <AddSourceForm />
+            </div>
+            <div
+              style={{ flexGrow: 1, height: 0, overflow: "auto", margin: 24 }}
+            >
+              <SourcesList />
+            </div>
+          </Grid>
           <TabContainer dir={theme.direction}>Sources</TabContainer>
         </SwipeableViews>
       </div>
