@@ -1,9 +1,10 @@
-import { TextElement, TextTranslation } from "../cards/text-card";
+import { TextElement } from "../cards/text-element";
+import { TextTranslation } from "../cards/text-translation";
 
 /** parses the text content of an element */
 export class TextContentParser {
     public result: TextElement[];
-    
+
     private isConditionalElement: boolean | undefined = undefined;
 
     constructor() {
@@ -13,17 +14,20 @@ export class TextContentParser {
     public addElement(xml: Element): boolean {
         switch (xml.tagName) {
             case "Case":
-                if (this.isConditionalElement === false) return false;
+                if (this.isConditionalElement === false) {
+                    return false;
+                }
                 this.isConditionalElement = true;
 
                 this.result.push(this.parseTextElement(xml));
                 return true;
             case "Text":
-                if (this.isConditionalElement === true) 
+                if (this.isConditionalElement === true) {
                     return false;
-                else if (this.isConditionalElement === undefined)
-                    this.result.push({translations: [], weight: 1});
-                
+                } else if (this.isConditionalElement === undefined) {
+                    this.result.push({ translations: [], weight: 1 });
+                }
+
                 this.isConditionalElement = false;
                 this.result[0].translations.push(this.parseTranslation(xml));
                 return true;
@@ -37,13 +41,14 @@ export class TextContentParser {
         const textElement = new TextElement();
 
         const weight = Number(element.getAttribute("weight"));
-        if (!isNaN(weight))
+        if (!isNaN(weight)) {
             textElement.weight = weight;
-        
+        }
+
         const texts = element.getElementsByTagName("Text");
         for (let i = 0; i < texts.length; i++) {
             const textXmlNode = texts[i];
-            translations.push(this.parseTranslation(textXmlNode))
+            translations.push(this.parseTranslation(textXmlNode));
         }
 
         textElement.translations = translations;
@@ -52,9 +57,14 @@ export class TextContentParser {
 
     private parseTranslation(element: Element) {
         const lang = element.getAttribute("lang");
-        if (!lang) throw new Error("lang attribute not found on element");
+        if (lang === null) {
+            throw new Error("lang attribute not found on element");
+        }
 
-        const content = element.textContent as string;
-        return new TextTranslation(lang, content);
+        if (element.textContent === null) {
+            throw new Error("The text content of the element is empty.");
+        }
+        
+        return new TextTranslation(lang, element.textContent);
     }
 }

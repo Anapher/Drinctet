@@ -4,12 +4,16 @@ import { GenderRequirement, PlayerSetting } from "../cards/player-setting";
 import { CardParser } from "./card-parser";
 import { ParserHelper } from "./parser-helper";
 
-export abstract class BaseCardParser<TCard extends BaseCard>
-    implements CardParser {
-    deserialize(xml: Element): Card {
+export abstract class BaseCardParser<TCard extends BaseCard> implements CardParser {
+    public deserialize(xml: Element): Card {
         const card = this.createCard();
 
-        card.id = xml.getAttribute("id");
+        const idAttr = xml.getAttribute("id");
+        if (idAttr === null) {
+            throw new Error("The id of a card must not be null");
+        }
+        card.id = idAttr;
+
         card.willPower = Number(xml.getAttribute("willPower"));
         if (card.willPower < 1 || card.willPower > 10) {
             card.willPower = undefined;
@@ -47,7 +51,7 @@ export abstract class BaseCardParser<TCard extends BaseCard>
     }
 
     protected abstract parseAttributes(rootXml: Element, card: TCard): void;
-    protected abstract parseElement(element: Element, card: TCard): void;
+    protected abstract parseElement(element: Element, card: TCard): boolean;
 
     protected abstract createCard(): TCard;
 
@@ -55,28 +59,37 @@ export abstract class BaseCardParser<TCard extends BaseCard>
         const players: PlayerSetting[] = [];
 
         const subElements = xml.getElementsByTagName("*");
-        for (const element of subElements) {
-            if (element.parentElement !== xml) continue;
+        for (let i = 0; i < subElements.length; i++) {
+            const element = subElements[i];
+
+            if (element.parentElement !== xml) {
+                continue;
+            }
 
             const player = this.parsePlayer(element);
-            if (player !== undefined) players.push(player);
+            if (player !== undefined) {
+                players.push(player);
+            }
         }
 
         return players;
     }
 
-    private parsePlayer(xml: Element): PlayerSetting {
+    private parsePlayer(xml: Element): PlayerSetting | undefined {
         const index = ParserHelper.parsePlayerTag(xml.tagName);
-        if (index === undefined)
+        if (index === undefined) {
             return undefined;
+        }
 
         let requiredGender: GenderRequirement = "None";
 
         const genderAttr = xml.getAttribute("gender");
         if (genderAttr) {
             const genderReq = ParserHelper.parseGenderRequirement(genderAttr);
-            if (genderReq !== undefined)
+
+            if (genderReq !== undefined) {
                 requiredGender = genderReq;
+            }
         }
 
         return new PlayerSetting(index, requiredGender);

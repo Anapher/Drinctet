@@ -1,4 +1,3 @@
-import { CardsRegister } from "./cards-register";
 
 it("should parse cards", () => {
     const text = `

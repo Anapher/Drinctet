@@ -9,6 +9,7 @@
                 "singleline": "never"
             }
         ],
-        "eofline": true
+        "eofline": true,
+        "prefer-for-of": false
     }
 }

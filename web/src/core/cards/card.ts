@@ -6,7 +6,7 @@ export interface Card {
   id: string;
 
   /** the optimal will power that is required for this card.This should be a number between 1 and 10, or zero if it doesnt matter */
-  willPower: number;
+  willPower: number | undefined;
 
   /** the type of this card, e. g. "TaskCard", "DownCard", etc. */
   type: string;

@@ -1,5 +1,7 @@
-import { BaseCardParser } from "./base-card-parser";
+// tslint:disable: max-classes-per-file
+
 import { BaseCard } from "../cards/base-card";
+import { BaseCardParser } from "./base-card-parser";
 
 class TestCard extends BaseCard {
     public type = "FactCard";
@@ -15,7 +17,7 @@ class BasicBaseCardParser extends BaseCardParser<TestCard> {
     }
 
     protected parseAttributes(rootXml: Element, card: TestCard) {}
-    protected parseElement(element: Element, card: TestCard) {}
+    protected parseElement(element: Element, card: TestCard): boolean { return false; }
 
     protected getDefaultAttributes() {
         return this.defaultTags;
