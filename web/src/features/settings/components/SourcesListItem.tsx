@@ -23,7 +23,7 @@ function SourcesListItem({
     return (
         <Card>
             <CardHeader
-                title={<Typography variant="subtitle1">{url}</Typography>}
+                title={<Typography variant="subtitle1" style={{overflow: "hidden"}}>{url}</Typography>}
                 subheader={
                     isLoading ? (
                         <LinearProgress />

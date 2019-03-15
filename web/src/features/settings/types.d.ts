@@ -3,6 +3,7 @@ declare module "SettingsModels" {
         url: string;
         isLoading: boolean;
         errorMessage: string | undefined;
-        cards: Card[] | undefined;
+        cards: import("../../core/cards/card").Card[] | undefined;
+        weight: number;
     }
 }

@@ -14,6 +14,7 @@ export type SettingsState = Readonly<{
     slides: SlideSetting[];
     socialMediaPlatform: string;
     sources: SourceInfo[];
+    language: string;
 }>;
 
 export default combineReducers<SettingsState, RootAction>({
@@ -72,6 +73,9 @@ export default combineReducers<SettingsState, RootAction>({
         return state;
     },
     socialMediaPlatform: (state = "Snapchat", _action) => {
+        return state;
+    },
+    language: (state = "en", _action) => {
         return state;
     },
 });

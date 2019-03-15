@@ -1,8 +1,8 @@
 import cuid from "cuid";
+import { SourceInfo } from "SettingsModels";
 import { createAsyncAction, createStandardAction } from "typesafe-actions";
 import { Card } from "../../core/cards/card";
 import { Gender, PlayerInfo } from "../../core/player-info";
-import { SourceInfo } from "SettingsModels";
 
 export const addPlayer = createStandardAction("ADD_PLAYER").map(
     (playerInfo: { name: string; gender: Gender }): { payload: PlayerInfo } => ({

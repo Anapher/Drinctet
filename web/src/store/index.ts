@@ -1,15 +1,14 @@
-import {RootAction, RootState, Services} from "DrinctetTypes";
-import { createStore, applyMiddleware } from "redux";
-import {createEpicMiddleware} from "redux-observable";
-
-import {composeEnhancers} from "./utils";
-import rootReducer from "./root-reducer";
-import rootEpic from "./root-epic";
+import { RootAction, RootState, Services } from "DrinctetTypes";
+import { applyMiddleware, createStore } from "redux";
+import { createEpicMiddleware } from "redux-observable";
 import services from "../services";
+import rootEpic from "./root-epic";
+import rootReducer from "./root-reducer";
+import { composeEnhancers } from "./utils";
 
 export const epicMiddleware = createEpicMiddleware<RootAction, RootAction, RootState, Services>(
     {
-        dependencies: services
+        dependencies: services,
     }
 );
 
