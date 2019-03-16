@@ -1,3 +1,4 @@
+import { Weighted } from './../../core/weighted';
 import cuid from "cuid";
 import { SourceInfo } from "SettingsModels";
 import { createAsyncAction, createStandardAction } from "typesafe-actions";
@@ -23,6 +24,7 @@ export const addSource = createStandardAction("ADD_SOURCE").map(
             isLoading: false,
             errorMessage: undefined,
             cards: undefined,
+            weight: .5,
         },
     }),
 )
@@ -33,3 +35,5 @@ export const loadSourceAsync = createAsyncAction(
     "LOAD_SOURCE_SUCCESS",
     "LOAD_SOURCE_FAILURE",
 )<string, { url: string; cards: Card[] }, { url: string; message: string }>();
+
+export const setSourceWeight = createStandardAction("SET_SOURCE_WEIGHT")<Weighted<string>>();

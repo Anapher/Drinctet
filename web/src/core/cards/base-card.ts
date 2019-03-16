@@ -1,3 +1,4 @@
+import { GameStatus } from "../game-status";
 import { Card } from "./card";
 import { PlayerSetting } from "./player-setting";
 
@@ -7,6 +8,7 @@ export abstract class BaseCard implements Card {
   public willPower!: number | undefined;
   public players!: PlayerSetting[];
   public tags!: string[];
+  public condition!: (status: GameStatus) => boolean;
 
-  public abstract type: string;
+  public readonly abstract type: string;
 }

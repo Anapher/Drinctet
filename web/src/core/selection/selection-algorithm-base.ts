@@ -5,14 +5,11 @@ import { SelectionAlgorithm } from "./selection-algorithm";
 
 // tslint:disable-next-line: max-classes-per-file
 export abstract class SelectionAlgorithmBase implements SelectionAlgorithm {
-    public readonly cardDictionary: CardDictionary;
-
     constructor(protected readonly status: GameStatus) {
-        this.cardDictionary = this.compileCardDictionary(status.decks);
     }
 
-    public abstract selectNextSlide(availableSlides: SlideRegistration[]): string;
-    public abstract selectCard<TCard extends Card>(): TCard;
+    public abstract selectNextSlide(availableSlides: SlideRegistration[]): string | undefined;
+    public abstract selectCard<TCard extends Card>(cardType: string): TCard;
 
     public selectRandomWeighted<T>(items: T[], getWeight: (item: T) => number): T | undefined {
         if (items.length === 0) {
@@ -38,25 +35,5 @@ export abstract class SelectionAlgorithmBase implements SelectionAlgorithm {
         }
 
         throw new Error("No choice could be made");
-    }
-
-    private compileCardDictionary(decks: CardDeck[]): CardDictionary {
-        const result: CardDictionary = {};
-        const deckInfos: CardDeckInfo[] = [];
-
-        for (const deck of decks) {
-            const deckInfo = new CardDeckInfo(deck);
-
-            for (const card of deck.cards) {
-                if (!(card.id in result)) {
-                    result[card.id] = {card, deck: deckInfo};
-                    deckInfo.actualCards++;
-                }
-            }
-
-            deckInfos.push(deckInfo);
-        }
-
-        return result;
     }
 }

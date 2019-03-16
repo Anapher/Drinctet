@@ -1,20 +1,21 @@
+import { Weighted } from "./../../core/weighted";
 import { RootAction } from "DrinctetTypes";
 import { SourceInfo } from "SettingsModels";
 import { combineReducers } from "redux";
 import { getType } from "typesafe-actions";
 import { PlayerArrangement } from "../../core/player-arrangement";
 import { PlayerInfo } from "../../core/player-info";
-import { SlideSetting } from "../../core/slide-setting";
 import * as actions from "./actions";
 
 export type SettingsState = Readonly<{
     players: PlayerInfo[];
     arrangements: PlayerArrangement[];
     preferOppositeGenders: boolean;
-    slides: SlideSetting[];
+    slides: Array<Weighted<string>>;
     socialMediaPlatform: string;
     sources: SourceInfo[];
     language: string;
+    tags: Array<Weighted<string>>;
 }>;
 
 export default combineReducers<SettingsState, RootAction>({
@@ -59,6 +60,12 @@ export default combineReducers<SettingsState, RootAction>({
                         ? { ...item, isLoading: false, errorMessage: action.payload.message }
                         : item,
                 );
+            case getType(actions.setSourceWeight):
+                return state.map(item =>
+                    item.url === action.payload.value
+                        ? { ...item, weight: action.payload.weight }
+                        : item,
+                );
             default:
                 return state;
         }
@@ -69,13 +76,16 @@ export default combineReducers<SettingsState, RootAction>({
     preferOppositeGenders: (state = false, _action) => {
         return state;
     },
-    slides: (state = [], _action) => {
+    slides: (state = [{ value: "FactSlide", weight: 1 }], _action) => {
         return state;
     },
     socialMediaPlatform: (state = "Snapchat", _action) => {
         return state;
     },
     language: (state = "en", _action) => {
+        return state;
+    },
+    tags: (state = [], _action) => {
         return state;
     },
 });

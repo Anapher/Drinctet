@@ -1,6 +1,6 @@
 import { TextCard } from "../../core/cards/text-card";
 
 export class FactCard extends TextCard {
-    public type: string = "Fact";
+    public readonly type: string = "FactCard";
     public isTrueFact: boolean = false;
 }

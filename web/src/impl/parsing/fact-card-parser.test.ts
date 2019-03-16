@@ -10,7 +10,7 @@ it("should deserialize card correctly", () => {
     `;
 
     const card = deserializeCard(data);
-    expect(card).toEqual({
+    expect(card).toMatchObject({
         content: [
             {
                 translations: [
@@ -31,7 +31,7 @@ it("should deserialize card correctly", () => {
         id: "1",
         isTrueFact: false,
         tags: [],
-        type: "Fact",
+        type: "FactCard",
     });
 });
 
@@ -44,7 +44,7 @@ it("should assume a true fact if not hint is given", () => {
     `;
 
     const card = deserializeCard(data);
-    expect(card).toEqual({
+    expect(card).toMatchObject({
         content: [
             {
                 translations: [
@@ -65,7 +65,7 @@ it("should assume a true fact if not hint is given", () => {
         id: "1",
         isTrueFact: true,
         tags: [],
-        type: "Fact",
+        type: "FactCard",
     });
 });
 
@@ -78,7 +78,7 @@ it("should correctly deserialize if the true hint is given", () => {
     `;
 
     const card = deserializeCard(data);
-    expect(card).toEqual({
+    expect(card).toMatchObject({
         content: [
             {
                 translations: [
@@ -99,7 +99,7 @@ it("should correctly deserialize if the true hint is given", () => {
         id: "1",
         isTrueFact: true,
         tags: [],
-        type: "Fact",
+        type: "FactCard",
     });
 });
 

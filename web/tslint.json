@@ -10,6 +10,6 @@
             }
         ],
         "eofline": true,
-        "prefer-for-of": false
+        "prefer-for-of": false,
     }
 }

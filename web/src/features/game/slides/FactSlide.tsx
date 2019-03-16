@@ -1,16 +1,22 @@
 import { withStyles } from "@material-ui/core";
+import { RootState } from "DrinctetTypes";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { RootState } from "DrinctetTypes";
+import { FactCard } from "../../../impl/cards/fact-card";
 import { nextSlide } from "../actions";
+import { drawCard } from "../game-engine";
 
 const styles = {
-    root: {},
+    root: {
+        backgroundColor: "#3498db",
+        height: "100%",
+    },
 };
 
 const mapStateToProps = (state: RootState) => ({
-    game: state.game,
+    isInGame: state.game.isStarted,
+    selectedCard: state.game.selectedCard,
     settings: state.settings,
 });
 
@@ -26,12 +32,21 @@ type Props = ReturnType<typeof mapStateToProps> & typeof dispatchProps & StylePr
 
 class FactSlide extends Component<Props> {
     componentDidMount() {
-        this.;
+        if (this.props.selectedCard === null) {
+            drawCard("FactCard");
+        }
     }
 
     render() {
-        const { classes } = this.props;
-        return <div />;
+        const { classes, selectedCard } = this.props;
+
+        if (selectedCard === null) {
+            return "Loading...";
+        }
+
+        const factCard = selectedCard as FactCard;
+
+        return <div className={classes.root}>{factCard.content[0].translations[0].content}</div>;
     }
 }
 

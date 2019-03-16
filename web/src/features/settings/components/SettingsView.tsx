@@ -7,108 +7,105 @@ import AddPlayerForm from "./AddPlayerForm";
 import PlayerList from "./PlayerList";
 import AddSourceForm from "./AddSourceForm";
 import SourcesList from "./SourcesList";
+import { withLocalize, LocalizeContextProps } from "react-localize-redux";
 
 function TabContainer({ children, dir }: { children: any; dir: Direction }) {
-  return (
-    <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
-      {children}
-    </Typography>
-  );
+    return (
+        <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
+            {children}
+        </Typography>
+    );
 }
 
-interface Props {
-  classes: { root: string };
-  theme: Theme;
+interface Props extends LocalizeContextProps {
+    classes: { root: string };
+    theme: Theme;
 }
 interface State {
-  value: number;
+    value: number;
 }
 
 const styles = (theme: Theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.paper,
-    height: "100%",
-  },
+    root: {
+        backgroundColor: theme.palette.background.paper,
+        height: "100%",
+    },
 });
 
 class SettingsView extends React.Component<Props, State> {
-  readonly state = {
-    value: 0,
-  };
+    readonly state = {
+        value: 0,
+    };
 
-  handleChange = (_event: any, value: number) => {
-    this.setState({ value });
-  };
+    handleChange = (_event: any, value: number) => {
+        this.setState({ value });
+    };
 
-  handleChangeIndex = (index: number) => {
-    this.setState({ value: index });
-  };
+    handleChangeIndex = (index: number) => {
+        this.setState({ value: index });
+    };
 
-  render() {
-    const { theme, classes } = this.props;
+    render() {
+        const { theme, classes, translate } = this.props;
 
-    return (
-      <div
-        style={{ display: "flex", flexDirection: "column", height: "100%" }}
-        className={classes.root}
-      >
-        <AppBar position="static" color="default">
-          <Tabs
-            value={this.state.value}
-            onChange={this.handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="fullWidth"
-          >
-            <Tab label="Players" />
-            <Tab label="Sources" />
-            <Tab label="Algorithm" />
-          </Tabs>
-        </AppBar>
-        <SwipeableViews
-          axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-          index={this.state.value}
-          style={{ flexGrow: 1 }}
-          containerStyle={{ height: "100%" }}
-          onChangeIndex={this.handleChangeIndex}
-        >
-          <Grid
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              height: "100%",
-            }}
-          >
-            <div style={{ marginTop: 24, marginLeft: 24, marginRight: 24 }}>
-              <AddPlayerForm />
-            </div>
+        return (
             <div
-              style={{ flexGrow: 1, height: 0, overflow: "auto", margin: 24 }}
+                style={{ display: "flex", flexDirection: "column", height: "100%" }}
+                className={classes.root}
             >
-              <PlayerList />
+                <AppBar position="static" color="default">
+                    <Tabs
+                        value={this.state.value}
+                        onChange={this.handleChange}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        variant="fullWidth"
+                    >
+                        <Tab label={translate("settings.players")} />
+                        <Tab label="Sources" />
+                        <Tab label="Algorithm" />
+                    </Tabs>
+                </AppBar>
+                <SwipeableViews
+                    axis={theme.direction === "rtl" ? "x-reverse" : "x"}
+                    index={this.state.value}
+                    style={{ flexGrow: 1 }}
+                    containerStyle={{ height: "100%" }}
+                    onChangeIndex={this.handleChangeIndex}
+                >
+                    <Grid
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            height: "100%",
+                        }}
+                    >
+                        <div style={{ marginTop: 24, marginLeft: 24, marginRight: 24 }}>
+                            <AddPlayerForm />
+                        </div>
+                        <div style={{ flexGrow: 1, height: 0, overflow: "auto", margin: 24 }}>
+                            <PlayerList />
+                        </div>
+                    </Grid>
+                    <Grid
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            height: "100%",
+                        }}
+                    >
+                        <div style={{ marginTop: 24, marginLeft: 24, marginRight: 24 }}>
+                            <AddSourceForm />
+                        </div>
+                        <div style={{ flexGrow: 1, height: 0, overflow: "auto" }}>
+                            <SourcesList />
+                        </div>
+                    </Grid>
+                    <TabContainer dir={theme.direction}>Sources</TabContainer>
+                </SwipeableViews>
             </div>
-          </Grid>
-          <Grid
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              height: "100%",
-            }}
-          >
-            <div style={{ marginTop: 24, marginLeft: 24, marginRight: 24 }}>
-              <AddSourceForm />
-            </div>
-            <div
-              style={{ flexGrow: 1, height: 0, overflow: "auto", margin: 24 }}
-            >
-              <SourcesList />
-            </div>
-          </Grid>
-          <TabContainer dir={theme.direction}>Sources</TabContainer>
-        </SwipeableViews>
-      </div>
-    );
-  }
+        );
+    }
 }
 
-export default withStyles(styles, { withTheme: true })(SettingsView);
+export default withLocalize(withStyles(styles, { withTheme: true })(SettingsView));

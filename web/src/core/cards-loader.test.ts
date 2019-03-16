@@ -4,11 +4,12 @@ import { PlayerSetting } from "./cards/player-setting";
 
 class DummyCard implements Card {
     constructor(public id: string) {}
-
+    
     public willPower: number;
     public type: string;
     public players: PlayerSetting[];
     public tags: string[];
+    public condition: (status: GameStatus) => true;
 }
 
 let loader: CardsLoader;
@@ -19,7 +20,7 @@ beforeEach(() => {
         createParser(t: string) {
             return {
                 deserialize(xml: Element) {
-                    return new DummyCard(xml.getAttribute("id"));
+                    return new DummyCard(xml.getAttribute("id")!);
                 },
             };
         },

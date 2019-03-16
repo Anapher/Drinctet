@@ -1,18 +1,34 @@
-import { SelectionAlgorithmBase } from "./selection-algorithm-base";
-import { SlideRegistration } from "../slide-registration";
-import { Card } from "../cards/card";
 import { CardDeck } from "../card-deck";
-import { Weighted } from "../weighted";
+import { Card } from "../cards/card";
 import { PlayerSetting } from "../cards/player-setting";
 import { PlayerInfo } from "../player-info";
+import { SlideRegistration } from "../slide-registration";
+import { Weighted } from "../weighted";
+import { SelectionAlgorithmBase } from "./selection-algorithm-base";
 
 export class MelinaAlgorithm extends SelectionAlgorithmBase {
     /** the percentage of cards that were played from one deck once the cards get weighted much lower */
     private readonly deckExhaustionLimit = 0.1;
 
-    public selectCard<TCard extends Card>(): TCard {}
+    public selectCard<TCard extends Card>(cardType: string): TCard {
+        const weightedDecks = this.weightCards(this.status.decks, cardType);
+        const weightedCards: Array<Weighted<Card>> = [];
 
-    public selectNextSlide(availableSlides: SlideRegistration[]): string {
+        for (const deck of weightedDecks) {
+            weightedCards.push(
+                ...deck.cards.map(x => ({ value: x.value, weight: x.weight * deck.deck.weight })),
+            );
+        }
+
+        const selected = this.selectRandomWeighted(weightedCards, card => card.weight);
+        if (selected === undefined) {
+            throw new Error("That should not actually happen");
+        }
+
+        return selected.value as TCard;
+    }
+
+    public selectNextSlide(availableSlides: SlideRegistration[]): string | undefined {
         const uniqueCardTypes: string[] = [];
         for (const slide of availableSlides) {
             for (const cardType of slide.requestedCards) {
@@ -22,34 +38,46 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
             }
         }
 
+        const cardTypeRatings: { [type: string]: number } = {};
         for (const cardType of uniqueCardTypes) {
-            const weightedCards = this.weightCards(this.status.decks, cardType);
-            
+            const weightedDecks = this.weightCards(this.status.decks, cardType);
+
+            const allCards: Array<Weighted<Card>> = [];
+            for (const cardDeck of weightedDecks) {
+                allCards.push(...cardDeck.cards);
+            }
+
+            if (allCards.length === 0) {
+                cardTypeRatings[cardType] = 0;
+            } else {
+                // relation ideal cards (1) to all cards
+                cardTypeRatings[cardType] =
+                    (allCards.filter(x => x.weight === 1).length + 1) / allCards.length;
+            }
         }
 
         const weightedSlides: Array<Weighted<SlideRegistration>> = [];
-        const cardTypeRatings: {[type: string]: number} = {};
-
         for (const slide of availableSlides) {
             const slideSettings = this.status.slides.find(x => x.value === slide.slideType);
+            
             if (slideSettings === undefined || slideSettings.weight === 0) {
                 continue;
             }
 
+            let factor = 1;
+            for (const cardType of slide.requestedCards) {
+                factor = Math.min(cardTypeRatings[cardType], factor);
+            }
 
+            weightedSlides.push({ weight: factor * slideSettings.weight, value: slide });
         }
 
-        // TODO: check if cards are available for the slides
-        const selected = this.selectRandomWeighted(this.status.slides, slide => slide.weight);
+        const selected = this.selectRandomWeighted(weightedSlides, slide => slide.weight);
         if (selected === undefined) {
-            return this.status.slides[0].slideType;
+            return undefined;
         }
 
-        return selected.slideType;
-    }
-
-    protected rateCards(cards: Array<Weighted<Card>>) {
-
+        return selected.value.slideType;
     }
 
     protected weightCards(
@@ -61,9 +89,8 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
                 if (card.type !== type) {
                     return false;
                 }
-
                 return (
-                    card.tags.length > 0 &&
+                    card.tags.length === 0 ||
                     card.tags.findIndex(x => {
                         const weightedTag = this.status.tags.find(y => y.value === x);
                         return weightedTag !== undefined && weightedTag.weight === 0;
@@ -89,23 +116,6 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
                 x => deck.cards.findIndex(y => y.id === x) > -1,
             );
 
-            // get how many cards we have for every will power value
-            const willPowerDistributions: Array<{
-                willPower: number | undefined;
-                count: number;
-            }> = [];
-
-            for (const card of deck.cards) {
-                const distribution = willPowerDistributions.findIndex(
-                    x => x.willPower === card.willPower,
-                );
-                if (distribution > -1) {
-                    willPowerDistributions[distribution].count++;
-                } else {
-                    willPowerDistributions.push({ willPower: card.willPower, count: 1 });
-                }
-            }
-
             // compute the deck exhaustion factor
             let exhaustionFactor: number;
 
@@ -119,11 +129,6 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
 
             const weightedCards: Array<Weighted<Card>> = [];
             for (const card of deck.cards) {
-                const willPowerDistribution = willPowerDistributions.find(
-                    x => x.willPower === card.willPower,
-                )!;
-
-                const distributionFactor = willPowerDistribution.count / deck.cards.length;
                 const willPowerRating = this.rateWillPower(card.willPower, willPower);
                 const historyFactor = this.getHistoryFactor(
                     card.id,
@@ -134,16 +139,11 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
 
                 weightedCards.push({
                     value: card,
-                    weight:
-                        exhaustionFactor *
-                        // distributionFactor *
-                        willPowerRating *
-                        historyFactor *
-                        tagsFactor,
+                    weight: exhaustionFactor * willPowerRating * historyFactor * tagsFactor,
                 });
             }
 
-            result.push({deck, cards: weightedCards});
+            result.push({ deck, cards: weightedCards });
         }
 
         return result;
@@ -268,7 +268,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
         }
 
         const specificationSame = specification.filter(x => x.gender === "Same").length;
-        if (specificationSame > Math.min(actualFemales, actualMales)) {
+        if (specificationSame + 1 > Math.max(actualFemales, actualMales)) {
             return false;
         }
 
