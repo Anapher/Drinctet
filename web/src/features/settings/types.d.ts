@@ -5,5 +5,6 @@ declare module "SettingsModels" {
         errorMessage: string | undefined;
         cards: import("../../core/cards/card").Card[] | undefined;
         weight: number;
+        tags: string[];
     }
 }

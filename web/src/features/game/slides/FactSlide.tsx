@@ -1,4 +1,4 @@
-import { withStyles } from "@material-ui/core";
+import { withStyles, WithStyles } from "@material-ui/core";
 import { RootState } from "DrinctetTypes";
 import React, { Component } from "react";
 import { connect } from "react-redux";
@@ -24,11 +24,7 @@ const dispatchProps = {
     nextSlide,
 };
 
-type StyleProps = {
-    classes: { root: string };
-};
-
-type Props = ReturnType<typeof mapStateToProps> & typeof dispatchProps & StyleProps;
+type Props = ReturnType<typeof mapStateToProps> & typeof dispatchProps & WithStyles<typeof styles>;
 
 class FactSlide extends Component<Props> {
     componentDidMount() {

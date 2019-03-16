@@ -9,6 +9,7 @@ import {
     createStyles,
     LinearProgress,
     Badge,
+    WithStyles,
 } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -23,15 +24,6 @@ interface LoadingFailedItemProps {
 interface WeightProps {
     weight: number;
     onChangeWeight: (value: number) => void;
-}
-
-interface Props extends LoadingFailedItemProps, WeightProps {
-    url: string;
-    isLoading: boolean;
-    cardsCount: number;
-    weight: number;
-    onRemoveClick: () => void;
-    classes: { root: string; title: string; fullWidth: string };
 }
 
 const styles = (theme: Theme) =>
@@ -49,6 +41,14 @@ const styles = (theme: Theme) =>
             width: "100%",
         },
     });
+
+interface Props extends LoadingFailedItemProps, WeightProps, WithStyles<typeof styles> {
+    url: string;
+    isLoading: boolean;
+    cardsCount: number;
+    weight: number;
+    onRemoveClick: () => void;
+}
 
 function LoadingItem() {
     return <LinearProgress />;
@@ -76,7 +76,7 @@ function WeightSlider({ weight, onChangeWeight }: WeightProps) {
             max={1}
             min={0}
             step={0.05}
-            style={{ margin: 10 }}
+            style={{ margin: 10, padding: '4px 0px' }}
             value={weight}
             onChange={(_, n) => onChangeWeight(n)}
         />

@@ -1,6 +1,6 @@
 import * as React from "react";
 import Typography from "@material-ui/core/Typography";
-import { createStyles, Theme, withStyles } from "@material-ui/core";
+import { createStyles, Theme, withStyles, WithStyles } from "@material-ui/core";
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -18,9 +18,7 @@ const styles = (theme: Theme) =>
         },
     });
 
-type Props = { classes: any };
-
-function DrinctetHeader({ classes }: Props) {
+function DrinctetHeader({ classes }: WithStyles<typeof styles>) {
     return (
         <div>
             <Typography variant="h2" className={classes.responsiveHeader}>

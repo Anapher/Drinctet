@@ -6,6 +6,8 @@ import { getType } from "typesafe-actions";
 import { PlayerArrangement } from "../../core/player-arrangement";
 import { PlayerInfo } from "../../core/player-info";
 import * as actions from "./actions";
+import { slideWeights } from "../../preferences";
+import * as _ from "underscore";
 
 export type SettingsState = Readonly<{
     players: PlayerInfo[];
@@ -14,7 +16,6 @@ export type SettingsState = Readonly<{
     slides: Array<Weighted<string>>;
     socialMediaPlatform: string;
     sources: SourceInfo[];
-    language: string;
     tags: Array<Weighted<string>>;
 }>;
 
@@ -51,6 +52,7 @@ export default combineReducers<SettingsState, RootAction>({
                               cards: action.payload.cards,
                               errorMessage: undefined,
                               isLoading: false,
+                              tags: _.uniq(_.flatten(action.payload.cards.map(x => x.tags)).map(x => (x as string).toLowerCase()))
                           }
                         : item,
                 );
@@ -70,22 +72,60 @@ export default combineReducers<SettingsState, RootAction>({
                 return state;
         }
     },
-    arrangements: (state = [], _action) => {
+    arrangements: (state = [], action) => {
+        switch (action.type) {
+            case getType(actions.addPlayerArrangment):
+                return [...state, action.payload];
+            case getType(actions.removePlayerArrangment):
+                return state.filter(x => x.p1 !== action.payload);
+            default:
+                return state;
+        }
+    },
+    preferOppositeGenders: (state = true, action) => {
+        if (action.type === getType(actions.setPreferOppositeGenders)) {
+            return action.payload;
+        }
         return state;
     },
-    preferOppositeGenders: (state = false, _action) => {
+    slides: (state = GetSlideWeightedArray(), action) => {
+        switch (action.type) {
+            case getType(actions.setSlideWeight):
+                return state.map(x => (x.value === action.payload.value ? action.payload : x));
+            default:
+                return state;
+        }
+    },
+    socialMediaPlatform: (state = "Snapchat", action) => {
+        if (action.type === getType(actions.setSocialMediaPlatform)) {
+            return action.payload;
+        }
+
         return state;
     },
-    slides: (state = [{ value: "FactSlide", weight: 1 }], _action) => {
-        return state;
-    },
-    socialMediaPlatform: (state = "Snapchat", _action) => {
-        return state;
-    },
-    language: (state = "en", _action) => {
-        return state;
-    },
-    tags: (state = [], _action) => {
+    tags: (state = [], action) => {
+        if (action.type === getType(actions.setTagWeight)) {
+            const value = action.payload.value.toLowerCase();
+            const existingTag = state.find(x => x.value === value);
+            if (existingTag !== undefined) {
+                return state.map(x => x.value === value ? {value, weight: action.payload.weight} : x);
+            } else {
+                return [...state, action.payload];
+            }
+        }
+
         return state;
     },
 });
+
+function GetSlideWeightedArray() {
+    const weightsList: Weighted<string>[] = [];
+    for (const key in slideWeights) {
+        if (slideWeights.hasOwnProperty(key)) {
+            const element = slideWeights[key];
+            weightsList.push({ value: key, weight: element });
+        }
+    }
+
+    return weightsList;
+}

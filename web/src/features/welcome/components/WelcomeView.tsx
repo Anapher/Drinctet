@@ -7,11 +7,11 @@ import StartButton from "./StartButton";
 export default () => (
   <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
     <Grid container justify="center">
-      <Grid item xs={12} md={6} style={{ margin: 20 }}>
+      <Grid item xs={12} md={6} style={{ margin: 20, marginBottom: 10 }}>
         <DrinctetHeader />
       </Grid>
     </Grid>
-    <div style={{ flexGrow: 1, marginBottom: 20, height: 0 }}>
+    <div style={{ flexGrow: 1, height: 0 }}>
       <Grid container justify="center" style={{ height: "100%"}}>
         <Grid item xs={12} md={6}>
           <SettingsView />
@@ -20,7 +20,7 @@ export default () => (
     </div>
     <Grid container justify="center">
       <Grid item xs={12} md={6} container justify="center">
-        <Grid item xs={10} lg={8} style={{ padding: 20 }}>
+        <Grid item xs={10} lg={8} style={{ padding: "10px 20px 20px 20px" }}>
           <StartButton />
         </Grid>
       </Grid>

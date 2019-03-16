@@ -8,13 +8,10 @@ import "./env";
 import { addPlayer, addSource, loadSourceAsync } from "./features/settings/actions";
 import "./index.css";
 import store from "./store";
-import { initialize, LocalizeProvider } from "react-localize-redux";
+import { initialize, LocalizeProvider, NamedLanguage } from "react-localize-redux";
 import drinctetTranslations from "./loc/drinctet.json";
 import { renderToStaticMarkup } from "react-dom/server";
-
-const defaultSources = [
-    "https://raw.githubusercontent.com/Anapher/Drinctet/master/web/public/bullshitfact.xml",
-];
+import { defaultSources } from "./preferences";
 
 for (const src of defaultSources) {
     store.dispatch(addSource(src));
@@ -24,9 +21,14 @@ for (const src of defaultSources) {
 store.dispatch(addPlayer({ name: "Vincent", gender: "Male" }));
 store.dispatch(addPlayer({ name: "Melina", gender: "Female" }));
 
-var userLang = (navigator.language || (navigator as any).userLanguage as string || "en").split("-")[0];
+var userLang = (navigator.language || ((navigator as any).userLanguage as string) || "en").split(
+    "-",
+)[0];
 
-const languages = ["en", "de"];
+const languages: NamedLanguage[] = [
+    { code: "en", name: "English" },
+    { code: "de", name: "Deutsch" },
+];
 store.dispatch(
     initialize({
         languages,

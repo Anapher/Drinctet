@@ -1,5 +1,33 @@
 {
     "settings": {
-        "players": ["Players", "Spieler"]
+        "players": ["Players", "Spieler"],
+        "players.playerName": ["Player name", "Spielername"],
+        "sources": ["Cards", "Karten"],
+        "sources.sourceUrl": ["Source url", "Quellen Url"],
+        "configuration": ["Configuration", "Konfiguration"]
+    },
+    "settings.configuration": {
+        "language": ["Language", "Sprache"],
+        "playerSettings": ["Players", "Spieler"],
+        "playerSettings.pairOppositeGenders": [
+            "Pair opposite genders more likely",
+            "Spieler mit unterschiedlichen Geschlechtern häufiger paaren."
+        ],
+        "arrangements": ["Set ups", "Verkuppeln"],
+        "arrangements.description": [
+            "Set up players are selected together with a higher probability.",
+            "Verkuppelte Spieler werden mit einer höheren Wahrscheinlichkeit zusammen ausgewählt."
+        ],
+        "arrangements.pairWith": ["Set up with", "Verkuppeln mit"],
+        "arrangements.none": ["None", "Keine"],
+        "socialMediaPlatform": ["Social Media Platform", "Soziales Netzwerk"],
+        "socialMediaPlatform.description": ["The social media platform your group mainly uses.", "Das soziale Netzwerk, welches deine Gruppe hauptsächlich nutzt."],
+        "slides": ["Slides", "Slides"],
+        "tags": ["Tags", "Tags"],
+        "tags.none": ["None of your cards have tags.", "Keine deiner Karten hat Tags."]
+    },
+    "add": ["Add", "Hinzufügen"],
+    "welcome": {
+        "startGame": ["Start Game", "Spiel starten"]
     }
 }

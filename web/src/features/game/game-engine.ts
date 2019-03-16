@@ -44,7 +44,7 @@ function invalidateAlgorithm() {
                 return result;
             }),
         history: state.game.cardsHistory,
-        language: state.settings.language,
+        language: state.localize.languages.find(x => x.active)!.code,
         players: state.settings.players,
         slides: state.settings.slides,
         tags: state.settings.tags,

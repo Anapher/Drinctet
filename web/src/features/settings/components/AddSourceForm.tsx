@@ -5,6 +5,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { addSource, loadSourceAsync } from "../actions";
 import * as selectors from "../selectors";
+import { LocalizeContextProps, withLocalize, Translate } from "react-localize-redux";
 
 const mapStateToProps = (state: RootState) => ({
     sources: selectors.getSources(state.settings),
@@ -15,7 +16,7 @@ const dispatchProps = {
     loadSource: loadSourceAsync.request,
 };
 
-type Props = ReturnType<typeof mapStateToProps> & typeof dispatchProps;
+type Props = ReturnType<typeof mapStateToProps> & typeof dispatchProps & LocalizeContextProps;
 
 type State = {
     url: string;
@@ -50,6 +51,7 @@ class AddSourceForm extends React.Component<Props, State> {
 
     render() {
         const { url } = this.state;
+        const { translate } = this.props;
         const sourceExists = this.props.sources.findIndex(x => x.url === this.state.url) > -1;
 
         return (
@@ -59,12 +61,16 @@ class AddSourceForm extends React.Component<Props, State> {
                         style={{ flexGrow: 1 }}
                         type="text"
                         value={url}
-                        placeholder="Source url"
+                        placeholder={translate("settings.sources.sourceUrl") as string}
                         error={sourceExists}
                         onChange={this.handleUrlChange}
                     />
-                    <Button disabled={!url || sourceExists} onClick={this.handleAddClick}>
-                        Add
+                    <Button
+                        style={{ marginLeft: 5 }}
+                        disabled={!url || sourceExists}
+                        onClick={this.handleAddClick}
+                    >
+                        <Translate id="add" />
                     </Button>
                 </div>
             </form>
@@ -75,4 +81,4 @@ class AddSourceForm extends React.Component<Props, State> {
 export default connect(
     mapStateToProps,
     dispatchProps,
-)(AddSourceForm);
+)(withLocalize(AddSourceForm));
