@@ -1,3 +1,4 @@
+import { RandomTextFragment } from './../../../core/fragments/random-text-fragment';
 import { PlayerInfo } from "@core/player-info";
 import { SipsFragment } from "@core/fragments/sips-fragment";
 import { PlayerReferenceFragment } from "@core/fragments/player-reference-fragment";
@@ -6,6 +7,7 @@ import { TextFragment } from "@core/text-fragment";
 import { PlayerSetting } from "@core/cards/player-setting";
 import _ from "underscore";
 import { RawTextFragment } from "@core/fragments/raw-text-fragment";
+import { GenderBasedSelectionFragment } from "@core/fragments/gender-based-selection-fragment";
 
 export class TextFormatter {
     public parseTextFragments(s: string): TextFragment[] {
@@ -57,7 +59,7 @@ export class TextFormatter {
         players: { [index: number]: PlayerInfo },
         sips: { [index: number]: number },
         translate: (key: string) => string,
-        options: Partial<FormatOptions>
+        options: Partial<FormatOptions>,
     ): string {
         let result = "";
         let lastPlayerFragment: PlayerReferenceFragment | null = null;
@@ -90,8 +92,29 @@ export class TextFormatter {
                 if (options.boldSips) {
                     result += "*";
                 }
+            } else if (fragment instanceof GenderBasedSelectionFragment) {
+                let referencedPlayer: number;
+                if (fragment.referencedPlayerIndex !== undefined) {
+                    referencedPlayer = fragment.referencedPlayerIndex;
+                } else if(lastPlayerFragment !== null) {
+                    referencedPlayer = lastPlayerFragment.playerIndex;
+                } else {
+                    const playerKeys = Object.keys(players);
+                    if (playerKeys.length === 0) {
+                        continue;
+                    }
+
+                    referencedPlayer = Number(playerKeys[0]);
+                }
+
+                const player = players[referencedPlayer];
+                result += player.gender === "Female" ? fragment.femaleText : fragment.maleText;
+            } else if (fragment instanceof RandomTextFragment) {
+                const index = 
             }
         }
+
+        return result;
     }
 }
 
