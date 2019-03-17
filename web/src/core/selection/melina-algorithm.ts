@@ -5,6 +5,7 @@ import { PlayerInfo } from "../player-info";
 import { SlideRegistration } from "../slide-registration";
 import { Weighted } from "../weighted";
 import { SelectionAlgorithmBase } from "./selection-algorithm-base";
+import { selectRandomWeighted } from "./utils";
 
 export class MelinaAlgorithm extends SelectionAlgorithmBase {
     /** the percentage of cards that were played from one deck once the cards get weighted much lower */
@@ -20,7 +21,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
             );
         }
 
-        const selected = this.selectRandomWeighted(weightedCards, card => card.weight);
+        const selected = selectRandomWeighted(weightedCards, card => card.weight);
         if (selected === undefined) {
             throw new Error("That should not actually happen");
         }
@@ -72,7 +73,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
             weightedSlides.push({ weight: factor * slideSettings.weight, value: slide });
         }
 
-        const selected = this.selectRandomWeighted(weightedSlides, slide => slide.weight);
+        const selected = selectRandomWeighted(weightedSlides, slide => slide.weight);
         if (selected === undefined) {
             return undefined;
         }

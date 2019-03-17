@@ -6,6 +6,4 @@ export interface SelectionAlgorithm {
     selectNextSlide(availableSlides: SlideRegistration[]): string |undefined;
 
     selectCard<TCard extends Card>(cardType: string): TCard;
-
-    selectRandomWeighted<T>(items: T[], getWeight: (item: T) => number): T | undefined;
 }

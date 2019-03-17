@@ -3,13 +3,16 @@ import { combineReducers } from "redux";
 import { getType } from "typesafe-actions";
 import { Card } from "../../core/cards/card";
 import * as actions from "./actions";
+import { PlayerInfo } from "../../core/player-info";
 
 export type GameState = Readonly<{
     isStarted: boolean;
 
     selectedSlide: string | null;
     selectedCard: Card | null;
-    // selectedPlayers: PlayerInfo[];
+
+    selectedPlayers: PlayerInfo[];
+    slideState: any | null;
 
     // currentWillPower: number;
     // isWillPowerLocked: boolean;
@@ -55,4 +58,17 @@ export default combineReducers<GameState, RootAction>({
 
         return state;
     },
+    slideState: (state = null, action) => {
+        switch (action.type) {
+            case getType(actions.nextSlide):
+                return null;
+            case getType(actions.setSlideState):
+                return action.payload;
+            default:
+                return state;
+        }
+    },
+    selectedPlayers: (state = null, action) => {
+        return state;
+    }
 });
