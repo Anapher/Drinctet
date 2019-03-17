@@ -1,18 +1,13 @@
-import { GenderBasedSelectionFragment } from "./fragments/gender-based-selection-fragment";
-import { SipsFragment } from "./fragments/sips-fragment";
 import { ParserHelper } from "./../parser-helper";
 import { CardTextDecoder } from "./card-text-decoder";
-import { TextFragment } from "./text-fragment";
+import { TextFragment } from "../../text-fragment";
 import * as Consts from "./text-decoder-consts";
-import { RawTextFragment } from "./fragments/raw-text-fragment";
-import { PlayerReferenceFragment } from "./fragments/player-reference-fragment";
-import {
-    RandomNumber,
-    RandomNumberFragment,
-    NumberRange,
-    StaticNumber,
-} from "./fragments/random-number-fragment";
-import { RandomTextFragment } from "./fragments/random-text-fragment";
+import { RawTextFragment } from "../../fragments/raw-text-fragment";
+import { PlayerReferenceFragment } from "../../fragments/player-reference-fragment";
+import { SipsFragment } from "../../fragments/sips-fragment";
+import { RandomNumberFragment, RandomNumber, NumberRange, StaticNumber } from "../../fragments/random-number-fragment";
+import { RandomTextFragment } from "../../fragments/random-text-fragment";
+import { GenderBasedSelectionFragment } from "../../fragments/gender-based-selection-fragment";
 
 export class DefaultTextDecoder implements CardTextDecoder {
     decode(s: string): TextFragment[] {

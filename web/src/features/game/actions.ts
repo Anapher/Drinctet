@@ -1,4 +1,4 @@
-import { Card } from './../../core/cards/card';
+import { Card } from '@core/cards/card';
 import { createStandardAction } from "typesafe-actions";
 
 export const startGame = createStandardAction("START_GAME")();

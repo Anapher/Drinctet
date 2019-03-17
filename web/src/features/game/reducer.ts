@@ -68,7 +68,7 @@ export default combineReducers<GameState, RootAction>({
                 return state;
         }
     },
-    selectedPlayers: (state = null, action) => {
+    selectedPlayers: (state = [], _action) => {
         return state;
     }
 });

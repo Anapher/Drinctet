@@ -1,10 +1,8 @@
 import { setSlideState } from './../actions';
-import { Card } from "./../../../core/cards/card";
 import { CardComponent, CardComponentProps } from "./card-component";
 import { TextCard } from "../../../core/cards/text-card";
 import _ from "underscore";
 import { selectRandomWeighted } from "../../../core/selection/utils";
-import { TextElement } from "../../../core/cards/text-element";
 
 interface TextCardComponentProps extends CardComponentProps {
     lang: string;
@@ -28,24 +26,18 @@ export abstract class TextCardComponent<
         this.props.setSlideState(index);
 
         if (card.followUp.length !== 0) {
-
+            this.formatTextInternal();
         }
     }
 
     componentDidMount() {}
 
-    private memoize() {
-
-    }
-
     protected formatText() {
-        const translation = this.props.selectedCard!.
     }
-
-    private readonly memoizedformatTextInternal = _.memoize(this.formatTextInternal);
 
     private formatTextInternal() {
-
+        console.log("test");
+        
     }
 
     protected abstract createState(): TState;

@@ -1,11 +1,12 @@
-import { StaticNumber, NumberRange, RandomNumberFragment } from "./fragments/random-number-fragment";
-import { GenderBasedSelectionFragment } from "./fragments/gender-based-selection-fragment";
+
 import { DefaultTextDecoder } from "./default-text-decoder";
-import { PlayerReferenceFragment } from "./fragments/player-reference-fragment";
-import { SipsFragment } from "./fragments/sips-fragment";
-import { TextFragment } from "./text-fragment";
-import { RawTextFragment } from "./fragments/raw-text-fragment";
-import { RandomTextFragment } from "./fragments/random-text-fragment";
+import { TextFragment } from "../../text-fragment";
+import { PlayerReferenceFragment } from "../../fragments/player-reference-fragment";
+import { SipsFragment } from "../../fragments/sips-fragment";
+import { GenderBasedSelectionFragment } from "../../fragments/gender-based-selection-fragment";
+import { StaticNumber, NumberRange, RandomNumberFragment } from "../../fragments/random-number-fragment";
+import { RawTextFragment } from "../../fragments/raw-text-fragment";
+import { RandomTextFragment } from "../../fragments/random-text-fragment";
 
 const decoder = new DefaultTextDecoder();
 

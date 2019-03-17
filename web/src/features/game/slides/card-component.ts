@@ -1,4 +1,4 @@
-import { Card } from "./../../../core/cards/card";
+import { Card } from "@core/cards/card";
 import { Component } from "react";
 import { drawCard } from "../game-engine";
 
