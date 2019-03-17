@@ -21,7 +21,9 @@ const algorithm = new MelinaAlgorithmWrapper({
     players: [],
     slides: [],
     tags: [],
-});
+    arrangements: [],
+    preferOppositeGenders: false
+}, "wtf");
 
 function player(gender: Gender): PlayerInfo {
     return { id: "", name: "", gender: gender };

@@ -4,6 +4,7 @@ import { getType } from "typesafe-actions";
 import { Card } from "../../core/cards/card";
 import * as actions from "./actions";
 import { PlayerInfo } from "../../core/player-info";
+import seedrandom from "seedrandom";
 
 export type GameState = Readonly<{
     isStarted: boolean;
@@ -13,6 +14,7 @@ export type GameState = Readonly<{
 
     selectedPlayers: PlayerInfo[];
     slideState: any | null;
+    currentSeed: string;
 
     // currentWillPower: number;
     // isWillPowerLocked: boolean;
@@ -70,5 +72,17 @@ export default combineReducers<GameState, RootAction>({
     },
     selectedPlayers: (state = [], _action) => {
         return state;
-    }
+    },
+    currentSeed: (state = "", action) => {
+        if (action.type === getType(actions.nextSlide)) {
+            // use seed from seedrandom
+            return (seedrandom as any)(undefined, {
+                pass: (_: any, seed: string) => {
+                    return seed;
+                },
+            }) as string;
+        }
+
+        return state;
+    },
 });

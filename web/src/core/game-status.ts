@@ -1,6 +1,7 @@
 import { CardDeck } from "./card-deck";
 import { PlayerInfo } from "./player-info";
 import { Weighted } from "./weighted";
+import { PlayerArrangement } from "./player-arrangement";
 
 export interface GameStatus {
     language: string;
@@ -9,4 +10,6 @@ export interface GameStatus {
     tags: Array<Weighted<string>>;
     history: string[];
     decks: CardDeck[];
+    preferOppositeGenders: boolean;
+    arrangements: PlayerArrangement[];
 }

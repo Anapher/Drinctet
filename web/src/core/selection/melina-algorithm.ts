@@ -1,15 +1,176 @@
 import { CardDeck } from "../card-deck";
 import { Card } from "../cards/card";
-import { PlayerSetting } from "../cards/player-setting";
-import { PlayerInfo } from "../player-info";
+import { GenderRequirement, PlayerSetting } from "../cards/player-setting";
+import { PlayerInfo, Gender } from "../player-info";
 import { SlideRegistration } from "../slide-registration";
 import { Weighted } from "../weighted";
 import { SelectionAlgorithmBase } from "./selection-algorithm-base";
-import { selectRandomWeighted } from "./utils";
+import _ from "underscore";
+import { higherArrangementPropabilityTags } from "../../preferences";
 
 export class MelinaAlgorithm extends SelectionAlgorithmBase {
     /** the percentage of cards that were played from one deck once the cards get weighted much lower */
     private readonly deckExhaustionLimit = 0.1;
+
+    public selectPlayers(playerSettings: GenderRequirement[], card: Card): PlayerInfo[] {
+        if (playerSettings.length === 0) {
+            return [];
+        }
+
+        if (playerSettings.length > this.status.players.length) {
+            throw new Error("More players were requested than available.");
+        }
+
+        const result: (PlayerInfo | null)[] = playerSettings.map(_ => null);
+        let resultCounter = 0;
+        const forArrangement = new Array<string>();
+
+        while (result.findIndex(x => x === null) !== -1) {
+            for (let i = 0; i < playerSettings.length; i++) {
+                if (result[i] !== null) {
+                    continue;
+                }
+
+                const gender = playerSettings[i];
+                let sourceList: PlayerInfo[];
+
+                switch (gender) {
+                    case "None":
+                        sourceList = this.status.players;
+                        break;
+                    case "Male":
+                        sourceList = this.status.players.filter(x => x.gender === "Male");
+                        break;
+                    case "Female":
+                        sourceList = this.status.players.filter(x => x.gender === "Female");
+                        break;
+                    default:
+                        continue;
+                }
+
+                const source = sourceList.filter(x => !_.contains(result, x));
+                const malesCount = result.filter(x => x !== null && x.gender === "Male").length;
+                const femalesCount = result.filter(x => x !== null && x.gender === "Female").length;
+
+                const player = this.selectRandomWeighted(source, p => {
+                    let weight = 1;
+
+                    if (_.any(forArrangement, x => x === p.id)) {
+                        if (
+                            _.any(higherArrangementPropabilityTags, x =>
+                                _.any(card.tags, y => x === y.toLowerCase()),
+                            )
+                        ) {
+                            weight += source.length;
+                        } else {
+                            // everyone has ~ the weight 1
+                            weight += source.length * 0.5;
+                        }
+                    }
+
+                    if (gender === "None" && this.status.preferOppositeGenders) {
+                        if (malesCount > femalesCount) {
+                            if (p.gender === "Female") {
+                                weight += 0.5;
+                            }
+                        } else if (femalesCount > malesCount) {
+                            if (p.gender === "Male") {
+                                weight += 0.5;
+                            }
+                        }
+                    }
+
+                    return weight;
+                })!;
+
+                result[i] = player;
+                resultCounter++;
+
+                const arrangement = this.status.arrangements.find(
+                    x => x.p1 === player.id || x.p2 === player.id,
+                );
+                if (arrangement !== undefined) {
+                    if (arrangement.p1 === player.id) {
+                        forArrangement.push(arrangement.p2);
+                    } else {
+                        forArrangement.push(arrangement.p1);
+                    }
+                }
+            }
+
+            if (resultCounter === result.length) {
+                break;
+            }
+
+            // here we have to handle Same/Opposite genders
+
+            const malesCount = result.filter(x => x !== null && x.gender === "Male").length;
+            const femalesCount = result.filter(x => x !== null && x.gender === "Female").length;
+            let dominant: Gender | null = null;
+
+            if (malesCount > femalesCount) dominant = "Male";
+            else if (femalesCount > malesCount) dominant = "Female";
+
+            if (dominant === null) {
+                // we try to change a 'Same' gender, so Same and opposite stay on different sites
+                // because the player gender will become dominant and opposite is always against dominant
+
+                let changed = false;
+                for (let i = 0; i < playerSettings.length; i++) {
+                    if (playerSettings[i] === "Same") {
+                        playerSettings[i] = "None";
+                        changed = true;
+                        break;
+                    }
+                }
+
+                if (!changed) {
+                    // we have the problem here that we only have opposite genders left but we have no dominant gender.
+                    // We change the first opposite to none (so it gets filled) and all other to Same, so they will get
+                    // the same gender like the first item that was changed to Same
+
+                    for (let i = 0; i < playerSettings.length; i++) {
+                        if (playerSettings[i] === "Opposite") {
+                            if (!changed) {
+                                playerSettings[i] = "None";
+                                changed = true;
+                            } else {
+                                playerSettings[i] = "Same";
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                continue;
+            }
+
+            for (let i = 0; i < playerSettings.length; i++) {
+                const gender = playerSettings[i];
+
+                switch (gender) {
+                    case "Opposite":
+                        if (dominant === "Female") {
+                            playerSettings[i] = "Male";
+                        } else {
+                            playerSettings[i] = "Female";
+                        }
+                        break;
+                    case "Same":
+                        if (dominant === "Female") {
+                            playerSettings[i] = "Female";
+                        } else {
+                            playerSettings[i] = "Male";
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        return result.map(x => x!);
+    }
 
     public selectCard<TCard extends Card>(cardType: string): TCard {
         const weightedDecks = this.weightCards(this.status.decks, cardType);
@@ -21,12 +182,12 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
             );
         }
 
-        const selected = selectRandomWeighted(weightedCards, card => card.weight);
+        const selected = this.selectRandomFromWeightedList(weightedCards);
         if (selected === undefined) {
             throw new Error("That should not actually happen");
         }
 
-        return selected.value as TCard;
+        return selected as TCard;
     }
 
     public selectNextSlide(availableSlides: SlideRegistration[]): string | undefined {
@@ -60,7 +221,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
         const weightedSlides: Array<Weighted<SlideRegistration>> = [];
         for (const slide of availableSlides) {
             const slideSettings = this.status.slides.find(x => x.value === slide.slideType);
-            
+
             if (slideSettings === undefined || slideSettings.weight === 0) {
                 continue;
             }
@@ -73,7 +234,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
             weightedSlides.push({ weight: factor * slideSettings.weight, value: slide });
         }
 
-        const selected = selectRandomWeighted(weightedSlides, slide => slide.weight);
+        const selected = this.selectRandomWeighted(weightedSlides, slide => slide.weight);
         if (selected === undefined) {
             return undefined;
         }

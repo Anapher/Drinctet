@@ -1,3 +1,4 @@
+import { MelinaAlgorithm } from '@core/selection/melina-algorithm';
 import { Card } from "@core/cards/card";
 import { Component } from "react";
 import { drawCard } from "../game-engine";
@@ -19,6 +20,7 @@ export abstract class CardComponent<
     componentDidMount() {
         if (this.props.selectedCard === null) {
             const card = drawCard(this.type) as TCard;
+            const algorithm = new MelinaAlgorithm()
             this.initialize(card);
         }
     }

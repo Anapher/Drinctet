@@ -48,11 +48,13 @@ function invalidateAlgorithm() {
         players: state.settings.players,
         slides: state.settings.slides,
         tags: state.settings.tags,
+        arrangements: state.settings.arrangements,
+        preferOppositeGenders: state.settings.preferOppositeGenders,
     };
 
     const currentStatusHash = hashGameStatus(currentStatus);
     if (selection === undefined || currentStatusHash !== selectionStatusHash) {
-        selection = new MelinaAlgorithm(currentStatus);
+        selection = new MelinaAlgorithm(currentStatus, state.game.seed);
         selectionStatusHash = currentStatusHash;
     }
 }

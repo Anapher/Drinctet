@@ -1,5 +1,13 @@
-import { Weighted } from './../weighted';
-export function selectRandomWeighted<T>(items: T[], getWeight: (item: T) => number): T | undefined {
+import { Weighted } from "./../weighted";
+
+type RandomGenerator = () => number;
+const defaultRandomGenerator: RandomGenerator = () => Math.random();
+
+export function selectRandomWeighted<T>(
+    items: T[],
+    getWeight: (item: T) => number,
+    random: RandomGenerator = defaultRandomGenerator,
+): T | undefined {
     if (items.length === 0) {
         return undefined;
     }
@@ -13,7 +21,7 @@ export function selectRandomWeighted<T>(items: T[], getWeight: (item: T) => numb
         totalWeight += weight;
     }
 
-    let randomWeight = totalWeight * Math.random();
+    let randomWeight = totalWeight * random();
     for (const { item, weight } of weights) {
         randomWeight -= weight;
 
@@ -25,8 +33,11 @@ export function selectRandomWeighted<T>(items: T[], getWeight: (item: T) => numb
     throw new Error("No choice could be made");
 }
 
-export function selectRandomFromWeightedList<T>(items: Weighted<T>[]) : T | undefined {
-    const result = selectRandomWeighted(items, item => item.weight);
+export function selectRandomFromWeightedList<T>(
+    items: Weighted<T>[],
+    random: RandomGenerator = defaultRandomGenerator,
+): T | undefined {
+    const result = selectRandomWeighted(items, item => item.weight, random);
     if (result === undefined) {
         return undefined;
     }

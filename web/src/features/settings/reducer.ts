@@ -1,10 +1,10 @@
-import { Weighted } from "./../../core/weighted";
+import { Weighted } from "@core/weighted";
 import { RootAction } from "DrinctetTypes";
 import { SourceInfo } from "SettingsModels";
 import { combineReducers } from "redux";
 import { getType } from "typesafe-actions";
-import { PlayerArrangement } from "../../core/player-arrangement";
-import { PlayerInfo } from "../../core/player-info";
+import { PlayerArrangement } from "@core/player-arrangement";
+import { PlayerInfo } from "@core/player-info";
 import * as actions from "./actions";
 import { slideWeights } from "../../preferences";
 import * as _ from "underscore";
