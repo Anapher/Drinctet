@@ -43,6 +43,10 @@ export abstract class BaseCardParser<TCard extends BaseCard> implements CardPars
             this.parseElement(element, card);
         }
 
+        if (card.players === undefined) {
+            card.players = [];
+        }
+
         return card;
     }
 

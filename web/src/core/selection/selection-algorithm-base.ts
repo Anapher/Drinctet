@@ -2,23 +2,23 @@ import { Card } from "@core/cards/card";
 import { GameStatus } from "../game-status";
 import { SlideRegistration } from "../slide-registration";
 import { SelectionAlgorithm } from "./selection-algorithm";
-import seedrandom, { prng } from "seedrandom";
-import { selectRandomWeighted, selectRandomFromWeightedList } from "./utils";
+import { selectRandomWeighted, selectRandomFromWeightedList, RNG } from "./utils";
 import { Weighted } from "@core/weighted";
 import { GenderRequirement } from "@core/cards/player-setting";
 import { PlayerInfo } from "@core/player-info";
 
 // tslint:disable-next-line: max-classes-per-file
 export abstract class SelectionAlgorithmBase implements SelectionAlgorithm {
-    protected readonly random: prng;
-
-    constructor(protected readonly status: GameStatus, randomSeed: string) {
-        this.random = seedrandom(randomSeed);
+    protected readonly random: RNG;
+    
+    constructor(protected readonly status: GameStatus, random: RNG) {
+        this.random = random;
     }
-
+    
     public abstract selectPlayers(playerSettings: GenderRequirement[], card: Card): PlayerInfo[];
     public abstract selectNextSlide(availableSlides: SlideRegistration[]): string | undefined;
     public abstract selectCard<TCard extends Card>(cardType: string): TCard;
+    public abstract getSips(min: number): number;
 
     public getRandom(): number {
         return this.random();

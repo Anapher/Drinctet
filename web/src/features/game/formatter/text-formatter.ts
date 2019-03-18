@@ -1,4 +1,4 @@
-import { RandomTextFragment } from './../../../core/fragments/random-text-fragment';
+import { RandomTextFragment } from "@core/fragments/random-text-fragment";
 import { PlayerInfo } from "@core/player-info";
 import { SipsFragment } from "@core/fragments/sips-fragment";
 import { PlayerReferenceFragment } from "@core/fragments/player-reference-fragment";
@@ -8,13 +8,19 @@ import { PlayerSetting } from "@core/cards/player-setting";
 import _ from "underscore";
 import { RawTextFragment } from "@core/fragments/raw-text-fragment";
 import { GenderBasedSelectionFragment } from "@core/fragments/gender-based-selection-fragment";
+import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
+import {
+    RandomNumberFragment,
+    NumberRange,
+    StaticNumber,
+} from "@core/fragments/random-number-fragment";
 
 export class TextFormatter {
     public parseTextFragments(s: string): TextFragment[] {
         return new DefaultTextDecoder().decode(s);
     }
 
-    public getRequiredPlayers(fragments: TextFragment[], playerSettings: PlayerSetting[]) {
+    public static getRequiredPlayers(fragments: TextFragment[], playerSettings: PlayerSetting[]) {
         const requiredPlayers = new Array<PlayerSetting>();
 
         const players = _.groupBy(
@@ -46,7 +52,7 @@ export class TextFormatter {
         return requiredPlayers;
     }
 
-    public getRequiredSips(fragments: TextFragment[]): SipsFragment[] {
+    public static getRequiredSips(fragments: TextFragment[]): SipsFragment[] {
         const sips = _.groupBy(
             fragments.filter(x => x instanceof SipsFragment).map(x => x as SipsFragment),
             "sipsIndex",
@@ -59,6 +65,7 @@ export class TextFormatter {
         players: { [index: number]: PlayerInfo },
         sips: { [index: number]: number },
         translate: (key: string) => string,
+        selection: SelectionAlgorithm,
         options: Partial<FormatOptions>,
     ): string {
         let result = "";
@@ -69,17 +76,17 @@ export class TextFormatter {
                 result += fragment.text;
             } else if (fragment instanceof PlayerReferenceFragment) {
                 if (options.boldPlayerNames) {
-                    result += "*";
+                    result += "**";
                 }
                 result += players[fragment.playerIndex].name;
                 if (options.boldPlayerNames) {
-                    result += "*";
+                    result += "**";
                 }
 
                 lastPlayerFragment = fragment;
             } else if (fragment instanceof SipsFragment) {
                 if (options.boldSips) {
-                    result += "*";
+                    result += "**";
                 }
 
                 const sip = sips[fragment.sipsIndex];
@@ -90,13 +97,13 @@ export class TextFormatter {
                 }
 
                 if (options.boldSips) {
-                    result += "*";
+                    result += "**";
                 }
             } else if (fragment instanceof GenderBasedSelectionFragment) {
                 let referencedPlayer: number;
                 if (fragment.referencedPlayerIndex !== undefined) {
                     referencedPlayer = fragment.referencedPlayerIndex;
-                } else if(lastPlayerFragment !== null) {
+                } else if (lastPlayerFragment !== null) {
                     referencedPlayer = lastPlayerFragment.playerIndex;
                 } else {
                     const playerKeys = Object.keys(players);
@@ -110,7 +117,21 @@ export class TextFormatter {
                 const player = players[referencedPlayer];
                 result += player.gender === "Female" ? fragment.femaleText : fragment.maleText;
             } else if (fragment instanceof RandomTextFragment) {
-                const index = 
+                const text = selection.selectRandomWeighted(fragment.texts, () => 1);
+                result += text;
+            } else if (fragment instanceof RandomNumberFragment) {
+                const number = selection.selectRandomWeighted(fragment.numbers, x => x.getCount());
+                if (number === undefined) {
+                    continue;
+                }
+
+                if (number instanceof NumberRange) {
+                    const random =
+                        number.min + Math.round((number.max - number.min) * selection.getRandom());
+                    result += random;
+                } else if (number instanceof StaticNumber) {
+                    result += number.i;
+                }
             }
         }
 

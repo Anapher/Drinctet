@@ -1,4 +1,4 @@
-import { createStyles, withStyles, WithStyles, Typography, Theme } from "@material-ui/core";
+import { createStyles, Theme, Typography, withStyles, WithStyles } from "@material-ui/core";
 import { RootState } from "DrinctetTypes";
 import React from "react";
 import { LocalizeContextProps, withLocalize } from "react-localize-redux";
@@ -6,18 +6,15 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { FactCard } from "../../../impl/cards/fact-card";
 import { setSlideState } from "../actions";
-import { TextCardComponent } from "./base/TextCardComponent";
-import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
-import { TextCard } from "@core/cards/text-card";
-import { nextSlide, enqueueFollowUp } from "../game-engine";
+import { nextSlide } from "../game-engine";
 import { getRootStyles } from "./base/helper";
-import { SelectedPlayer } from "GameModels";
+import { TextCardComponent } from "./base/TextCardComponent";
 
 const styles = (theme: Theme) =>
     createStyles({
         root: {
             ...getRootStyles(),
-            backgroundColor: "#3498db",
+            backgroundColor: "#34495e",
         },
         content: {
             textAlign: "center",
@@ -51,33 +48,9 @@ type Props = ReturnType<typeof mapStateToProps> &
     WithStyles<typeof styles> &
     LocalizeContextProps;
 
-class FactSlide extends TextCardComponent<FactCard, Props> {
+class DownSlide extends TextCardComponent<FactCard, Props> {
     constructor(props: Props) {
-        super(props, "FactCard");
-    }
-
-    selectText(selection: SelectionAlgorithm, selectedCard: TextCard): string {
-        const cardText = super.selectText(selection, selectedCard);
-
-        const rand = selection.getRandom();
-
-        const availableInstructions = ["singleplayer", "multiplayer"];
-        const selectedInstruction = availableInstructions[Math.floor(rand * availableInstructions.length)];
-        const instruction = this.props.translate(`slides.fact.${selectedInstruction}`) as string;
-
-        return `### ${instruction}\n${cardText}`;
-    }
-
-    didInitialize(card: FactCard, players: SelectedPlayer[]) {
-        enqueueFollowUp(new Date(), card, players);
-    }
-
-    selectFollowUpText(_selection: SelectionAlgorithm, card: FactCard) {
-        if (card.isTrueFact) {
-            return "Der Fakt ist **wahr**. Wenn du falsch geraten hast, trink [sips]";
-        } else {
-            return "Der Fakt ist **falsch**. Wenn du falsch geraten hast, trink [sips]";
-        }
+        super(props, "DownCard");
     }
 
     renderSlide(textComponent: JSX.Element) {
@@ -86,7 +59,7 @@ class FactSlide extends TextCardComponent<FactCard, Props> {
 
         const header = (
             <Typography className={classes.header} variant="h3">
-                Fakt?!
+                Auf Ex'
             </Typography>
         );
 
@@ -108,4 +81,4 @@ export default compose(
         mapStateToProps,
         dispatchProps,
     ),
-)(withLocalize(FactSlide)) as React.ComponentType;
+)(withLocalize(DownSlide)) as React.ComponentType;

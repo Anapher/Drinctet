@@ -29,5 +29,23 @@
     "add": ["Add", "Hinzufügen"],
     "welcome": {
         "startGame": ["Start Game", "Spiel starten"]
+    },
+    "game": {
+        "textFormatter": {
+            "sips": ["sips", "Schlucke"],
+            "oneSip": ["one sip", "einen Schluck"]
+        }
+    },
+    "slides": {
+        "fact": {
+            "singleplayer": [
+                "[Player], decide if the following statement is true or false:",
+                "[Player], entscheide, ob folgende Aussage wahr oder falsch ist:"
+            ],
+            "multiplayer": [
+                "[Player1] and [Player2], decide together the correctness of the following statement:",
+                "[Player1], entscheide mit [Player2] zusammen, ob folgende Aussage wahr ist:"
+            ]
+        }
     }
 }

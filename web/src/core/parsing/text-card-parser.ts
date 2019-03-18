@@ -33,6 +33,8 @@ export abstract class TextCardParser<TCard extends TextCard> extends BaseCardPar
             }
 
             card.followUpDelay = seconds;
+        } else {
+            card.followUpDelay = 0;
         }
     }
 

@@ -80,6 +80,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
                         }
                     }
 
+                    console.log(`${p.name} -> ${weight}`);
                     return weight;
                 })!;
 
@@ -202,7 +203,10 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
 
         const cardTypeRatings: { [type: string]: number } = {};
         for (const cardType of uniqueCardTypes) {
-            const weightedDecks = this.weightCards(this.status.decks, cardType);
+            const weightedDecks = this.weightCards(
+                this.status.decks.filter(x => x.weight !== 0),
+                cardType,
+            );
 
             const allCards: Array<Weighted<Card>> = [];
             for (const cardDeck of weightedDecks) {
@@ -234,12 +238,18 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
             weightedSlides.push({ weight: factor * slideSettings.weight, value: slide });
         }
 
+        console.log(weightedSlides);
+
         const selected = this.selectRandomWeighted(weightedSlides, slide => slide.weight);
         if (selected === undefined) {
             return undefined;
         }
 
         return selected.value.slideType;
+    }
+
+    public getSips(min: number): number {
+        return min + 1;
     }
 
     protected weightCards(
@@ -298,10 +308,14 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
                     totalCards,
                 );
                 const tagsFactor = this.getTagsFactor(card.tags, this.status.tags);
+                const weight = exhaustionFactor * willPowerRating * historyFactor * tagsFactor;
+                if (weight === 0) {
+                    continue;
+                }
 
                 weightedCards.push({
                     value: card,
-                    weight: exhaustionFactor * willPowerRating * historyFactor * tagsFactor,
+                    weight: weight,
                 });
             }
 

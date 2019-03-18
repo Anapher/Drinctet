@@ -1,14 +1,12 @@
 import { CardParser } from "../core/parsing/card-parser";
 import { CardParserFactory } from "../core/parsing/card-parser-factory";
-import { FactCardParser } from "./parsing/fact-card-parser";
+import { parsers } from "./registrations";
 
 export class DefaultCardParserFactory implements CardParserFactory {
     private parsers: { [type: string]: new () => CardParser };
 
     constructor() {
-        this.parsers = {
-            FactCard: FactCardParser,
-        };
+        this.parsers = parsers;
     }
 
     public createParser(cardType: string): CardParser | undefined {

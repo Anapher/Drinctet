@@ -18,7 +18,7 @@ export class CardsLoader {
 
     private async loadFile(url: string, result: Card[], requestedCards?: string[]): Promise<void> {
         const xml = await this.requestFile(url);
-
+        
         // the DOMParser doesn't like XML docs without a Root element
         const xmlDoc = this.domParser.parseFromString("<Root>" + xml + "</Root>", "text/xml");
 

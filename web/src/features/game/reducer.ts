@@ -3,8 +3,7 @@ import { combineReducers } from "redux";
 import { getType } from "typesafe-actions";
 import { Card } from "../../core/cards/card";
 import * as actions from "./actions";
-import { PlayerInfo } from "../../core/player-info";
-import seedrandom from "seedrandom";
+import { FollowUpSlide, SelectedPlayer } from "GameModels";
 
 export type GameState = Readonly<{
     isStarted: boolean;
@@ -12,7 +11,7 @@ export type GameState = Readonly<{
     selectedSlide: string | null;
     selectedCard: Card | null;
 
-    selectedPlayers: PlayerInfo[];
+    selectedPlayers: SelectedPlayer[];
     slideState: any | null;
     currentSeed: string;
 
@@ -22,6 +21,9 @@ export type GameState = Readonly<{
     // startTime: string;
 
     cardsHistory: string[];
+    slidesHistory: string[];
+    followUp: FollowUpSlide[];
+    activeFollowUp: string | null;
 }>;
 
 export default combineReducers<GameState, RootAction>({
@@ -32,6 +34,12 @@ export default combineReducers<GameState, RootAction>({
             default:
                 return state;
         }
+    },
+    slidesHistory: (state = [], action) => {
+        if (action.type === getType(actions.nextSlide)) {
+            return [action.payload, ...state];
+        }
+        return state;
     },
     isStarted: (state = false, action) => {
         switch (action.type) {
@@ -47,8 +55,10 @@ export default combineReducers<GameState, RootAction>({
         switch (action.type) {
             case getType(actions.applyCard):
                 return action.payload;
-            case getType(actions.applyCard):
+            case getType(actions.nextSlide):
                 return null;
+            case getType(actions.activateFollowUp):
+                return action.payload.selectedCard;
         }
         return state;
     },
@@ -56,13 +66,16 @@ export default combineReducers<GameState, RootAction>({
         switch (action.type) {
             case getType(actions.nextSlide):
                 return action.payload;
+            case getType(actions.activateFollowUp):
+                return action.payload.slideType;
+            default:
+                return state;
         }
-
-        return state;
     },
     slideState: (state = null, action) => {
         switch (action.type) {
             case getType(actions.nextSlide):
+            case getType(actions.enqueueFollowUp):
                 return null;
             case getType(actions.setSlideState):
                 return action.payload;
@@ -70,19 +83,47 @@ export default combineReducers<GameState, RootAction>({
                 return state;
         }
     },
-    selectedPlayers: (state = [], _action) => {
-        return state;
+    selectedPlayers: (state = [], action) => {
+        switch (action.type) {
+            case getType(actions.nextSlide):
+                return [];
+            case getType(actions.activateFollowUp):
+                return action.payload.selectedPlayers;
+            case getType(actions.selectPlayers):
+                return [...state, ...action.payload];
+            default:
+                return state;
+        }
     },
     currentSeed: (state = "", action) => {
-        if (action.type === getType(actions.nextSlide)) {
-            // use seed from seedrandom
-            return (seedrandom as any)(undefined, {
-                pass: (_: any, seed: string) => {
-                    return seed;
-                },
-            }) as string;
+        switch (action.type) {
+            case getType(actions.nextSlide):
+            case getType(actions.activateFollowUp):
+                return "";
+            case getType(actions.setCurrentSeed):
+                return action.payload;
+            default:
+                return state;
         }
-
-        return state;
+    },
+    followUp: (state = [], action) => {
+        switch (action.type) {
+            case getType(actions.enqueueFollowUp):
+                return [...state, action.payload];
+            case getType(actions.activateFollowUp):
+                return state.filter(x => x.id !== action.payload.id);
+            default:
+                return state;
+        }
+    },
+    activeFollowUp: (state = null, action) => {
+        switch (action.type) {
+            case getType(actions.nextSlide):
+                return null;
+            case getType(actions.activateFollowUp):
+                return action.payload.id;
+            default:
+                return state;
+        }
     },
 });

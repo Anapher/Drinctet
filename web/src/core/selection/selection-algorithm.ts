@@ -11,6 +11,8 @@ export interface SelectionAlgorithm {
 
     selectPlayers(playerSettings: GenderRequirement[], card: Card): PlayerInfo[];
 
+    getSips(min: number): number;
+
     selectRandomWeighted<T>(items: T[], getWeight: (item: T) => number): T | undefined;
 
     getRandom(): number;
