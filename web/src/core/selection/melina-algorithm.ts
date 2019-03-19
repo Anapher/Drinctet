@@ -12,7 +12,11 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
     /** the percentage of cards that were played from one deck once the cards get weighted much lower */
     private readonly deckExhaustionLimit = 0.1;
 
-    public selectPlayers(playerSettings: GenderRequirement[], card: Card): PlayerInfo[] {
+    public selectPlayers(
+        playerSettings: GenderRequirement[],
+        definedPlayers: (PlayerInfo | null)[],
+        card: Card,
+    ): PlayerInfo[] {
         if (playerSettings.length === 0) {
             return [];
         }
@@ -21,7 +25,9 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
             throw new Error("More players were requested than available.");
         }
 
-        const result: (PlayerInfo | null)[] = playerSettings.map(_ => null);
+        const result: (PlayerInfo | null)[] = playerSettings.map((_, i) =>
+            definedPlayers.length > i ? definedPlayers[i] : null,
+        );
         let resultCounter = 0;
         const forArrangement = new Array<string>();
 

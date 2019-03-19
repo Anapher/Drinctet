@@ -1,14 +1,23 @@
-import { createStyles, Theme, Typography, withStyles, WithStyles } from "@material-ui/core";
+import { TextSlidePresenter, TextSlideState, TranslateFunc } from "./base/text-slide-presenter";
+import { DownCard } from "src/impl/cards/down-card";
+import { getRootStyles, defaultMarkdownOptions } from "./base/helper";
 import { RootState } from "DrinctetTypes";
-import React from "react";
-import { LocalizeContextProps, withLocalize } from "react-localize-redux";
-import { connect } from "react-redux";
+import { requestSlideAsync } from "../actions";
+import { ReactNode } from "react";
 import { compose } from "redux";
-import { FactCard } from "../../../impl/cards/fact-card";
-import { setSlideState } from "../actions";
-import { nextSlide } from "../game-engine";
-import { getRootStyles } from "./base/helper";
-import { TextCardComponent } from "./base/TextCardComponent";
+import { connect } from "react-redux";
+import { createStyles, Theme, WithStyles, Typography, withStyles } from "@material-ui/core";
+import { LocalizeContextProps, Translate } from "react-localize-redux";
+import Markdown from "markdown-to-jsx";
+import * as React from "react";
+
+const mapStateToProps = (state: RootState) => ({
+    state: state.game.slideState as DownSlideState,
+});
+
+const dispatchProps = {
+    nextSlide: requestSlideAsync.request,
+};
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -29,56 +38,64 @@ const styles = (theme: Theme) =>
         },
         header: {
             color: "white",
+            marginBottom: 15,
         },
     });
-
-const mapStateToProps = (state: RootState) => ({
-    selectedCard: state.game.selectedCard,
-    selectedPlayers: state.game.selectedPlayers,
-    followUp: state.game.activeFollowUp,
-    currentSeed: state.game.currentSeed,
-});
-
-const dispatchProps = {
-    setSlideState,
-};
 
 type Props = ReturnType<typeof mapStateToProps> &
     typeof dispatchProps &
     WithStyles<typeof styles> &
     LocalizeContextProps;
 
-class DownSlide extends TextCardComponent<FactCard, Props> {
-    constructor(props: Props) {
-        super(props, "DownCard");
+function DownSlideComponent({classes, nextSlide, state}: Props) {
+    if (state === null) {
+        return <Typography>Loading...</Typography>
     }
 
-    renderSlide(textComponent: JSX.Element) {
-        //, selection: SelectionAlgorithm
-        const { classes } = this.props;
+    const header = (
+        <Typography className={classes.header} variant="h3">
+            <Translate id="slides.down.title" />
+        </Typography>
+    );
 
-        const header = (
-            <Typography className={classes.header} variant="h3">
-                Auf Ex'
-            </Typography>
-        );
-
-        return (
-            <div className={classes.root} onClick={() => nextSlide()}>
-                <div className={classes.content}>
-                    {header}
-                    {textComponent}
-                    <div style={{ opacity: 0 }}>{header}</div>
-                </div>
+    return (
+        <div className={classes.root} onClick={() => nextSlide()}>
+            <div className={classes.content}>
+                {header}
+                <Markdown children={state.markdownContent} options={defaultMarkdownOptions} />
+                <div style={{ opacity: 0 }}>{header}</div>
             </div>
-        );
+        </div>
+    );}
+
+const Component =
+    compose(
+        connect(
+            mapStateToProps,
+            dispatchProps,
+        ),
+        withStyles(styles)
+    )(DownSlideComponent) as React.ComponentType;
+
+interface DownSlideState extends TextSlideState {}
+export class DownSlide extends TextSlidePresenter<DownSlideState, DownCard> {
+    constructor(translate: TranslateFunc) {
+        super(translate, "DownCard");
+    }
+
+    protected initializeSlide(): ReactNode {
+        return (<Component />);
+    }
+
+    protected initializeState(markdownContent: string): DownSlideState {
+        return {
+            markdownContent: markdownContent,
+        };
+    }
+
+    protected initializeFollowUpState(markdownContent: string): DownSlideState {
+        return {
+            markdownContent: markdownContent,
+        };
     }
 }
-
-export default compose(
-    withStyles(styles),
-    connect(
-        mapStateToProps,
-        dispatchProps,
-    ),
-)(withLocalize(DownSlide)) as React.ComponentType;

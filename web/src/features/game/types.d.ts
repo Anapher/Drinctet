@@ -12,9 +12,7 @@ declare module "GameModels" {
     export interface FollowUpSlide {
         slideType: string;
         selectedCard: import("@core/cards/card").Card | null;
-        selectedPlayers: SelectedPlayer[];
         due: Date;
-        id: string;
         param: any;
     }
 }

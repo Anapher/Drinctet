@@ -5,11 +5,11 @@ import { PlayerInfo } from "@core/player-info";
 
 export interface SelectionAlgorithm {
     /** select the next slide. Return undefined if no slide could be selected */
-    selectNextSlide(availableSlides: SlideRegistration[]): string |undefined;
+    selectNextSlide(availableSlides: SlideRegistration[]): string | undefined;
 
     selectCard<TCard extends Card>(cardType: string): TCard;
 
-    selectPlayers(playerSettings: GenderRequirement[], card: Card): PlayerInfo[];
+    selectPlayers(playerSettings: GenderRequirement[], definedPlayers: (PlayerInfo | null)[], card: Card): PlayerInfo[];
 
     getSips(min: number): number;
 

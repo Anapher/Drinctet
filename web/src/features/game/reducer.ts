@@ -1,9 +1,10 @@
 import { RootAction } from "DrinctetTypes";
 import { combineReducers } from "redux";
 import { getType } from "typesafe-actions";
-import { Card } from "../../core/cards/card";
+import { Card } from "@core/cards/card";
 import * as actions from "./actions";
-import { FollowUpSlide, SelectedPlayer } from "GameModels";
+import { FollowUpSlide } from "GameModels";
+import cuid from "cuid";
 
 export type GameState = Readonly<{
     isStarted: boolean;
@@ -11,9 +12,7 @@ export type GameState = Readonly<{
     selectedSlide: string | null;
     selectedCard: Card | null;
 
-    selectedPlayers: SelectedPlayer[];
     slideState: any | null;
-    currentSeed: string;
 
     // currentWillPower: number;
     // isWillPowerLocked: boolean;
@@ -23,7 +22,8 @@ export type GameState = Readonly<{
     cardsHistory: string[];
     slidesHistory: string[];
     followUp: FollowUpSlide[];
-    activeFollowUp: string | null;
+    activeFollowUp: FollowUpSlide | null;
+    current: string;
 }>;
 
 export default combineReducers<GameState, RootAction>({
@@ -36,7 +36,7 @@ export default combineReducers<GameState, RootAction>({
         }
     },
     slidesHistory: (state = [], action) => {
-        if (action.type === getType(actions.nextSlide)) {
+        if (action.type === getType(actions.requestSlideAsync.success)) {
             return [action.payload, ...state];
         }
         return state;
@@ -55,7 +55,7 @@ export default combineReducers<GameState, RootAction>({
         switch (action.type) {
             case getType(actions.applyCard):
                 return action.payload;
-            case getType(actions.nextSlide):
+            case getType(actions.requestSlideAsync.success):
                 return null;
             case getType(actions.activateFollowUp):
                 return action.payload.selectedCard;
@@ -64,7 +64,7 @@ export default combineReducers<GameState, RootAction>({
     },
     selectedSlide: (state = null, action) => {
         switch (action.type) {
-            case getType(actions.nextSlide):
+            case getType(actions.requestSlideAsync.success):
                 return action.payload;
             case getType(actions.activateFollowUp):
                 return action.payload.slideType;
@@ -74,33 +74,10 @@ export default combineReducers<GameState, RootAction>({
     },
     slideState: (state = null, action) => {
         switch (action.type) {
-            case getType(actions.nextSlide):
-            case getType(actions.enqueueFollowUp):
+            case getType(actions.requestSlideAsync.success):
+            case getType(actions.activateFollowUp):
                 return null;
             case getType(actions.setSlideState):
-                return action.payload;
-            default:
-                return state;
-        }
-    },
-    selectedPlayers: (state = [], action) => {
-        switch (action.type) {
-            case getType(actions.nextSlide):
-                return [];
-            case getType(actions.activateFollowUp):
-                return action.payload.selectedPlayers;
-            case getType(actions.selectPlayers):
-                return [...state, ...action.payload];
-            default:
-                return state;
-        }
-    },
-    currentSeed: (state = "", action) => {
-        switch (action.type) {
-            case getType(actions.nextSlide):
-            case getType(actions.activateFollowUp):
-                return "";
-            case getType(actions.setCurrentSeed):
                 return action.payload;
             default:
                 return state;
@@ -111,19 +88,28 @@ export default combineReducers<GameState, RootAction>({
             case getType(actions.enqueueFollowUp):
                 return [...state, action.payload];
             case getType(actions.activateFollowUp):
-                return state.filter(x => x.id !== action.payload.id);
+                return state.filter(x => x !== action.payload);
             default:
                 return state;
         }
     },
     activeFollowUp: (state = null, action) => {
         switch (action.type) {
-            case getType(actions.nextSlide):
+            case getType(actions.requestSlideAsync.success):
                 return null;
             case getType(actions.activateFollowUp):
-                return action.payload.id;
+                return action.payload;
             default:
                 return state;
         }
     },
+    current: (state = "", action) => {
+        switch (action.type) {
+            case getType(actions.requestSlideAsync.success):
+            case getType(actions.activateFollowUp):
+                return cuid();
+            default:
+                return state;
+        }
+    }
 });

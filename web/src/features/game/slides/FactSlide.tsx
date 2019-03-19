@@ -1,17 +1,28 @@
-import { createStyles, withStyles, WithStyles, Typography, Theme } from "@material-ui/core";
+import { createStyles, Theme, Typography, WithStyles, withStyles } from "@material-ui/core";
 import { RootState } from "DrinctetTypes";
-import React from "react";
-import { LocalizeContextProps, withLocalize } from "react-localize-redux";
+import Markdown from "markdown-to-jsx";
+import * as React from "react";
+import { ReactNode } from "react";
+import { LocalizeContextProps, Translate } from "react-localize-redux";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { FactCard } from "../../../impl/cards/fact-card";
-import { setSlideState } from "../actions";
-import { TextCardComponent } from "./base/TextCardComponent";
-import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
+import { FactCard } from "src/impl/cards/fact-card";
+import { requestSlideAsync } from "../actions";
+import { defaultMarkdownOptions, getRootStyles } from "./base/helper";
+import { TextSlidePresenter, TextSlideState, TranslateFunc } from "./base/text-slide-presenter";
+import store from "../../../store/index";
+import * as actions from "../actions";
 import { TextCard } from "@core/cards/text-card";
-import { nextSlide, enqueueFollowUp } from "../game-engine";
-import { getRootStyles } from "./base/helper";
+import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
 import { SelectedPlayer } from "GameModels";
+
+const mapStateToProps = (state: RootState) => ({
+    state: state.game.slideState as FactSlideState,
+});
+
+const dispatchProps = {
+    nextSlide: requestSlideAsync.request,
+};
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -23,89 +34,143 @@ const styles = (theme: Theme) =>
             textAlign: "center",
             [theme.breakpoints.down("sm")]: {
                 width: "100%",
-                margin: 0,
+                marginLeft: 30,
+                marginRight: 30,
                 fontSize: 20,
             },
-            [theme.breakpoints.down("lg")]: {
+            [theme.breakpoints.up("md")]: {
                 width: "80%",
+            },
+            [theme.breakpoints.up("lg")]: {
+                width: "60%",
             },
         },
         header: {
             color: "white",
+            marginBottom: 15
         },
     });
-
-const mapStateToProps = (state: RootState) => ({
-    selectedCard: state.game.selectedCard,
-    selectedPlayers: state.game.selectedPlayers,
-    followUp: state.game.activeFollowUp,
-    currentSeed: state.game.currentSeed,
-});
-
-const dispatchProps = {
-    setSlideState,
-};
 
 type Props = ReturnType<typeof mapStateToProps> &
     typeof dispatchProps &
     WithStyles<typeof styles> &
     LocalizeContextProps;
 
-class FactSlide extends TextCardComponent<FactCard, Props> {
-    constructor(props: Props) {
-        super(props, "FactCard");
+function FactSlideComponent({ classes, nextSlide, state }: Props) {
+    if (state === null) {
+        return <Typography>Loading...</Typography>;
     }
 
-    selectText(selection: SelectionAlgorithm, selectedCard: TextCard): string {
-        const cardText = super.selectText(selection, selectedCard);
+    const header = (
+        <Typography className={classes.header} variant="h3">
+            <Translate id={`slides.fact.title${(state.isFollowUp ? '.follow' : '')}`} />
+        </Typography>
+    );
 
-        const rand = selection.getRandom();
-
-        const availableInstructions = ["singleplayer", "multiplayer"];
-        const selectedInstruction = availableInstructions[Math.floor(rand * availableInstructions.length)];
-        const instruction = this.props.translate(`slides.fact.${selectedInstruction}`) as string;
-
-        return `### ${instruction}\n${cardText}`;
-    }
-
-    didInitialize(card: FactCard, players: SelectedPlayer[]) {
-        enqueueFollowUp(new Date(), card, players);
-    }
-
-    selectFollowUpText(_selection: SelectionAlgorithm, card: FactCard) {
-        if (card.isTrueFact) {
-            return "Der Fakt ist **wahr**. Wenn du falsch geraten hast, trink [sips]";
-        } else {
-            return "Der Fakt ist **falsch**. Wenn du falsch geraten hast, trink [sips]";
-        }
-    }
-
-    renderSlide(textComponent: JSX.Element) {
-        //, selection: SelectionAlgorithm
-        const { classes } = this.props;
-
-        const header = (
-            <Typography className={classes.header} variant="h3">
-                Fakt?!
-            </Typography>
-        );
-
-        return (
-            <div className={classes.root} onClick={() => nextSlide()}>
-                <div className={classes.content}>
-                    {header}
-                    {textComponent}
-                    <div style={{ opacity: 0 }}>{header}</div>
-                </div>
+    return (
+        <div className={classes.root} onClick={() => nextSlide()}>
+            <div className={classes.content}>
+                {header}
+                <Markdown children={state.markdownContent} options={defaultMarkdownOptions} />
+                <div style={{ opacity: 0 }}>{header}</div>
             </div>
-        );
-    }
+        </div>
+    );
 }
 
-export default compose(
-    withStyles(styles),
+interface FactSlideFollowUpParam {
+    mode: FactSlideMode;
+    players: SelectedPlayer[];
+}
+
+const Component = compose(
     connect(
         mapStateToProps,
         dispatchProps,
     ),
-)(withLocalize(FactSlide)) as React.ComponentType;
+    withStyles(styles),
+)(FactSlideComponent) as React.ComponentType;
+
+type FactSlideMode = "singleplayer" | "multiplayer";
+const availableFactSlideModes: FactSlideMode[] = ["singleplayer", "multiplayer"];
+
+interface FactSlideState extends TextSlideState {
+    isFollowUp: boolean;
+    mode: FactSlideMode;
+}
+
+export class FactSlide extends TextSlidePresenter<FactSlideState, FactCard> {
+    private selectedMode: FactSlideMode;
+    private players?: SelectedPlayer[];
+
+    constructor(translate: TranslateFunc) {
+        super(translate, "FactCard");
+
+        this.selectedMode =
+            availableFactSlideModes[Math.floor(availableFactSlideModes.length * Math.random())];
+    }
+
+    protected initializeSlide(): ReactNode {
+        return <Component />;
+    }
+
+    selectText(selection: SelectionAlgorithm, selectedCard: TextCard): string {
+        const cardText = super.selectText(selection, selectedCard);
+        const instruction = this.translate(`slides.fact.${this.selectedMode}`);
+
+        return `#### ${instruction}\n${cardText}`;
+    }
+
+    selectFollowUpText(
+        _selection: SelectionAlgorithm,
+        selectedCard: FactCard,
+        param: any,
+    ): { text: string; players?: SelectedPlayer[] } {
+        const { mode, players } = param as FactSlideFollowUpParam;
+        const { isTrueFact } = selectedCard;
+
+        const text = this.translate(`slides.fact.${mode}.${isTrueFact}`);
+        return { text, players };
+    }
+
+    protected initializeState(
+        markdownContent: string,
+        _card: FactCard,
+        players: SelectedPlayer[],
+    ): FactSlideState {
+        this.players = players;
+
+        return {
+            isFollowUp: false,
+            markdownContent: markdownContent,
+            mode: this.selectedMode,
+        };
+    }
+
+    protected initializeFollowUpState(markdownContent: string, param: any): FactSlideState {
+        const { mode } = param as FactSlideFollowUpParam;
+        return {
+            isFollowUp: true,
+            markdownContent: markdownContent,
+            mode,
+        };
+    }
+
+    protected initializeCard(card: FactCard): ReactNode {
+        const result = super.initializeCard(card);
+
+        store.dispatch(
+            actions.enqueueFollowUp({
+                due: new Date(),
+                selectedCard: card,
+                slideType: "FactSlide",
+                param: {
+                    mode: this.selectedMode,
+                    players: this.players,
+                } as FactSlideFollowUpParam,
+            }),
+        );
+
+        return result;
+    }
+}

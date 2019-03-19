@@ -38,6 +38,8 @@
     },
     "slides": {
         "fact": {
+            "title": ["Fact?", "Fakt?"],
+            "title.follow": ["Fact!", "Fakt!"],
             "singleplayer": [
                 "[Player], decide if the following statement is true or false:",
                 "[Player], entscheide, ob folgende Aussage wahr oder falsch ist:"
@@ -45,7 +47,26 @@
             "multiplayer": [
                 "[Player1] and [Player2], decide together the correctness of the following statement:",
                 "[Player1], entscheide mit [Player2] zusammen, ob folgende Aussage wahr ist:"
+            ],
+            "singleplayer.true": [
+                "[Player], drink [sips] if you thought the fact was wrong.",
+                "[Player], trinke [sips], wenn du dachtest, dass der Fakt falsch war. Ansonsten verteil sie."
+            ],
+            "singleplayer.false": [
+                "[Player], drink [sips] if you thought the fact was right.",
+                "[Player], trinke [sips], wenn du dachtest, dass der Fakt richtig war. Ansonsten verteil sie."
+            ],
+            "multiplayer.true": [
+                "[Player1] and [Player2], drink both [sips] if your thought the fact was wrong.",
+                "[Player1] und [Player2], trinkt jeweils [sips], wenn ihr dachtet, der Fakt sei falsch. Ansonsten verteilt sie."
+            ],
+            "multiplayer.false": [
+                "[Player1] and [Player2], drink both [sips] if your thought the fact was right.",
+                "[Player1] und [Player2], trinkt jeweils [sips], wenn ihr dachtet, der Fakt sei richtig. Ansonsten verteilt sie."
             ]
+        },
+        "down": {
+            "title": ["Down it!", "Auf Ex'"]
         }
     }
 }
