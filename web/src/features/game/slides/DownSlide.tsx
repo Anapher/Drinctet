@@ -1,6 +1,6 @@
 import { TextSlidePresenter, TextSlideState, TranslateFunc } from "./base/text-slide-presenter";
 import { DownCard } from "src/impl/cards/down-card";
-import { getRootStyles, defaultMarkdownOptions } from "./base/helper";
+import { getRootStyles, defaultMarkdownOptions, getContentStyles, spaceHeaderStyles } from "./base/helper";
 import { RootState } from "DrinctetTypes";
 import { requestSlideAsync } from "../actions";
 import { ReactNode } from "react";
@@ -23,23 +23,14 @@ const styles = (theme: Theme) =>
     createStyles({
         root: {
             ...getRootStyles(),
-            backgroundColor: "#34495e",
+            backgroundColor: "#34495e"
         },
-        content: {
-            textAlign: "center",
-            [theme.breakpoints.down("sm")]: {
-                width: "100%",
-                margin: 0,
-                fontSize: 20,
-            },
-            [theme.breakpoints.down("lg")]: {
-                width: "80%",
-            },
-        },
+        content: getContentStyles(theme),
         header: {
             color: "white",
             marginBottom: 15,
         },
+        spaceHeader: spaceHeaderStyles(theme),
     });
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -49,7 +40,7 @@ type Props = ReturnType<typeof mapStateToProps> &
 
 function DownSlideComponent({classes, nextSlide, state}: Props) {
     if (state === null) {
-        return <Typography>Loading...</Typography>
+        return <div className={classes.root} />;
     }
 
     const header = (
@@ -63,7 +54,7 @@ function DownSlideComponent({classes, nextSlide, state}: Props) {
             <div className={classes.content}>
                 {header}
                 <Markdown children={state.markdownContent} options={defaultMarkdownOptions} />
-                <div style={{ opacity: 0 }}>{header}</div>
+                <div className={classes.spaceHeader}>{header}</div>
             </div>
         </div>
     );}

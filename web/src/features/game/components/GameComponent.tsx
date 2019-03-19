@@ -38,7 +38,7 @@ class GameComponent extends Component<Props, State> {
         }
 
         const factory = slideComponents[selectedSlide];
-        const slideInitalizer = factory(x => translate(x) as string);
+        const slideInitalizer = new factory(x => translate(x) as string);
         let component: React.ReactNode;
         if (activeFollowUp === null) {
             component = slideInitalizer.initialize();

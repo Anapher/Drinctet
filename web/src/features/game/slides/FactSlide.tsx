@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { FactCard } from "src/impl/cards/fact-card";
 import { requestSlideAsync } from "../actions";
-import { defaultMarkdownOptions, getRootStyles } from "./base/helper";
+import { defaultMarkdownOptions, getRootStyles, getContentStyles, spaceHeaderStyles } from "./base/helper";
 import { TextSlidePresenter, TextSlideState, TranslateFunc } from "./base/text-slide-presenter";
 import store from "../../../store/index";
 import * as actions from "../actions";
@@ -30,25 +30,12 @@ const styles = (theme: Theme) =>
             ...getRootStyles(),
             backgroundColor: "#3498db",
         },
-        content: {
-            textAlign: "center",
-            [theme.breakpoints.down("sm")]: {
-                width: "100%",
-                marginLeft: 30,
-                marginRight: 30,
-                fontSize: 20,
-            },
-            [theme.breakpoints.up("md")]: {
-                width: "80%",
-            },
-            [theme.breakpoints.up("lg")]: {
-                width: "60%",
-            },
-        },
+        content: getContentStyles(theme),
         header: {
             color: "white",
             marginBottom: 15
         },
+        spaceHeader: spaceHeaderStyles(theme),
     });
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -58,7 +45,7 @@ type Props = ReturnType<typeof mapStateToProps> &
 
 function FactSlideComponent({ classes, nextSlide, state }: Props) {
     if (state === null) {
-        return <Typography>Loading...</Typography>;
+        return <div className={classes.root} />;
     }
 
     const header = (
@@ -72,7 +59,7 @@ function FactSlideComponent({ classes, nextSlide, state }: Props) {
             <div className={classes.content}>
                 {header}
                 <Markdown children={state.markdownContent} options={defaultMarkdownOptions} />
-                <div style={{ opacity: 0 }}>{header}</div>
+                <div className={classes.spaceHeader}>{header}</div>
             </div>
         </div>
     );

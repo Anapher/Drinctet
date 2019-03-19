@@ -21,7 +21,10 @@
         "arrangements.pairWith": ["Set up with", "Verkuppeln mit"],
         "arrangements.none": ["None", "Keine"],
         "socialMediaPlatform": ["Social Media Platform", "Soziales Netzwerk"],
-        "socialMediaPlatform.description": ["The social media platform your group mainly uses.", "Das soziale Netzwerk, welches deine Gruppe hauptsächlich nutzt."],
+        "socialMediaPlatform.description": [
+            "The social media platform your group mainly uses.",
+            "Das soziale Netzwerk, welches deine Gruppe hauptsächlich nutzt."
+        ],
         "slides": ["Slides", "Slides"],
         "tags": ["Tags", "Tags"],
         "tags.none": ["None of your cards have tags.", "Keine deiner Karten hat Tags."]
@@ -67,6 +70,10 @@
         },
         "down": {
             "title": ["Down it!", "Auf Ex'"]
+        },
+        "neverever": {
+            "title": ["Never have I ever...", "Ich habe noch nie..."],
+            "instruction": ["Everybody who's already done that drinks ${sips} sips.", "Jeder, der es schonmal gemacht hat, trinkt ${sips} Schlucke."]
         }
     }
 }

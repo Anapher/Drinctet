@@ -141,8 +141,8 @@
 </FactCard>
 
 <FactCard is="false" id="29">
-    <Text lang="de">Wenn du z. B. ein grünes Shirt mit einem blauen BH darunter trägst, kann eine farbenblinde Person vage den BH durch sehen. Dies liegt daran, dass das Licht, das tatsächlich durch das Shirt strömt, den BH reflektiert, aber mit einer geringeren Intensität im Vergleich zum Shirt. Wenn du jedoch nicht in der Lage bist, die Lichtreflexion des Shirts zu sehen, würdest du die Lichtreflexion des BHs sehen. So würde eine Person mit normalem Sehvermögen das Licht (die Farbe) des Shirts sehen, während eine farbenblinde Person die Farbe und damit die Kontur des BHs sehen würde.</Text>
-    <Text lang="en">If you're wearing say a green shirt with a blue bra underneath, a colorblind person will be able to vaguely see the bra. This is due to that light actually passes through the shirt reflects the of the bra but at a lower intensity level relative to the shirt. However if you were to unable to see the light reflecting of the shirt you would see the light reflecting of the bra. So a person with normal vision would see the light (color) of the shirt while a colorblind person would see the color and therefore the outlining of the bra.</Text>
+    <Text lang="de">Wenn du z. B. ein grünes Shirt mit einem blauen BH darunter trägst, kann eine farbenblinde Person vage den BH durch sehen.</Text>
+    <Text lang="en">If you're wearing say a green shirt with a blue bra underneath, a colorblind person will be able to vaguely see the bra.</Text>
 </FactCard>
 
 <FactCard is="false" id="30">
@@ -153,4 +153,9 @@
 <FactCard is="false" id="31">
     <Text lang="de">Jeder wird mit der gleichen Augen- und Haarfarbe geboren, aber sobald das Baby der Welt ausgesetzt ist, ändert sich die Farbe als eine Reaktion.</Text>
     <Text lang="en">Everyone is born with the same color eyes and hair, but as soon as the baby is exposed to the world, the color changes as a reaction</Text>
+</FactCard>
+
+<FactCard is="false" id="32">
+    <Text lang="de">Das Nationaltier von Ungarn ist das Einhorn.</Text>
+    <Text lang="en">The national animal of Ungarn is the Unicorn.</Text>
 </FactCard>

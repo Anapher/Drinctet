@@ -1,7 +1,9 @@
 import { ParsingOptions } from "markdown-to-jsx";
 import * as React from "react";
+import { Theme } from "@material-ui/core";
+import { CSSProperties } from "@material-ui/core/styles/withStyles";
 
-export function getRootStyles() {
+export function getRootStyles(): CSSProperties {
     return {
         backgroundColor: "#3498db",
         height: "100%",
@@ -10,6 +12,34 @@ export function getRootStyles() {
         alignItems: "center",
         justifyContent: "center",
         color: "white",
+        cursor: "pointer",
+    };
+}
+
+export function getContentStyles(theme: Theme): CSSProperties {
+    return {
+        textAlign: "center",
+        [theme.breakpoints.down("sm")]: {
+            width: "100%",
+            marginLeft: 30,
+            marginRight: 30,
+            fontSize: 20,
+        },
+        [theme.breakpoints.up("md")]: {
+            width: "80%",
+        },
+        [theme.breakpoints.up("lg")]: {
+            width: "60%",
+        },
+    }
+}
+
+export function spaceHeaderStyles(theme: Theme): CSSProperties {
+    return {
+        visibility: "hidden",
+        [theme.breakpoints.down("sm")]: {
+            display: "none",
+        }
     };
 }
 

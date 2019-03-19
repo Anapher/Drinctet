@@ -219,12 +219,13 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
                 allCards.push(...cardDeck.cards);
             }
 
+            console.log(allCards);
+            
+
             if (allCards.length === 0) {
                 cardTypeRatings[cardType] = 0;
             } else {
-                // relation ideal cards (1) to all cards
-                cardTypeRatings[cardType] =
-                    (allCards.filter(x => x.weight === 1).length + 1) / allCards.length;
+                cardTypeRatings[cardType] = 0.75 + 0.25 * allCards.reduce((x, y) => x + y.weight, 0) / allCards.length;
             }
         }
 
@@ -243,8 +244,6 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
 
             weightedSlides.push({ weight: factor * slideSettings.weight, value: slide });
         }
-
-        console.log(weightedSlides);
 
         const selected = this.selectRandomWeighted(weightedSlides, slide => slide.weight);
         if (selected === undefined) {
