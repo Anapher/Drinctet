@@ -3,17 +3,16 @@ import { applyMiddleware, createStore } from "redux";
 import { createEpicMiddleware } from "redux-observable";
 import services from "../services";
 import rootEpic from "./root-epic";
-import rootReducer from "./root-reducer";
+import rootReducer, { history } from "./root-reducer";
 import { composeEnhancers } from "./utils";
+import { routerMiddleware } from "connected-react-router";
 
-export const epicMiddleware = createEpicMiddleware<RootAction, RootAction, RootState, Services>(
-    {
-        dependencies: services,
-    }
-);
+export const epicMiddleware = createEpicMiddleware<RootAction, RootAction, RootState, Services>({
+    dependencies: services,
+});
 
 // configure middlewares
-const middlewares = [epicMiddleware];
+const middlewares = [epicMiddleware, routerMiddleware(history)];
 
 // compose enchancers
 const enhancer = composeEnhancers(applyMiddleware(...middlewares));

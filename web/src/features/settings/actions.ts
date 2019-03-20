@@ -1,10 +1,10 @@
 import { PlayerArrangement } from './../../core/player-arrangement';
-import { Weighted } from "./../../core/weighted";
+import { Weighted } from "@core/weighted";
 import cuid from "cuid";
 import { SourceInfo } from "SettingsModels";
 import { createAsyncAction, createStandardAction } from "typesafe-actions";
-import { Card } from "../../core/cards/card";
-import { Gender, PlayerInfo } from "../../core/player-info";
+import { Card } from "@core/cards/card";
+import { Gender, PlayerInfo } from "@core/player-info";
 
 export const addPlayer = createStandardAction("ADD_PLAYER").map(
     (playerInfo: { name: string; gender: Gender }): { payload: PlayerInfo } => ({

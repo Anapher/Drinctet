@@ -6,19 +6,23 @@ import { isActionOf } from "typesafe-actions";
 import _ from "underscore";
 import store from "../../store/index";
 import * as actions from "./actions";
-import { requestSlideAsync } from "./actions";
 import { getRandomSelectionAlgorithm } from "./game-engine";
 import { slides } from "../../impl/registrations";
+import { push } from "connected-react-router";
 
-export const nextSlideEpic: Epic<RootAction, RootAction, RootState, Services> = (
-    action$,
-    _state$,
-    {  },
-) =>
+export const nextSlideEpic: Epic<RootAction, RootAction, RootState, Services> = action$ =>
     action$.pipe(
-        filter(isActionOf(requestSlideAsync.request)),
+        filter(isActionOf(actions.requestSlideAsync.request)),
         map(() => nextSlide()),
     );
+
+export const redirectOnGameStartedEpic: Epic<
+    RootAction,
+    RootAction,
+    RootState,
+    Services
+> = action$ =>
+    action$.pipe(filter(isActionOf(actions.startGame)), map(() => <any> push("/game")));
 
 const registeredSlides = compileSlideRegistrations();
 

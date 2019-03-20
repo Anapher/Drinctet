@@ -1,4 +1,4 @@
-import { routerActions } from "react-router-redux";
+import { routerActions } from "connected-react-router";
 import * as gameActions from "../features/game/actions";
 import * as settingsActions from "../features/settings/actions";
 

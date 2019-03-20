@@ -1,4 +1,4 @@
-import { withStyles, WithStyles } from "@material-ui/core";
+import { withStyles, WithStyles, createStyles } from "@material-ui/core";
 import Fab from "@material-ui/core/Fab";
 import { RootState } from "DrinctetTypes";
 import * as React from "react";
@@ -6,8 +6,9 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { startGame } from "../../game/actions";
 import { withLocalize, LocalizeContextProps, Translate } from "react-localize-redux";
+import { push } from "connected-react-router";
 
-const styles = {
+const styles = createStyles({
     root: {
         color: "white",
         width: "100%",
@@ -16,7 +17,7 @@ const styles = {
             backgroundColor: "#c0392b",
         },
     },
-};
+});
 
 const mapStateToProps = (state: RootState) => ({
     settings: state.settings,
@@ -24,9 +25,13 @@ const mapStateToProps = (state: RootState) => ({
 
 const dispatchProps = {
     startGame,
+    push,
 };
 
-type Props = ReturnType<typeof mapStateToProps> & typeof dispatchProps & WithStyles<typeof styles> & LocalizeContextProps;
+type Props = ReturnType<typeof mapStateToProps> &
+    typeof dispatchProps &
+    WithStyles<typeof styles> &
+    LocalizeContextProps;
 
 function StartButton(props: Props) {
     const { classes, startGame, settings } = props;
@@ -54,4 +59,5 @@ export default compose(
         mapStateToProps,
         dispatchProps,
     ),
-)(withLocalize(StartButton)) as React.ComponentType;
+    withLocalize,
+)(StartButton) as React.ComponentType;

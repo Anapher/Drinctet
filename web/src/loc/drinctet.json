@@ -37,6 +37,11 @@
         "textFormatter": {
             "sips": ["sips", "Schlucke"],
             "oneSip": ["one sip", "einen Schluck"]
+        },
+        "options": {
+            "settings": ["Settings", "Einstellungen"],
+            "insights": ["Insights", "Insights"],
+            "reportCard": ["Report card", "Karte melden"]
         }
     },
     "slides": {
