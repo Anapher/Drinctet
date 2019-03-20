@@ -1,13 +1,13 @@
 import { DownSlide } from "./slides/DownSlide";
 import { SlidePresenter } from "./slides/base/slide-presenter";
-import { TranslateFunc } from "./slides/base/text-slide-presenter";
 import { FactSlide } from "./slides/FactSlide";
 import { NeverEverSlide } from "./slides/NeverEverSlide";
+import { Translator } from "GameModels";
 
-type SlideComponent = { [type: string]: new(translate: TranslateFunc) => SlidePresenter };
+export type SlideComponents = { [type: string]: new(translator: Translator) => SlidePresenter };
 
-export const slideComponents: SlideComponent = {
+export const slideComponents: SlideComponents = {
     DownSlide,
     FactSlide,
-    NeverEverSlide
+    NeverEverSlide,
 };

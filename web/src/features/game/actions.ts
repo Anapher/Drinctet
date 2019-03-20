@@ -1,6 +1,6 @@
 import { Card } from '@core/cards/card';
 import { createStandardAction, createAsyncAction } from "typesafe-actions";
-import { FollowUpSlide } from 'GameModels';
+import { FollowUpSlide, Translator } from 'GameModels';
 
 export const startGame = createStandardAction("START_GAME")();
 
@@ -10,7 +10,7 @@ export const requestSlideAsync = createAsyncAction(
     "NEXT_SLIDE_REQUEST",
     "NEXT_SLIDE_SUCCESS",
     "NEXT_SLIDE_FAILURE",
-)<never, string, string>();
+)<Translator, string, string>();
 
 export const applyCard = createStandardAction("APPLY_CARD")<Card>();
 

@@ -1,19 +1,22 @@
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { RootState } from "DrinctetTypes";
-import React, { Component, ComponentType } from "react";
-import { withLocalize, LocalizeContextProps, Translate } from "react-localize-redux";
 import {
     createStyles,
-    withStyles,
     IconButton,
-    WithStyles,
+    ListItemIcon,
     Menu,
     MenuItem,
-    ListItemIcon,
+    WithStyles,
+    withStyles,
 } from "@material-ui/core";
+import DonutLargeIcon from "@material-ui/icons/DonutLarge";
+import FeedbackIcon from "@material-ui/icons/Feedback";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SettingsIcon from "@material-ui/icons/Settings";
+import { RootState } from "DrinctetTypes";
+import React, { Component, ComponentType } from "react";
+import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { compose } from "redux";
 import { connect } from "react-redux";
+import { RouterProps, withRouter } from "react-router";
 
 const styles = createStyles({
     button: {
@@ -24,7 +27,8 @@ const styles = createStyles({
 type Props = ReturnType<typeof mapStateToProps> &
     typeof dispatchProps &
     LocalizeContextProps &
-    WithStyles<typeof styles>;
+    WithStyles<typeof styles> &
+    RouterProps;
 
 const mapStateToProps = (state: RootState) => ({
     selectedSlide: state.game.selectedSlide,
@@ -52,7 +56,7 @@ class GameOptions extends Component<Props, State> {
     };
 
     render() {
-        const { classes } = this.props;
+        const { classes, history } = this.props;
         const { anchorEl } = this.state;
         const isOpen = anchorEl !== null;
 
@@ -75,16 +79,27 @@ class GameOptions extends Component<Props, State> {
                         },
                     }}
                 >
-                    <MenuItem onClick={this.handleClose}>
+                    <MenuItem
+                        onClick={() => {
+                            this.handleClose();
+                            history.push("/game/settings");
+                        }}
+                    >
                         <ListItemIcon>
                             <SettingsIcon />
                         </ListItemIcon>
                         <Translate id="game.options.settings" />
                     </MenuItem>
                     <MenuItem onClick={this.handleClose}>
+                        <ListItemIcon>
+                            <DonutLargeIcon />
+                        </ListItemIcon>
                         <Translate id="game.options.insights" />
                     </MenuItem>
                     <MenuItem onClick={this.handleClose}>
+                        <ListItemIcon>
+                            <FeedbackIcon />
+                        </ListItemIcon>
                         <Translate id="game.options.reportCard" />
                     </MenuItem>
                 </Menu>
@@ -100,4 +115,5 @@ export default compose(
         mapStateToProps,
         dispatchProps,
     ),
+    withRouter,
 )(GameOptions) as ComponentType;

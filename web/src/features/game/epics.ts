@@ -1,19 +1,21 @@
-import { SlideRegistration } from "@core/slide-registration";
 import { RootAction, RootState, Services } from "DrinctetTypes";
 import { Epic } from "redux-observable";
-import { filter, map } from "rxjs/operators";
+import { filter, map, mergeMap } from "rxjs/operators";
 import { isActionOf } from "typesafe-actions";
 import _ from "lodash";
 import store from "../../store/index";
 import * as actions from "./actions";
 import { getRandomSelectionAlgorithm } from "./game-engine";
-import { slides } from "../../impl/registrations";
 import { push } from "connected-react-router";
+import { slideComponents } from "./component-registry";
+import { of } from "rxjs";
+import { Translator } from "GameModels";
+import {getSlideRegistrations} from "./slides-processor";
 
 export const nextSlideEpic: Epic<RootAction, RootAction, RootState, Services> = action$ =>
     action$.pipe(
         filter(isActionOf(actions.requestSlideAsync.request)),
-        map(() => nextSlide()),
+        mergeMap(x => of(...nextSlide(x.payload))),
     );
 
 export const redirectOnGameStartedEpic: Epic<
@@ -22,36 +24,38 @@ export const redirectOnGameStartedEpic: Epic<
     RootState,
     Services
 > = action$ =>
-    action$.pipe(filter(isActionOf(actions.startGame)), map(() => <any> push("/game")));
+    action$.pipe(
+        filter(isActionOf(actions.startGame)),
+        map(() => <any>push("/game")),
+    );
 
-const registeredSlides = compileSlideRegistrations();
-
-function nextSlide() {
+function nextSlide(translator: Translator): RootAction[] {
     const now = new Date();
     const state = store.getState();
 
     const dueFollowUps = state.game.followUp.filter(x => x.due < now);
     if (dueFollowUps.length > 0) {
         const followUp = _.sortBy(dueFollowUps, x => x.due.getSeconds())[0];
-        return actions.activateFollowUp(followUp);
+
+        const factory = slideComponents[followUp.slideType];
+        const slideInitalizer = new factory(translator);
+        const slideActions = slideInitalizer.initializeFollowUp(followUp.selectedCard, followUp.param);
+
+        return [actions.activateFollowUp(followUp), ...slideActions];
     }
 
     const selection = getRandomSelectionAlgorithm();
-    const slideType = selection.selectNextSlide(registeredSlides);
+    const slides = getSlideRegistrations(slideComponents);
+    
+    const slideType = selection.selectNextSlide(slides);
     if (slideType === undefined) {
         // TODO: end game
         throw new Error("Game Finished");
     }
 
-    return actions.requestSlideAsync.success(slideType);
-}
+    const factory = slideComponents[slideType];
+    const slideInitalizer = new factory(translator);
+    const slideActions = slideInitalizer.initialize();
 
-function compileSlideRegistrations(): SlideRegistration[] {
-    const result: SlideRegistration[] = [];
-
-    for (const [type, info] of Object.entries(slides)) {
-        result.push({ slideType: type, requestedCards: info.cards });
-    }
-
-    return result;
+    return [actions.requestSlideAsync.success(slideType), ...slideActions];
 }

@@ -42,7 +42,8 @@
             "settings": ["Settings", "Einstellungen"],
             "insights": ["Insights", "Insights"],
             "reportCard": ["Report card", "Karte melden"]
-        }
+        },
+        "close": ["Close", "Schließen"]
     },
     "slides": {
         "fact": {

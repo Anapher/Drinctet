@@ -1,7 +1,12 @@
 import { ReactNode } from "react";
 import { Card } from "@core/cards/card";
+import { RootAction } from "DrinctetTypes";
 
 export interface SlidePresenter {
-    initialize(): ReactNode;
-    initializeFollowUp(card: Card | null, param: any): ReactNode;
+    slideType: string;
+    requiredCards: string[];
+
+    initialize(): RootAction[];
+    initializeFollowUp(card: Card | null, param: any): RootAction[];
+    render(): ReactNode;
 }

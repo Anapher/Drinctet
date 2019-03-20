@@ -1,4 +1,4 @@
-import { TextSlidePresenter, TextSlideState, TranslateFunc } from "./base/text-slide-presenter";
+import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
 import {
     getRootStyles,
     defaultMarkdownOptions,
@@ -11,13 +11,14 @@ import { ReactNode } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { createStyles, Theme, WithStyles, Typography, withStyles } from "@material-ui/core";
-import { LocalizeContextProps, Translate } from "react-localize-redux";
+import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import Markdown from "markdown-to-jsx";
 import * as React from "react";
 import { NeverEverCard } from "src/impl/cards/never-ever-card";
 import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
-import { SelectedPlayer } from "GameModels";
+import { SelectedPlayer, Translator } from "GameModels";
 import { TextCard } from "@core/cards/text-card";
+import { toTranslator } from "../utils";
 
 const mapStateToProps = (state: RootState) => ({
     state: state.game.slideState as State,
@@ -49,7 +50,8 @@ type Props = ReturnType<typeof mapStateToProps> &
     WithStyles<typeof styles> &
     LocalizeContextProps;
 
-function NeverEverComponent({ classes, nextSlide, state }: Props) {
+function NeverEverComponent(props: Props) {
+    const { classes, nextSlide, state } = props;
     if (state === null) {
         return <div className={classes.root} />;
     }
@@ -61,7 +63,7 @@ function NeverEverComponent({ classes, nextSlide, state }: Props) {
     );
 
     return (
-        <div className={classes.root} onClick={() => nextSlide()}>
+        <div className={classes.root} onClick={() => nextSlide(toTranslator(props))}>
             <div className={classes.content}>
                 {header}
                 <Typography variant="h5" className={classes.instruction}>
@@ -87,6 +89,7 @@ const Component = compose(
         dispatchProps,
     ),
     withStyles(styles),
+    withLocalize,
 )(NeverEverComponent) as React.ComponentType;
 
 interface State extends TextSlideState {
@@ -94,11 +97,11 @@ interface State extends TextSlideState {
 }
 
 export class NeverEverSlide extends TextSlidePresenter<State, NeverEverCard> {
-    constructor(translate: TranslateFunc) {
-        super(translate, "NeverEverCard");
+    constructor(translator: Translator) {
+        super(translator, "NeverEverCard", "NeverEverSlide");
     }
 
-    protected initializeSlide(): ReactNode {
+    render(): ReactNode {
         return <Component />;
     }
 

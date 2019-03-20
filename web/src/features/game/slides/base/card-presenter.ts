@@ -2,24 +2,28 @@ import { SlidePresenter } from "./slide-presenter";
 import { Card } from "@core/cards/card";
 import * as gameEngine from "../../game-engine";
 import { ReactNode } from "react";
-import store from "../../../../store/index";
 import * as actions from "../../actions";
+import { ActionType } from "typesafe-actions";
 
 export abstract class CardPresenter<TCard extends Card> implements SlidePresenter {
-    constructor(protected cardType: string) {}
+    requiredCards: string[];
 
-    initialize(): ReactNode {
-        const selection = gameEngine.getRandomSelectionAlgorithm();
-        const card = selection.selectCard(this.cardType) as TCard;
-        store.dispatch(actions.applyCard(card));
-
-        return this.initializeCard(card);
+    constructor(protected cardType: string, public slideType: string) {
+        this.requiredCards = [cardType];
     }
 
-    initializeFollowUp(card: Card | null, param: any): ReactNode {
+    initialize(): ActionType<any>[] {
+        const selection = gameEngine.getRandomSelectionAlgorithm();
+        const card = selection.selectCard(this.cardType) as TCard;
+
+        return [actions.applyCard(card), ...this.initializeCard(card)];
+    }
+
+    initializeFollowUp(card: Card | null, param: any): ActionType<any>[] {
         return this.initializeFollowUpCard(card as TCard, param);
     }
 
-    protected abstract initializeCard(card: TCard): ReactNode;
-    protected abstract initializeFollowUpCard(card: TCard, param: any): ReactNode;
+    abstract render(): ReactNode;
+    protected abstract initializeCard(card: TCard): ActionType<any>[];
+    protected abstract initializeFollowUpCard(card: TCard, param: any): ActionType<any>[];
 }

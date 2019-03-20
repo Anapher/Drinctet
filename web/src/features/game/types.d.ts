@@ -15,4 +15,9 @@ declare module "GameModels" {
         due: Date;
         param: any;
     }
+
+    export interface Translator {
+        languageCode: string;
+        translate: (key: string) => string;
+    }
 }

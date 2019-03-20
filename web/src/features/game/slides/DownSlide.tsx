@@ -1,4 +1,4 @@
-import { TextSlidePresenter, TextSlideState, TranslateFunc } from "./base/text-slide-presenter";
+import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
 import { DownCard } from "src/impl/cards/down-card";
 import { getRootStyles, defaultMarkdownOptions, getContentStyles, spaceHeaderStyles } from "./base/helper";
 import { RootState } from "DrinctetTypes";
@@ -7,9 +7,11 @@ import { ReactNode } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { createStyles, Theme, WithStyles, Typography, withStyles } from "@material-ui/core";
-import { LocalizeContextProps, Translate } from "react-localize-redux";
+import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import Markdown from "markdown-to-jsx";
 import * as React from "react";
+import { toTranslator } from "../utils";
+import { Translator } from "GameModels";
 
 const mapStateToProps = (state: RootState) => ({
     state: state.game.slideState as DownSlideState,
@@ -38,7 +40,8 @@ type Props = ReturnType<typeof mapStateToProps> &
     WithStyles<typeof styles> &
     LocalizeContextProps;
 
-function DownSlideComponent({classes, nextSlide, state}: Props) {
+function DownSlideComponent(props: Props) {
+    const {classes, nextSlide, state} = props;
     if (state === null) {
         return <div className={classes.root} />;
     }
@@ -50,7 +53,7 @@ function DownSlideComponent({classes, nextSlide, state}: Props) {
     );
 
     return (
-        <div className={classes.root} onClick={() => nextSlide()}>
+        <div className={classes.root} onClick={() => nextSlide(toTranslator(props))}>
             <div className={classes.content}>
                 {header}
                 <Markdown children={state.markdownContent} options={defaultMarkdownOptions} />
@@ -65,16 +68,17 @@ const Component =
             mapStateToProps,
             dispatchProps,
         ),
-        withStyles(styles)
+        withStyles(styles),
+        withLocalize
     )(DownSlideComponent) as React.ComponentType;
 
 interface DownSlideState extends TextSlideState {}
 export class DownSlide extends TextSlidePresenter<DownSlideState, DownCard> {
-    constructor(translate: TranslateFunc) {
-        super(translate, "DownCard");
+    constructor(translator: Translator) {
+        super(translator, "DownCard", "DownSlide");
     }
 
-    protected initializeSlide(): ReactNode {
+    public render(): ReactNode {
         return (<Component />);
     }
 

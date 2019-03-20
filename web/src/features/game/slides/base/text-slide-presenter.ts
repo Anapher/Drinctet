@@ -1,20 +1,17 @@
 import { TextCard } from "@core/cards/text-card";
 import { CardPresenter } from "./card-presenter";
 import * as gameEngine from "../../game-engine";
-import { ReactNode } from "react";
-import store from "../../../../store/index";
 import * as actions from "../../actions";
 import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
 import { TextFormatter } from "../../formatter/text-formatter";
 import { PlayerInfo } from "@core/player-info";
-import { FollowUpSlide, SelectedPlayer } from "GameModels";
+import { FollowUpSlide, SelectedPlayer, Translator } from "GameModels";
 import _ from "lodash";
+import { RootAction } from "DrinctetTypes";
 
 export interface TextSlideState {
     markdownContent: string;
 }
-
-export type TranslateFunc = (key: string) => string;
 
 export abstract class TextSlidePresenter<
     TState extends TextSlideState,
@@ -22,18 +19,19 @@ export abstract class TextSlidePresenter<
 > extends CardPresenter<TCard> {
     private readonly formatter = new TextFormatter();
 
-    constructor(protected translate: TranslateFunc, cardType: string) {
-        super(cardType);
+    constructor(protected translator: Translator, cardType: string, slideType: string) {
+        super(cardType, slideType);
     }
 
-    protected initializeCard(card: TCard): ReactNode {
+    protected initializeCard(card: TCard): RootAction[] {
         const selection = gameEngine.getRandomSelectionAlgorithm();
+        const result = new Array<RootAction>();
 
         const text = this.selectText(selection, card);
         const { formatted, players } = this.formatText(text, card, null, selection);
 
         const state = this.initializeState(formatted, card, players, selection);
-        store.dispatch(actions.setSlideState(state));
+        result.push(actions.setSlideState(state));
 
         if (_.some(card.followUp)) {
             // dont check for correct translation as the language may change
@@ -41,26 +39,26 @@ export abstract class TextSlidePresenter<
                 const due = new Date();
                 due.setSeconds(due.getSeconds() + card.followUpDelay);
 
-                store.dispatch(actions.enqueueFollowUp(this.createFollowUp(card, players, due)));
+                result.push(actions.enqueueFollowUp(this.createFollowUp(card, players, due)));
             }
         }
 
-        return this.initializeSlide(state);
+        return result;
     }
 
-    protected initializeFollowUpCard(card: TCard, param: any): ReactNode {
+    protected initializeFollowUpCard(card: TCard, param: any): RootAction[] {
         const selection = gameEngine.getRandomSelectionAlgorithm();
 
-        const { text, players } = this.selectFollowUpText(selection, card, param);
-        const { formatted } = this.formatText(text, card, players || [], selection);
-
-        const state = this.initializeFollowUpState(formatted, card, selection, param);
-        store.dispatch(actions.setSlideState(state));
-
-        return this.initializeSlide(state);
+        try {
+            const { text, players } = this.selectFollowUpText(selection, card, param);
+            const { formatted } = this.formatText(text, card, players || [], selection);
+    
+            const state = this.initializeFollowUpState(formatted, card, selection, param);
+            return [actions.setSlideState(state)];
+        } catch (error) { //no follow up found
+            return [actions.requestSlideAsync.request(this.translator)];
+        }
     }
-
-    protected abstract initializeSlide(state: TState): ReactNode;
 
     protected abstract initializeState(
         markdownContent: string,
@@ -77,10 +75,9 @@ export abstract class TextSlidePresenter<
     ): TState;
 
     protected createFollowUp(card: TCard, players: SelectedPlayer[], due: Date): FollowUpSlide {
-        const slideType = store.getState().game.selectedSlide;
         return {
             due: due,
-            slideType: slideType!,
+            slideType: this.slideType,
             selectedCard: card,
             param: { definedPlayers: players },
         };
@@ -113,7 +110,7 @@ export abstract class TextSlidePresenter<
             fragments,
             indexedPlayers,
             sips,
-            x => this.translate(`game.textFormatter.${x}`),
+            x => this.translator.translate(`game.textFormatter.${x}`),
             selection,
             { boldPlayerNames: true, boldSips: true },
         );
@@ -122,7 +119,7 @@ export abstract class TextSlidePresenter<
     }
 
     selectText(selection: SelectionAlgorithm, selectedCard: TextCard): string {
-        const lang = store.getState().localize.languages.find(x => x.active)!.code;
+        const lang = this.translator.languageCode;
 
         const viableContents = selectedCard.content.filter(x =>
             _.some(x.translations, y => y.lang.toLocaleLowerCase() === lang),
@@ -136,14 +133,13 @@ export abstract class TextSlidePresenter<
         selectedCard: TextCard,
         param: any,
     ): { text: string; players?: SelectedPlayer[] } {
-        const lang = store.getState().localize.languages.find(x => x.active)!.code;
+        const lang = this.translator.languageCode;
 
         const followUps = selectedCard.followUp.filter(x =>
             _.some(x.translations, y => y.lang.toLowerCase() === lang),
         );
         if (followUps.length === 0) {
-            store.dispatch(actions.requestSlideAsync.request());
-            return { text: "" };
+            throw new Error("No follow ups found");
         }
 
         let players: SelectedPlayer[] | undefined;
