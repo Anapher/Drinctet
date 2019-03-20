@@ -5,7 +5,7 @@ import { PlayerInfo, Gender } from "../player-info";
 import { SlideRegistration } from "../slide-registration";
 import { Weighted } from "../weighted";
 import { SelectionAlgorithmBase } from "./selection-algorithm-base";
-import _ from "underscore";
+import _ from "lodash";
 import { higherArrangementPropabilityTags } from "../../preferences";
 
 export class MelinaAlgorithm extends SelectionAlgorithmBase {
@@ -54,17 +54,17 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
                         continue;
                 }
 
-                const source = sourceList.filter(x => !_.contains(result, x));
+                const source = sourceList.filter(x => !_.includes(result, x));
                 const malesCount = result.filter(x => x !== null && x.gender === "Male").length;
                 const femalesCount = result.filter(x => x !== null && x.gender === "Female").length;
 
                 const player = this.selectRandomWeighted(source, p => {
                     let weight = 1;
 
-                    if (_.any(forArrangement, x => x === p.id)) {
+                    if (_.some(forArrangement, x => x === p.id)) {
                         if (
-                            _.any(higherArrangementPropabilityTags, x =>
-                                _.any(card.tags, y => x === y.toLowerCase()),
+                            _.some(higherArrangementPropabilityTags, x =>
+                                _.some(card.tags, y => x === y.toLowerCase()),
                             )
                         ) {
                             weight += source.length;

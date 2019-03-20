@@ -7,7 +7,7 @@ import { PlayerArrangement } from "@core/player-arrangement";
 import { PlayerInfo } from "@core/player-info";
 import * as actions from "./actions";
 import { slideWeights } from "../../preferences";
-import * as _ from "underscore";
+import _ from "lodash";
 
 export type SettingsState = Readonly<{
     players: PlayerInfo[];

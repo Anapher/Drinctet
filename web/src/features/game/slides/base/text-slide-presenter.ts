@@ -8,7 +8,7 @@ import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
 import { TextFormatter } from "../../formatter/text-formatter";
 import { PlayerInfo } from "@core/player-info";
 import { FollowUpSlide, SelectedPlayer } from "GameModels";
-import _ from "underscore";
+import _ from "lodash";
 
 export interface TextSlideState {
     markdownContent: string;
@@ -35,7 +35,7 @@ export abstract class TextSlidePresenter<
         const state = this.initializeState(formatted, card, players, selection);
         store.dispatch(actions.setSlideState(state));
 
-        if (_.any(card.followUp)) {
+        if (_.some(card.followUp)) {
             // dont check for correct translation as the language may change
             if (Math.random() <= card.followUpPropability) {
                 const due = new Date();
@@ -125,7 +125,7 @@ export abstract class TextSlidePresenter<
         const lang = store.getState().localize.languages.find(x => x.active)!.code;
 
         const viableContents = selectedCard.content.filter(x =>
-            _.any(x.translations, y => y.lang.toLocaleLowerCase() === lang),
+            _.some(x.translations, y => y.lang.toLocaleLowerCase() === lang),
         );
         const content = selection.selectRandomWeighted(viableContents, x => x.weight)!;
         return content.translations.find(x => x.lang === lang)!.content;
@@ -139,7 +139,7 @@ export abstract class TextSlidePresenter<
         const lang = store.getState().localize.languages.find(x => x.active)!.code;
 
         const followUps = selectedCard.followUp.filter(x =>
-            _.any(x.translations, y => y.lang.toLowerCase() === lang),
+            _.some(x.translations, y => y.lang.toLowerCase() === lang),
         );
         if (followUps.length === 0) {
             store.dispatch(actions.requestSlideAsync.request());

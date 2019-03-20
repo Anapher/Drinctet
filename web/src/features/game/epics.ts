@@ -3,7 +3,7 @@ import { RootAction, RootState, Services } from "DrinctetTypes";
 import { Epic } from "redux-observable";
 import { filter, map } from "rxjs/operators";
 import { isActionOf } from "typesafe-actions";
-import _ from "underscore";
+import _ from "lodash";
 import store from "../../store/index";
 import * as actions from "./actions";
 import { getRandomSelectionAlgorithm } from "./game-engine";

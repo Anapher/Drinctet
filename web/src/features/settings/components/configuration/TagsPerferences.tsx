@@ -5,7 +5,7 @@ import { Typography } from "@material-ui/core";
 import ItemPreferences from "./ItemPreferences";
 import { connect } from "react-redux";
 import * as React from "react";
-import * as _ from "underscore";
+import _ from "lodash";
 
 const mapStateToProps = (state: RootState) => ({
     tags: state.settings.tags,

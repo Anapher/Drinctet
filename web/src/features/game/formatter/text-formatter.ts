@@ -5,7 +5,7 @@ import { PlayerReferenceFragment } from "@core/fragments/player-reference-fragme
 import { DefaultTextDecoder } from "@core/parsing/text-decoder/default-text-decoder";
 import { TextFragment } from "@core/text-fragment";
 import { PlayerSetting } from "@core/cards/player-setting";
-import _ from "underscore";
+import _ from "lodash";
 import { RawTextFragment } from "@core/fragments/raw-text-fragment";
 import { GenderBasedSelectionFragment } from "@core/fragments/gender-based-selection-fragment";
 import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
