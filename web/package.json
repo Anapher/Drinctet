@@ -17,7 +17,6 @@
     "@types/react-router-dom": "^4.3.1",
     "@types/seedrandom": "^2.4.27",
     "axios": "^0.18.0",
-    "connected-react-router": "^6.3.2",
     "cuid": "^2.1.6",
     "history": "^4.9.0",
     "markdown-to-jsx": "^6.9.2",

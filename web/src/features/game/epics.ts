@@ -1,12 +1,11 @@
 import { RootAction, RootState, Services } from "DrinctetTypes";
 import { Epic } from "redux-observable";
-import { filter, map, mergeMap } from "rxjs/operators";
+import { filter, mergeMap, tap, ignoreElements } from "rxjs/operators";
 import { isActionOf } from "typesafe-actions";
 import _ from "lodash";
 import store from "../../store/index";
 import * as actions from "./actions";
 import { getRandomSelectionAlgorithm } from "./game-engine";
-import { push } from "connected-react-router";
 import { slideComponents } from "./component-registry";
 import { of } from "rxjs";
 import { Translator } from "GameModels";
@@ -26,7 +25,8 @@ export const redirectOnGameStartedEpic: Epic<
 > = action$ =>
     action$.pipe(
         filter(isActionOf(actions.startGame)),
-        map(() => <any>push("/game")),
+        tap(action => action.payload.push("/game")),
+        ignoreElements()
     );
 
 function nextSlide(translator: Translator): RootAction[] {

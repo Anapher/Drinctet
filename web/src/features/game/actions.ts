@@ -1,8 +1,9 @@
 import { Card } from '@core/cards/card';
 import { createStandardAction, createAsyncAction } from "typesafe-actions";
 import { FollowUpSlide, Translator } from 'GameModels';
+import { History } from 'history';
 
-export const startGame = createStandardAction("START_GAME")();
+export const startGame = createStandardAction("START_GAME")<History>();
 
 export const cancelGame = createStandardAction("CANCEL_GAME")();
 

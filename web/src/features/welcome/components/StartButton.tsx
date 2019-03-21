@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { startGame } from "../../game/actions";
 import { withLocalize, LocalizeContextProps, Translate } from "react-localize-redux";
-import { push } from "connected-react-router";
+import { withRouter, RouteComponentProps } from "react-router";
 
 const styles = createStyles({
     root: {
@@ -25,16 +25,16 @@ const mapStateToProps = (state: RootState) => ({
 
 const dispatchProps = {
     startGame,
-    push,
 };
 
 type Props = ReturnType<typeof mapStateToProps> &
     typeof dispatchProps &
     WithStyles<typeof styles> &
-    LocalizeContextProps;
+    LocalizeContextProps &
+    RouteComponentProps;
 
 function StartButton(props: Props) {
-    const { classes, startGame, settings } = props;
+    const { classes, startGame, settings, history } = props;
 
     const arePlayersSelected = settings.players.length > 0;
     const areSourcesAdded = settings.sources.filter(x => x.cards !== undefined).length > 0;
@@ -46,7 +46,7 @@ function StartButton(props: Props) {
             size="large"
             disabled={!arePlayersSelected || !areSourcesAdded || areSourcesLoading}
             classes={{ root: classes.root }}
-            onClick={() => startGame()}
+            onClick={() => startGame(history)}
         >
             <Translate id="welcome.startGame" />
         </Fab>
@@ -60,4 +60,5 @@ export default compose(
         dispatchProps,
     ),
     withLocalize,
+    withRouter
 )(StartButton) as React.ComponentType;
