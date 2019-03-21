@@ -3,6 +3,7 @@ import { MelinaAlgorithm } from "./melina-algorithm";
 import { PlayerSetting } from "../cards/player-setting";
 import { PlayerInfo } from "../player-info";
 import { Weighted } from "../weighted";
+import seedrandom from "seedrandom";
 
 class MelinaAlgorithmWrapper extends MelinaAlgorithm {
     public testVerifyPlayerSpecification(players: PlayerInfo[], specification: PlayerSetting[]) {
@@ -14,16 +15,21 @@ class MelinaAlgorithmWrapper extends MelinaAlgorithm {
     }
 }
 
-const algorithm = new MelinaAlgorithmWrapper({
+const status = {
     decks: [],
-    history: [],
+    cardsHistory: [],
     language: "",
     players: [],
     slides: [],
     tags: [],
     arrangements: [],
-    preferOppositeGenders: false
-}, "wtf");
+    preferOppositeGenders: false,
+    slidesHistory: [],
+    startTime: new Date(),
+    willPower: 1
+};
+const random = seedrandom("test");
+const algorithm = new MelinaAlgorithmWrapper(status, () => random());
 
 function player(gender: Gender): PlayerInfo {
     return { id: "", name: "", gender: gender };
@@ -132,3 +138,5 @@ it("(checkIfWeightedZero) should correctly return if one is weighted zero", () =
     expect(algorithm.testCheckIfWeightedZero(2, array)).toBe(false);
     expect(algorithm.testCheckIfWeightedZero(3, array)).toBe(true);
 });
+
+it("")

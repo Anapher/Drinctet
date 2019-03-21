@@ -4,8 +4,6 @@ import { SlideRegistration } from "@core/slide-registration";
 export function getSlideRegistrations(components: SlideComponents): SlideRegistration[] {
     const result = new Array<SlideRegistration>();
 
-    console.log(components);
-
     for (const component in components) {
         if (components.hasOwnProperty(component)) {
             const element = components[component];

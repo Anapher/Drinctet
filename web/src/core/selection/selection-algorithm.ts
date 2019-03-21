@@ -16,4 +16,6 @@ export interface SelectionAlgorithm {
     selectRandomWeighted<T>(items: T[], getWeight: (item: T) => number): T | undefined;
 
     getRandom(): number;
+
+    recomputeWillPower(memory: string[]): {willPower: number, memory: string[]};
 }

@@ -45,6 +45,11 @@
         },
         "close": ["Close", "Schließen"]
     },
+    "insights": {
+        "willPower": ["WillPower", "Überzeugungskraft"],
+        "lockWillPower": ["Lock value", "Wert sperren"],
+        "slide": ["Slide", "Slide"]
+    },
     "slides": {
         "fact": {
             "title": ["Fact?", "Fakt?"],

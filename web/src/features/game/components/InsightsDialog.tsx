@@ -12,7 +12,6 @@ import {
     Typography,
 } from "@material-ui/core";
 import { withLocalize, LocalizeContextProps, Translate } from "react-localize-redux";
-import SettingsView from "../../settings/components/SettingsView";
 import { withRouter, RouterProps } from "react-router";
 import { compose } from "redux";
 import { WithWidth } from "@material-ui/core/withWidth";
@@ -49,7 +48,7 @@ function InsightsDialog({ fullScreen, classes, history }: Props) {
                 <AppBar className={classes.appBar}>
                     <Toolbar>
                         <Typography variant="h6" color="inherit" className={classes.flex}>
-                            <Translate id="game.options.settings" />
+                            <Translate id="game.options.insights" />
                         </Typography>
                         <Button color="inherit" onClick={() => history.push("/game")}>
                             <Translate id="game.close" />
@@ -57,7 +56,7 @@ function InsightsDialog({ fullScreen, classes, history }: Props) {
                     </Toolbar>
                 </AppBar>
                 <div style={{height: "60vh"}}>
-                    <SettingsView />
+                    
                 </div>
             </Dialog>
         </div>

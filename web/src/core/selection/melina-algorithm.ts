@@ -220,12 +220,12 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
             }
 
             console.log(allCards);
-            
 
             if (allCards.length === 0) {
                 cardTypeRatings[cardType] = 0;
             } else {
-                cardTypeRatings[cardType] = 0.75 + 0.25 * allCards.reduce((x, y) => x + y.weight, 0) / allCards.length;
+                cardTypeRatings[cardType] =
+                    0.75 + (0.25 * allCards.reduce((x, y) => x + y.weight, 0)) / allCards.length;
             }
         }
 
@@ -285,11 +285,11 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
         // every card should be rated by x when 0 < x <= 1
         const result: Array<{ cards: Array<Weighted<Card>>; deck: CardDeck }> = [];
 
-        const willPower = this.getWillPower();
+        const willPower = this.status.willPower;
 
         for (const deck of filtered) {
             // cards from this deck that were already played
-            const cardsPlayed = this.status.history.filter(
+            const cardsPlayed = this.status.cardsHistory.filter(
                 x => deck.cards.findIndex(y => y.id === x) > -1,
             );
 
@@ -309,7 +309,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
                 const willPowerRating = this.rateWillPower(card.willPower, willPower);
                 const historyFactor = this.getHistoryFactor(
                     card.id,
-                    this.status.history,
+                    this.status.cardsHistory,
                     totalCards,
                 );
                 const tagsFactor = this.getTagsFactor(card.tags, this.status.tags);
@@ -330,8 +330,26 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
         return result;
     }
 
-    protected getWillPower(): number {
-        return 4;
+    public recomputeWillPower(memory: string[]): { willPower: number; memory: string[] } {
+        const addedMemory = new Array<string>();
+        const now = new Date();
+        let result = this.status.willPower;
+
+        if (!_.includes(memory, "AFTER_10") && (now.getHours() > 22 || now.getHours() < 8)) {
+            result++;
+            addedMemory.push("AFTER_10");
+        }
+
+        const slidesCount = this.status.slidesHistory.length;
+        if (slidesCount % 12 === 0) {
+            const id = slidesCount / 12;
+            if (!_.includes(memory, `SLIDES_${id}`)) {
+                result++;
+                addedMemory.push(`SLIDES_${id}`);
+            }
+        }
+
+        return { willPower: result, memory: addedMemory };
     }
 
     protected getTagsFactor(tags: string[], tagWeights: Array<Weighted<string>>) {

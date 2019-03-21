@@ -19,3 +19,7 @@ export const setSlideState = createStandardAction("SET_SLIDE_STATE")<any>();
 
 export const enqueueFollowUp = createStandardAction("ADD_FOLLOW_UP")<FollowUpSlide>();
 export const activateFollowUp = createStandardAction("ACTIVATE_FOLLOW_UP")<FollowUpSlide>();
+
+export const setWillPowerLocked = createStandardAction("SET_WILL_POWER_LOCKED")<boolean>();
+export const setWillPower = createStandardAction("SET_WILL_POWER")<number>();
+export const addWillPowerMemory = createStandardAction("ADD_WILL_POWER_MEMORY")<string[]>();

@@ -23,6 +23,7 @@ export abstract class SelectionAlgorithmBase implements SelectionAlgorithm {
     public abstract selectNextSlide(availableSlides: SlideRegistration[]): string | undefined;
     public abstract selectCard<TCard extends Card>(cardType: string): TCard;
     public abstract getSips(min: number): number;
+    public abstract recomputeWillPower(memory: string[]): { willPower: number; memory: string[] };
 
     public getRandom(): number {
         return this.random();

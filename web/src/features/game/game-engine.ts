@@ -46,13 +46,16 @@ function extractGameStatus(state: RootState): GameStatus {
                 const result: CardDeck = { ...item, cards: item.cards || [] };
                 return result;
             }),
-        history: state.game.cardsHistory,
+        cardsHistory: state.game.cardsHistory,
         language: state.localize.languages.find(x => x.active)!.code,
         players: state.settings.players,
         slides: state.settings.slides,
         tags: state.settings.tags,
         arrangements: state.settings.arrangements,
         preferOppositeGenders: state.settings.preferOppositeGenders,
+        slidesHistory: state.game.slidesHistory,
+        startTime: state.game.startTime!,
+        willPower: state.game.currentWillPower,
     };
 
     return currentStatus;

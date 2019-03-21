@@ -14,10 +14,11 @@ export type GameState = Readonly<{
 
     slideState: any | null;
 
-    // currentWillPower: number;
-    // isWillPowerLocked: boolean;
+    currentWillPower: number;
+    isWillPowerLocked: boolean;
+    willPowerMemory: string[];
 
-    // startTime: string;
+    startTime: Date | null;
 
     cardsHistory: string[];
     slidesHistory: string[];
@@ -111,5 +112,35 @@ export default combineReducers<GameState, RootAction>({
             default:
                 return state;
         }
-    }
+    },
+    startTime: (state = null, action) => {
+        if (action.type === getType(actions.startGame)) {
+            return new Date();
+        }
+        return state;
+    },
+    isWillPowerLocked: (state = false, action) => {
+        if (action.type === getType(actions.setWillPowerLocked)) {
+            return action.payload;
+        }
+
+        return state;
+    },
+    currentWillPower: (state = 1, action) => {
+        if (action.type === getType(actions.setWillPower)) {
+            return action.payload;
+        }
+
+        return state;
+    },
+    willPowerMemory: (state = [], action) => {
+        switch (action.type) {
+            case getType(actions.addWillPowerMemory):
+                return [...state, ...action.payload];
+            case getType(actions.startGame):
+                return [];
+            default:
+                return state;
+        }
+    },
 });

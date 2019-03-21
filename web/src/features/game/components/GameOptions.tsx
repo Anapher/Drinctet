@@ -55,8 +55,13 @@ class GameOptions extends Component<Props, State> {
         this.setState({ anchorEl: null });
     };
 
+    handleNavigate = (path: string) => {
+        this.handleClose();
+        this.props.history.push(`/game/${path}`);
+    };
+
     render() {
-        const { classes, history } = this.props;
+        const { classes } = this.props;
         const { anchorEl } = this.state;
         const isOpen = anchorEl !== null;
 
@@ -80,17 +85,14 @@ class GameOptions extends Component<Props, State> {
                     }}
                 >
                     <MenuItem
-                        onClick={() => {
-                            this.handleClose();
-                            history.push("/game/settings");
-                        }}
+                        onClick={() => this.handleNavigate("settings")}
                     >
                         <ListItemIcon>
                             <SettingsIcon />
                         </ListItemIcon>
                         <Translate id="game.options.settings" />
                     </MenuItem>
-                    <MenuItem onClick={this.handleClose}>
+                    <MenuItem onClick={() => this.handleNavigate("insights")}>
                         <ListItemIcon>
                             <DonutLargeIcon />
                         </ListItemIcon>

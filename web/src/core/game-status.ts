@@ -6,10 +6,13 @@ import { PlayerArrangement } from "./player-arrangement";
 export interface GameStatus {
     language: string;
     players: PlayerInfo[];
+    willPower: number;
     slides: Array<Weighted<string>>;
     tags: Array<Weighted<string>>;
-    history: string[];
+    cardsHistory: string[];
+    slidesHistory: string[];
     decks: CardDeck[];
+    startTime: Date;
     preferOppositeGenders: boolean;
     arrangements: PlayerArrangement[];
 }

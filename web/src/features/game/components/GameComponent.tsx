@@ -4,6 +4,7 @@ import { compose } from "redux";
 import GameOptions from "./GameOptions";
 import { Route, Switch, withRouter } from "react-router-dom";
 import SettingsDialog from "./SettingsDialog";
+import InsightsDialog from "./InsightsDialog";
 import { RootState } from "DrinctetTypes";
 import SlideWrapper from "./SlideWrapper";
 import { requestSlideAsync } from "../actions";
@@ -35,6 +36,7 @@ class GameComponent extends Component<Props> {
                 </div>
                 <Switch>
                     <Route path="/game/settings" component={SettingsDialog} />
+                    <Route path="/game/insights" component={InsightsDialog} />
                 </Switch>
             </div>
         );
