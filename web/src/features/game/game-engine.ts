@@ -33,9 +33,13 @@ export function selectPlayers(
     return selected;
 }
 
-export function getRandomSelectionAlgorithm(): SelectionAlgorithm {
+export function getRandomSelectionAlgorithm(state?: RootState): SelectionAlgorithm {
+    if (state === undefined) {
+        state = store.getState();
+    }
+
     const random = seedrandom();
-    return new MelinaAlgorithm(extractGameStatus(store.getState()), random);
+    return new MelinaAlgorithm(extractGameStatus(state), random);
 }
 
 function extractGameStatus(state: RootState): GameStatus {

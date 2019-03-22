@@ -27,7 +27,7 @@ function SlidePreferences({ slides, setSlideWeight }: Props) {
                 <Translate id="settings.configuration.slides" />
             </Typography>
             <ItemPreferences items={slides} onChangeWeight={x => setSlideWeight(x)} />
-            <span>When you take {totalCards} cards, you get </span>
+            <Translate id="settings.configuration.slidesProjection" data={{count: totalCards}} />
             {slidePercentages.map(x => (
                 <React.Fragment key={x.value.value}>
                     <b>{x.value.value}</b>: {x.part}
@@ -60,9 +60,6 @@ function percentageFixedTotal<T>(
         result.push({ value, part: sumRounded - prevBaseline });
         prevBaseline = sumRounded;
     }
-
-    console.log(sum);
-    
 
     return result;
 }

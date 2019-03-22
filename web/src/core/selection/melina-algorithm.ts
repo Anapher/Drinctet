@@ -7,10 +7,43 @@ import { Weighted } from "../weighted";
 import { SelectionAlgorithmBase } from "./selection-algorithm-base";
 import _ from "lodash";
 import { higherArrangementPropabilityTags } from "../../preferences";
+import { Insights, PlayerSelectionInsights, PlayerSelection, CardsInsight } from "./insights";
 
 export class MelinaAlgorithm extends SelectionAlgorithmBase {
     /** the percentage of cards that were played from one deck once the cards get weighted much lower */
     private readonly deckExhaustionLimit = 0.1;
+
+    public readonly insights: Insights = { playerSelection: null };
+
+    public getAllCardDeckStatistics(): CardsInsight {
+        const weighted = this.weightCards(this.status.decks, null);
+        const deckWeights = new Array<Weighted<CardDeck>>();
+        const willPowerWeights: { [willPower: number]: number } = {};
+
+        for (const element of weighted) {
+            deckWeights.push({
+                value: element.deck,
+                weight: element.cards.reduce((x, y) => x + y.weight, 0) * element.deck.weight,
+            });
+
+            for (const card of element.cards) {
+                willPowerWeights[card.value.willPower || 0] += card.weight * element.deck.weight;
+            }
+        }
+
+        const willPowerWeightsArray = new Array<Weighted<number | null>>();
+        for (const willPower in willPowerWeights) {
+            if (willPowerWeights.hasOwnProperty(willPower)) {
+                const element = willPowerWeights[willPower];
+                willPowerWeightsArray.push({
+                    value: Number(willPower) === 0 ? null : Number(willPower),
+                    weight: element,
+                });
+            }
+        }
+
+        return {decks: deckWeights, willPower: willPowerWeightsArray};
+    }
 
     public selectPlayers(
         playerSettings: GenderRequirement[],
@@ -30,6 +63,10 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
         );
         let resultCounter = 0;
         const forArrangement = new Array<string>();
+        const insights: PlayerSelectionInsights = {
+            predefined: definedPlayers.filter(x => x != null).map(x => x!.id),
+            rounds: [],
+        };
 
         while (result.findIndex(x => x === null) !== -1) {
             for (let i = 0; i < playerSettings.length; i++) {
@@ -58,6 +95,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
                 const malesCount = result.filter(x => x !== null && x.gender === "Male").length;
                 const femalesCount = result.filter(x => x !== null && x.gender === "Female").length;
 
+                const selectionRoundInsights = new Array<PlayerSelection>();
                 const player = this.selectRandomWeighted(source, p => {
                     let weight = 1;
 
@@ -87,8 +125,12 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
                     }
 
                     console.log(`${p.name} -> ${weight}`);
+                    selectionRoundInsights.push({ playerId: p.id, weight, chosen: false });
                     return weight;
                 })!;
+
+                selectionRoundInsights.find(x => x.playerId === player.id)!.chosen = true;
+                insights.rounds.push(selectionRoundInsights);
 
                 result[i] = player;
                 resultCounter++;
@@ -176,6 +218,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
             }
         }
 
+        this.insights.playerSelection = insights;
         return result.map(x => x!);
     }
 
@@ -259,11 +302,11 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
 
     protected weightCards(
         decks: CardDeck[],
-        type: string,
+        type: string | null,
     ): Array<{ cards: Array<Weighted<Card>>; deck: CardDeck }> {
         const filtered: CardDeck[] = decks.map(x => ({
             cards: x.cards.filter(card => {
-                if (card.type !== type) {
+                if (type !== null && card.type !== type) {
                     return false;
                 }
                 return (

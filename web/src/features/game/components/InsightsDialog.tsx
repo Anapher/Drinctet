@@ -15,6 +15,7 @@ import { withLocalize, LocalizeContextProps, Translate } from "react-localize-re
 import { withRouter, RouterProps } from "react-router";
 import { compose } from "redux";
 import { WithWidth } from "@material-ui/core/withWidth";
+import InsightsView from "./InsightsView";
 
 function Transition(props: any) {
     return <Slide direction="up" {...props} />;
@@ -56,7 +57,7 @@ function InsightsDialog({ fullScreen, classes, history }: Props) {
                     </Toolbar>
                 </AppBar>
                 <div style={{height: "60vh"}}>
-                    
+                    <InsightsView />
                 </div>
             </Dialog>
         </div>

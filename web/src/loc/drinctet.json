@@ -26,6 +26,7 @@
             "Das soziale Netzwerk, welches deine Gruppe hauptsächlich nutzt."
         ],
         "slides": ["Slides", "Slides"],
+        "slidesProjection": ["When you take ${count} slides, you get ", "Bei ${count} Slides hat man "],
         "tags": ["Tags", "Tags"],
         "tags.none": ["None of your cards have tags.", "Keine deiner Karten hat Tags."]
     },

@@ -9,7 +9,7 @@ import { getRandomSelectionAlgorithm } from "./game-engine";
 import { slideComponents } from "./component-registry";
 import { of } from "rxjs";
 import { Translator } from "GameModels";
-import {getSlideRegistrations} from "./slides-processor";
+import { getSlideRegistrations } from "./slides-processor";
 
 export const nextSlideEpic: Epic<RootAction, RootAction, RootState, Services> = action$ =>
     action$.pipe(
@@ -26,12 +26,12 @@ export const redirectOnGameStartedEpic: Epic<
     action$.pipe(
         filter(isActionOf(actions.startGame)),
         tap(action => action.payload.push("/game")),
-        ignoreElements()
+        ignoreElements(),
     );
 
 function nextSlide(translator: Translator): RootAction[] {
     const now = new Date();
-    const state = store.getState();
+    let state = store.getState();
 
     const dueFollowUps = state.game.followUp.filter(x => x.due < now);
     if (dueFollowUps.length > 0) {
@@ -39,14 +39,32 @@ function nextSlide(translator: Translator): RootAction[] {
 
         const factory = slideComponents[followUp.slideType];
         const slideInitalizer = new factory(translator);
-        const slideActions = slideInitalizer.initializeFollowUp(followUp.selectedCard, followUp.param);
+        const slideActions = slideInitalizer.initializeFollowUp(
+            followUp.selectedCard,
+            followUp.param,
+        );
 
         return [actions.activateFollowUp(followUp), ...slideActions];
     }
 
-    const selection = getRandomSelectionAlgorithm();
+    let selection = getRandomSelectionAlgorithm(state);
     const slides = getSlideRegistrations(slideComponents);
-    
+
+    const { willPower, memory } = selection.recomputeWillPower(state.game.willPowerMemory);
+    const willPowerActions = new Array<RootAction>();
+
+    if (willPower !== state.game.currentWillPower) {
+        if (!state.game.isWillPowerLocked) {
+            willPowerActions.push(actions.setWillPower(willPower));
+            state = {...state, game: {...state.game, currentWillPower: willPower}};
+            selection = getRandomSelectionAlgorithm(state);
+        }
+    }
+
+    if (memory.length > 0) {
+        willPowerActions.push(actions.addWillPowerMemory(memory));
+    }
+
     const slideType = selection.selectNextSlide(slides);
     if (slideType === undefined) {
         // TODO: end game
