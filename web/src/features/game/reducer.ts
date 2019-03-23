@@ -1,10 +1,10 @@
+import { PlayerSelectionInsights, SlideSelectionInsights } from './../../core/selection/insights';
 import { RootAction } from "DrinctetTypes";
 import { combineReducers } from "redux";
 import { getType } from "typesafe-actions";
 import { Card } from "@core/cards/card";
 import * as actions from "./actions";
 import { FollowUpSlide } from "GameModels";
-import cuid from "cuid";
 
 export type GameState = Readonly<{
     isStarted: boolean;
@@ -18,13 +18,15 @@ export type GameState = Readonly<{
     isWillPowerLocked: boolean;
     willPowerMemory: string[];
 
+    playerInsights: PlayerSelectionInsights | null;
+    slideInsights: SlideSelectionInsights | null;
+
     startTime: Date | null;
 
     cardsHistory: string[];
     slidesHistory: string[];
     followUp: FollowUpSlide[];
     activeFollowUp: FollowUpSlide | null;
-    current: string;
 }>;
 
 export default combineReducers<GameState, RootAction>({
@@ -38,7 +40,7 @@ export default combineReducers<GameState, RootAction>({
     },
     slidesHistory: (state = [], action) => {
         if (action.type === getType(actions.requestSlideAsync.success)) {
-            return [action.payload, ...state];
+            return [action.payload.slide, ...state];
         }
         return state;
     },
@@ -66,7 +68,7 @@ export default combineReducers<GameState, RootAction>({
     selectedSlide: (state = null, action) => {
         switch (action.type) {
             case getType(actions.requestSlideAsync.success):
-                return action.payload;
+                return action.payload.slide;
             case getType(actions.activateFollowUp):
                 return action.payload.slideType;
             default:
@@ -79,7 +81,7 @@ export default combineReducers<GameState, RootAction>({
             case getType(actions.activateFollowUp):
                 return null;
             case getType(actions.setSlideState):
-                return action.payload;
+                return action.payload.state;
             default:
                 return state;
         }
@@ -100,15 +102,6 @@ export default combineReducers<GameState, RootAction>({
                 return null;
             case getType(actions.activateFollowUp):
                 return action.payload;
-            default:
-                return state;
-        }
-    },
-    current: (state = "", action) => {
-        switch (action.type) {
-            case getType(actions.requestSlideAsync.success):
-            case getType(actions.activateFollowUp):
-                return cuid();
             default:
                 return state;
         }
@@ -143,4 +136,18 @@ export default combineReducers<GameState, RootAction>({
                 return state;
         }
     },
+    playerInsights: (state = null, action) => {
+        if (action.type === getType(actions.setSlideState)) {
+            return action.payload.insights;
+        }
+
+        return state;
+    },
+    slideInsights: (state = null, action) => {
+        if (action.type === getType(actions.requestSlideAsync.success)) {
+            return action.payload.insights;
+        }
+
+        return state;
+    }
 });

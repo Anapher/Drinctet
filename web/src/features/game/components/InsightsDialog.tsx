@@ -10,6 +10,7 @@ import {
     Toolbar,
     Button,
     Typography,
+    Theme,
 } from "@material-ui/core";
 import { withLocalize, LocalizeContextProps, Translate } from "react-localize-redux";
 import { withRouter, RouterProps } from "react-router";
@@ -21,12 +22,17 @@ function Transition(props: any) {
     return <Slide direction="up" {...props} />;
 }
 
-const styles = createStyles({
+const styles = (theme: Theme) => createStyles({
     appBar: {
         position: "relative",
     },
     flex: {
         flex: 1,
+    },
+    content: {
+        flexGrow: 1,
+        margin: theme.spacing.unit,
+        overflowY: "auto",
     },
 });
 
@@ -45,6 +51,8 @@ function InsightsDialog({ fullScreen, classes, history }: Props) {
                 open={true}
                 onClose={() => history.push("/game")}
                 TransitionComponent={Transition}
+                fullWidth={true}
+                maxWidth="md"
             >
                 <AppBar className={classes.appBar}>
                     <Toolbar>
@@ -56,7 +64,7 @@ function InsightsDialog({ fullScreen, classes, history }: Props) {
                         </Button>
                     </Toolbar>
                 </AppBar>
-                <div style={{height: "60vh"}}>
+                <div className={classes.content}>
                     <InsightsView />
                 </div>
             </Dialog>

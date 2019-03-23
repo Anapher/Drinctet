@@ -1,11 +1,11 @@
-import * as React from "react";
-import { Typography, Switch, FormGroup, FormControlLabel } from "@material-ui/core";
-import { Translate, withLocalize } from "react-localize-redux";
-import { Slider } from "@material-ui/lab";
+import { createStyles, FormControlLabel, FormGroup, Switch, Typography, WithStyles, withStyles } from "@material-ui/core";
+import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import { RootState } from "DrinctetTypes";
-import { setWillPower, setWillPowerLocked } from "../actions";
-import { compose } from "redux";
+import * as React from "react";
+import { Translate, withLocalize } from "react-localize-redux";
 import { connect } from "react-redux";
+import { compose } from "redux";
+import { setWillPower, setWillPowerLocked } from "../actions";
 
 const mapStateToProps = (state: RootState) => ({
     currentWillPower: state.game.currentWillPower,
@@ -17,20 +17,41 @@ const dispatchProps = {
     setWillPowerLocked,
 };
 
-type Props = ReturnType<typeof mapStateToProps> & typeof dispatchProps;
+const styles = 
+    createStyles({
+        toggleContainer: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-start",
+        },
+    });
+
+type Props = ReturnType<typeof mapStateToProps> & typeof dispatchProps & WithStyles<typeof styles>;
 
 function InsightsWillPowerView({
     currentWillPower,
     isLocked,
     setWillPower,
     setWillPowerLocked,
+    classes,
 }: Props) {
     return (
         <div>
             <Typography variant="h5" gutterBottom>
                 <Translate id="insights.willPower" />
             </Typography>
-            <Slider min={1} max={5} value={currentWillPower} onChange={(_, x) => setWillPower(x)} />
+            <div className={classes.toggleContainer}>
+                <ToggleButtonGroup
+                    exclusive
+                    value={currentWillPower}
+                    onChange={(_, y) => setWillPower(y)}
+                    children={[1, 2, 3, 4, 5].map(x => (
+                        <ToggleButton key={x} value={x}>
+                            {x}
+                        </ToggleButton>
+                    ))}
+                />
+            </div>
             <FormGroup row>
                 <FormControlLabel
                     control={
@@ -44,6 +65,10 @@ function InsightsWillPowerView({
 }
 
 export default compose(
-    connect(mapStateToProps, dispatchProps),
-    withLocalize
+    connect(
+        mapStateToProps,
+        dispatchProps,
+    ),
+    withLocalize,
+    withStyles(styles),
 )(InsightsWillPowerView) as React.ComponentType;

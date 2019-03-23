@@ -1,3 +1,4 @@
+import { MelinaAlgorithm } from './../../../../core/selection/melina-algorithm';
 import { TextCard } from "@core/cards/text-card";
 import { CardPresenter } from "./card-presenter";
 import * as gameEngine from "../../game-engine";
@@ -31,7 +32,7 @@ export abstract class TextSlidePresenter<
         const { formatted, players } = this.formatText(text, card, null, selection);
 
         const state = this.initializeState(formatted, card, players, selection);
-        result.push(actions.setSlideState(state));
+        result.push(actions.setSlideState({state, insights: (selection as MelinaAlgorithm).insights.playerSelection}));
 
         if (_.some(card.followUp)) {
             // dont check for correct translation as the language may change
@@ -54,7 +55,7 @@ export abstract class TextSlidePresenter<
             const { formatted } = this.formatText(text, card, players || [], selection);
     
             const state = this.initializeFollowUpState(formatted, card, selection, param);
-            return [actions.setSlideState(state)];
+            return [actions.setSlideState({state, insights: (selection as MelinaAlgorithm).insights.playerSelection})];
         } catch (error) { //no follow up found
             return [actions.requestSlideAsync.request(this.translator)];
         }
@@ -92,7 +93,7 @@ export abstract class TextSlidePresenter<
         const fragments = this.formatter.parseTextFragments(text);
         const playerRequirements = TextFormatter.getRequiredPlayers(fragments, card.players);
 
-        const players = gameEngine.selectPlayers(playerRequirements, definedPlayers || [], card);
+        const players = gameEngine.selectPlayers(selection, playerRequirements, definedPlayers || [], card);
 
         const requiredSips = TextFormatter.getRequiredSips(fragments);
 

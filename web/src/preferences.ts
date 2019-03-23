@@ -10,7 +10,7 @@ export const defaultSources = [
 export const slideWeights: { [key: string]: number } = {
     FactSlide: 0.5,
     DownSlide: 0.1,
-    NeverEverSlide: 0.5
+    NeverEverSlide: 0
 };
 
 // if a card has one of these tags and an arranged player is selected

@@ -10,12 +10,11 @@ import seedrandom from "seedrandom";
 import store from "../../store";
 
 export function selectPlayers(
+    selection: SelectionAlgorithm,
     players: PlayerSetting[],
     predefined: SelectedPlayer[],
     card: Card,
 ): SelectedPlayer[] {
-    const selection = getRandomSelectionAlgorithm();
-
     const result = selection.selectPlayers(
         players.map(x => x.gender),
         players.map(x => {

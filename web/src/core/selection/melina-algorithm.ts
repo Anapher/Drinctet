@@ -13,7 +13,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
     /** the percentage of cards that were played from one deck once the cards get weighted much lower */
     private readonly deckExhaustionLimit = 0.1;
 
-    public readonly insights: Insights = { playerSelection: null };
+    public readonly insights: Insights = new Insights();
 
     public getAllCardDeckStatistics(): CardsInsight {
         const weighted = this.weightCards(this.status.decks, null);
@@ -27,10 +27,13 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
             });
 
             for (const card of element.cards) {
+                if (willPowerWeights[card.value.willPower || 0] === undefined) {
+                    willPowerWeights[card.value.willPower || 0] = 0;
+                }
                 willPowerWeights[card.value.willPower || 0] += card.weight * element.deck.weight;
             }
         }
-
+        
         const willPowerWeightsArray = new Array<Weighted<number | null>>();
         for (const willPower in willPowerWeights) {
             if (willPowerWeights.hasOwnProperty(willPower)) {
@@ -42,7 +45,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
             }
         }
 
-        return {decks: deckWeights, willPower: willPowerWeightsArray};
+        return { decks: deckWeights, willPower: willPowerWeightsArray };
     }
 
     public selectPlayers(
@@ -262,8 +265,6 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
                 allCards.push(...cardDeck.cards);
             }
 
-            console.log(allCards);
-
             if (allCards.length === 0) {
                 cardTypeRatings[cardType] = 0;
             } else {
@@ -287,6 +288,10 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
 
             weightedSlides.push({ weight: factor * slideSettings.weight, value: slide });
         }
+
+        this.insights.slideWeights = {
+            weights: weightedSlides.map(x => ({ weight: x.weight, value: x.value.slideType })),
+        };
 
         const selected = this.selectRandomWeighted(weightedSlides, slide => slide.weight);
         if (selected === undefined) {

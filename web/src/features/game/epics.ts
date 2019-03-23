@@ -1,3 +1,4 @@
+import { MelinaAlgorithm } from "./../../core/selection/melina-algorithm";
 import { RootAction, RootState, Services } from "DrinctetTypes";
 import { Epic } from "redux-observable";
 import { filter, mergeMap, tap, ignoreElements } from "rxjs/operators";
@@ -56,7 +57,7 @@ function nextSlide(translator: Translator): RootAction[] {
     if (willPower !== state.game.currentWillPower) {
         if (!state.game.isWillPowerLocked) {
             willPowerActions.push(actions.setWillPower(willPower));
-            state = {...state, game: {...state.game, currentWillPower: willPower}};
+            state = { ...state, game: { ...state.game, currentWillPower: willPower } };
             selection = getRandomSelectionAlgorithm(state);
         }
     }
@@ -75,5 +76,11 @@ function nextSlide(translator: Translator): RootAction[] {
     const slideInitalizer = new factory(translator);
     const slideActions = slideInitalizer.initialize();
 
-    return [actions.requestSlideAsync.success(slideType), ...slideActions];
+    return [
+        actions.requestSlideAsync.success({
+            slide: slideType,
+            insights: (selection as MelinaAlgorithm).insights.slideWeights!,
+        }),
+        ...slideActions,
+    ];
 }

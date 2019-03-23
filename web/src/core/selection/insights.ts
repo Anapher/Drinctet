@@ -3,11 +3,16 @@ import { CardDeck } from "@core/card-deck";
 
 export class Insights {
     public playerSelection: PlayerSelectionInsights | null = null;
+    public slideWeights: SlideSelectionInsights | null  = null;
 }
 
 export interface PlayerSelectionInsights {
     predefined: string[];
     rounds: Array<PlayerSelection[]>;
+}
+
+export interface SlideSelectionInsights {
+    weights: Weighted<string>[];
 }
 
 export interface PlayerSelection {

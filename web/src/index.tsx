@@ -20,6 +20,10 @@ for (const src of defaultSources) {
 
 store.dispatch(addPlayer({ name: "Vincent", gender: "Male" }));
 store.dispatch(addPlayer({ name: "Melina", gender: "Female" }));
+store.dispatch(addPlayer({ name: "Bursod", gender: "Male" }));
+store.dispatch(addPlayer({ name: "Larny", gender: "Female" }));
+store.dispatch(addPlayer({ name: "Sven", gender: "Male" }));
+store.dispatch(addPlayer({ name: "Hufeld", gender: "Male" }));
 
 var userLang = (navigator.language || ((navigator as any).userLanguage as string) || "en").split(
     "-",

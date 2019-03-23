@@ -26,7 +26,7 @@
             "Das soziale Netzwerk, welches deine Gruppe hauptsächlich nutzt."
         ],
         "slides": ["Slides", "Slides"],
-        "slidesProjection": ["When you take ${count} slides, you get ", "Bei ${count} Slides hat man "],
+        "slidesProjection": ["When you take ${count} slides, you get ", "Bei ${count} Slides hat man von "],
         "tags": ["Tags", "Tags"],
         "tags.none": ["None of your cards have tags.", "Keine deiner Karten hat Tags."]
     },
@@ -49,7 +49,19 @@
     "insights": {
         "willPower": ["WillPower", "Überzeugungskraft"],
         "lockWillPower": ["Lock value", "Wert sperren"],
-        "slide": ["Slide", "Slide"]
+        "slide": ["Slide", "Slide"],
+        "currentSlide": ["Current Slide", "Aktuelle Slide"],
+        "name": ["Name", "Name"],
+        "playerSelection": ["Player Selection", "Spielerauswahl"],
+        "predefinedPlayers": ["Predefined players", "Vordefinierte Spieler"],
+        "player": ["Player ${number}", "Spieler ${number}"],
+        "noPlayers": ["No players selected", "Keine Spieler ausgewählt"],
+        "playerRemoved": ["Removed", "Gelöscht"],
+        "cardsDist": ["Cards Distribution", "Kartenverteilung"],
+        "willPowerDist": ["WillPower Distribution", "Überzeugungskraft Verteilung"],
+        "cardDeckName": ["${url} (cards: ${cards})", "${url} (Karten: ${cards})"],
+        "part": ["Part", "Anteil"],
+        "universal": ["Universal", "Universell"]
     },
     "slides": {
         "fact": {

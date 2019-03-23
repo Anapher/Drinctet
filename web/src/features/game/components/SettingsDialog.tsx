@@ -1,21 +1,12 @@
-import React from "react";
+import { AppBar, Button, createStyles, Slide, Toolbar, Typography, WithStyles, withStyles } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import withMobileDialog, { InjectedProps } from "@material-ui/core/withMobileDialog";
-import {
-    AppBar,
-    Slide,
-    createStyles,
-    WithStyles,
-    withStyles,
-    Toolbar,
-    Button,
-    Typography,
-} from "@material-ui/core";
-import { withLocalize, LocalizeContextProps, Translate } from "react-localize-redux";
-import SettingsView from "../../settings/components/SettingsView";
-import { withRouter, RouterProps } from "react-router";
-import { compose } from "redux";
 import { WithWidth } from "@material-ui/core/withWidth";
+import React from "react";
+import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
+import { RouterProps, withRouter } from "react-router";
+import { compose } from "redux";
+import SettingsView from "../../settings/components/SettingsView";
 
 function Transition(props: any) {
     return <Slide direction="up" {...props} />;
@@ -28,6 +19,15 @@ const styles = createStyles({
     flex: {
         flex: 1,
     },
+    content: {
+        flexGrow: 1,
+    },
+    dialogPaper: {
+        height: "80vh"
+    },
+    fullscreenPaper: {
+        height: "100vh"
+    }
 });
 
 interface Props
@@ -45,6 +45,9 @@ function SettingsDialog({ fullScreen, classes, history }: Props) {
                 open={true}
                 onClose={() => history.push("/game")}
                 TransitionComponent={Transition}
+                fullWidth={true}
+                maxWidth="lg"
+                classes={{paperScrollPaper: classes.dialogPaper, paperFullScreen: classes.fullscreenPaper}}
             >
                 <AppBar className={classes.appBar}>
                     <Toolbar>
@@ -56,7 +59,7 @@ function SettingsDialog({ fullScreen, classes, history }: Props) {
                         </Button>
                     </Toolbar>
                 </AppBar>
-                <div style={{height: "60vh"}}>
+                <div className={classes.content}>
                     <SettingsView />
                 </div>
             </Dialog>

@@ -32,7 +32,6 @@ type Props = ReturnType<typeof mapStateToProps> &
 
 const mapStateToProps = (state: RootState) => ({
     selectedSlide: state.game.selectedSlide,
-    current: state.game.current,
     activeFollowUp: state.game.activeFollowUp,
 });
 
