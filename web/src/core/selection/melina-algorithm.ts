@@ -61,11 +61,26 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
             throw new Error("More players were requested than available.");
         }
 
+        const forArrangement = new Array<string>();
         const result: (PlayerInfo | null)[] = playerSettings.map((_, i) =>
             definedPlayers.length > i ? definedPlayers[i] : null,
         );
+
+        for (const player of definedPlayers.filter(x => x !== null).map(x => x!)) {
+            const arrangement = this.status.arrangements.find(
+                x => x.p1 === player.id || x.p2 === player.id,
+            );
+
+            if (arrangement !== undefined) {
+                if (arrangement.p1 === player.id) {
+                    forArrangement.push(arrangement.p2);
+                } else {
+                    forArrangement.push(arrangement.p1);
+                }
+            }
+        }
+
         let resultCounter = 0;
-        const forArrangement = new Array<string>();
         const insights: PlayerSelectionInsights = {
             predefined: definedPlayers.filter(x => x != null).map(x => x!.id),
             rounds: [],
