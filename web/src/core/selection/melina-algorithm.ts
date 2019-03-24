@@ -436,7 +436,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
 
         if (cardWillPower > willPower) {
             const result = 0.35 - (cardWillPower - willPower) * 0.1;
-            return result < 0 ? 0.5 : result;
+            return result < 0 ? 0 : result;
         }
 
         return 0.5;

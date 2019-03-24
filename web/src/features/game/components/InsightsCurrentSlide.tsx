@@ -11,6 +11,7 @@ const mapStateToProps = (state: RootState) => ({
     slideInsights: state.game.slideInsights,
     playerInsights: state.game.playerInsights,
     players: state.settings.players,
+    card: state.game.selectedCard,
 });
 
 const styles = createStyles({
@@ -139,11 +140,31 @@ function renderSlideWeights({ slide, slideInsights }: Props) {
 
 class InsightsCurrentSlide extends Component<Props> {
     render() {
-        const { playerInsights, classes } = this.props;
+        const { playerInsights, classes, card } = this.props;
         return (
             <div>
                 <Typography variant="h5">
                     <Translate id="insights.currentSlide" />
+                </Typography>
+                <Typography>
+                    <Translate id="insights.currentCard" />
+                    {": "}
+                    {card === null ? (
+                        <i>
+                            <Translate id="insights.noCard" />
+                        </i>
+                    ) : (
+                        <span>
+                            <Translate
+                                id="insights.cardInfo"
+                                data={{
+                                    name: card.type,
+                                    id: card.id,
+                                    wp: card.willPower === undefined ? <Translate id="insights.universal"/> : card.willPower,
+                                }}
+                            />
+                        </span>
+                    )}
                 </Typography>
                 {renderSlideWeights(this.props)}
 

@@ -64,7 +64,10 @@
         "willPowerDist": ["WillPower Distribution", "Überzeugungskraft Verteilung"],
         "cardDeckName": ["${url} (cards: ${cards})", "${url} (Karten: ${cards})"],
         "part": ["Part", "Anteil"],
-        "universal": ["Universal", "Universell"]
+        "universal": ["Universal", "Universell"],
+        "currentCard": ["Current card", "Aktuelle Karte"],
+        "noCard": ["No card chosen", "Keine Karte ausgewählt"],
+        "cardInfo": ["${name} (ID: ${id}, WillPower: ${wp})", "${id} (ID: ${id}, Überzeugungskraft: ${wp})"]
     },
     "slides": {
         "fact": {

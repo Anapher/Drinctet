@@ -45,6 +45,7 @@ function InsightsCards({ translate, currentWillPower }: Props) {
         x => ({
             value: x.part / 10,
             name: x.value.value || translate("insights.universal"),
+            willPower: x.value.value
         }),
     );
 
@@ -92,7 +93,7 @@ function InsightsCards({ translate, currentWillPower }: Props) {
                     >
                         {willPowerStatistics.map((entry, index) => (
                             <Cell
-                                fill={entry.value === currentWillPower ? "#e74c3c" : "#8884d8"}
+                                fill={entry.willPower === currentWillPower ? "#e74c3c" : "#8884d8"}
                                 key={index}
                             />
                         ))}
