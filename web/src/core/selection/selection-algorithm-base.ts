@@ -18,7 +18,7 @@ export abstract class SelectionAlgorithmBase implements SelectionAlgorithm {
     public abstract selectPlayers(
         playerSettings: GenderRequirement[],
         definedPlayers: (PlayerInfo | null)[],
-        card: Card,
+        tags: string[],
     ): PlayerInfo[];
     public abstract selectNextSlide(availableSlides: SlideRegistration[]): string | undefined;
     public abstract selectCard<TCard extends Card>(cardType: string): TCard;

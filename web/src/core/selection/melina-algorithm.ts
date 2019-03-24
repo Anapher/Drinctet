@@ -51,7 +51,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
     public selectPlayers(
         playerSettings: GenderRequirement[],
         definedPlayers: (PlayerInfo | null)[],
-        card: Card,
+        tags: string[],
     ): PlayerInfo[] {
         if (playerSettings.length === 0) {
             return [];
@@ -105,7 +105,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
                     if (_.some(forArrangement, x => x === p.id)) {
                         if (
                             _.some(higherArrangementPropabilityTags, x =>
-                                _.some(card.tags, y => x === y.toLowerCase()),
+                                _.some(tags, y => x === y.toLowerCase()),
                             )
                         ) {
                             weight += source.length;

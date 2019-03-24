@@ -1,3 +1,4 @@
+import { TruthOrDareSlide } from './slides/TruthOrDareSlide';
 import { DownSlide } from "./slides/DownSlide";
 import { SlidePresenter } from "./slides/base/slide-presenter";
 import { FactSlide } from "./slides/FactSlide";
@@ -10,4 +11,5 @@ export const slideComponents: SlideComponents = {
     DownSlide,
     FactSlide,
     NeverEverSlide,
+    TruthOrDareSlide,
 };

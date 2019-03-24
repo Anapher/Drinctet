@@ -26,7 +26,10 @@
             "Das soziale Netzwerk, welches deine Gruppe hauptsächlich nutzt."
         ],
         "slides": ["Slides", "Slides"],
-        "slidesProjection": ["When you take ${count} slides, you get ", "Bei ${count} Slides hat man von "],
+        "slidesProjection": [
+            "When you take ${count} slides, you get ",
+            "Bei ${count} Slides hat man von "
+        ],
         "tags": ["Tags", "Tags"],
         "tags.none": ["None of your cards have tags.", "Keine deiner Karten hat Tags."]
     },
@@ -97,7 +100,17 @@
         },
         "neverever": {
             "title": ["Never have I ever...", "Ich habe noch nie..."],
-            "instruction": ["Everybody who's already done that drinks ${sips} sips.", "Jeder, der es schonmal gemacht hat, trinkt ${sips} Schlucke."]
+            "instruction": [
+                "Everybody who's already done that drinks ${sips} sips.",
+                "Jeder, der es schonmal gemacht hat, trinkt ${sips} Schlucke."
+            ]
+        },
+        "truthordare": {
+            "playerTruthordare": ["${name}, truth or dare?", "${name}, Wahrheit oder Pflicht?"],
+            "truth": ["Truth", "Wahrheit"],
+            "dare": ["Dare", "Pflicht"],
+            "instruction": ["Alright [Player99]:", "Okay [Player99]:"],
+            "or": ["or", "oder"]
         }
     }
 }

@@ -9,7 +9,7 @@ export interface SelectionAlgorithm {
 
     selectCard<TCard extends Card>(cardType: string): TCard;
 
-    selectPlayers(playerSettings: GenderRequirement[], definedPlayers: (PlayerInfo | null)[], card: Card): PlayerInfo[];
+    selectPlayers(playerSettings: GenderRequirement[], definedPlayers: (PlayerInfo | null)[], tags: string[]): PlayerInfo[];
 
     getSips(min: number): number;
 

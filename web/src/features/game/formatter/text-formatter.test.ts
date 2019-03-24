@@ -4,7 +4,6 @@ import { PlayerReferenceFragment } from "@core/fragments/player-reference-fragme
 import { PlayerSetting } from "@core/cards/player-setting";
 import { TextFragment } from "@core/text-fragment";
 
-const formatter = new TextFormatter();
 it("should correctly find out the players", () => {
     const testData: {
         fragments: TextFragment[];
@@ -47,7 +46,7 @@ it("should correctly find out the players", () => {
     ];
 
     for (const data of testData) {
-        const result = formatter.getRequiredPlayers(data.fragments, data.global);
+        const result = TextFormatter.getRequiredPlayers(data.fragments, data.global);
         expect(result).toEqual(data.expected);
     }
 });

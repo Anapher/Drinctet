@@ -9,6 +9,7 @@ import SlideWrapper from "./SlideWrapper";
 import { requestSlideAsync } from "../actions";
 import { withLocalize, LocalizeContextProps } from "react-localize-redux";
 import { toTranslator } from "../utils";
+import { Fade } from "@material-ui/core";
 
 const dispatchProps = {
     requestSlide: requestSlideAsync.request,
@@ -24,7 +25,9 @@ class GameComponent extends Component<Props> {
     public render() {
         return (
             <div style={{ width: "100%", height: "100%", position: "relative" }}>
-                <SlideWrapper />
+                <Fade in={true}>
+                    <SlideWrapper />
+                </Fade>
                 <div style={{ top: 10, right: 10, position: "absolute" }}>
                     <GameOptions />
                 </div>
@@ -39,6 +42,9 @@ class GameComponent extends Component<Props> {
 
 export default compose(
     withRouter,
-    connect(undefined, dispatchProps),
-    withLocalize
+    connect(
+        undefined,
+        dispatchProps,
+    ),
+    withLocalize,
 )(GameComponent) as React.ComponentType;

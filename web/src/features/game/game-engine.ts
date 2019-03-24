@@ -1,5 +1,4 @@
 import { CardDeck } from "@core/card-deck";
-import { Card } from "@core/cards/card";
 import { PlayerSetting } from "@core/cards/player-setting";
 import { GameStatus } from "@core/game-status";
 import { MelinaAlgorithm } from "@core/selection/melina-algorithm";
@@ -13,7 +12,7 @@ export function selectPlayers(
     selection: SelectionAlgorithm,
     players: PlayerSetting[],
     predefined: SelectedPlayer[],
-    card: Card,
+    tags: string[],
 ): SelectedPlayer[] {
     const result = selection.selectPlayers(
         players.map(x => x.gender),
@@ -25,7 +24,7 @@ export function selectPlayers(
 
             return p.player;
         }),
-        card,
+        tags,
     );
     const selected = result.map((x, i) => ({ index: players[i].playerIndex, player: x }));
 

@@ -1,4 +1,4 @@
-import { MelinaAlgorithm } from './../../../../core/selection/melina-algorithm';
+import { MelinaAlgorithm } from "./../../../../core/selection/melina-algorithm";
 import { TextCard } from "@core/cards/text-card";
 import { CardPresenter } from "./card-presenter";
 import * as gameEngine from "../../game-engine";
@@ -18,8 +18,6 @@ export abstract class TextSlidePresenter<
     TState extends TextSlideState,
     TCard extends TextCard
 > extends CardPresenter<TCard> {
-    private readonly formatter = new TextFormatter();
-
     constructor(protected translator: Translator, cardType: string, slideType: string) {
         super(cardType, slideType);
     }
@@ -32,7 +30,12 @@ export abstract class TextSlidePresenter<
         const { formatted, players } = this.formatText(text, card, null, selection);
 
         const state = this.initializeState(formatted, card, players, selection);
-        result.push(actions.setSlideState({state, insights: (selection as MelinaAlgorithm).insights.playerSelection}));
+        result.push(
+            actions.setSlideState({
+                state,
+                insights: (selection as MelinaAlgorithm).insights.playerSelection,
+            }),
+        );
 
         if (_.some(card.followUp)) {
             // dont check for correct translation as the language may change
@@ -53,10 +56,16 @@ export abstract class TextSlidePresenter<
         try {
             const { text, players } = this.selectFollowUpText(selection, card, param);
             const { formatted } = this.formatText(text, card, players || [], selection);
-    
+
             const state = this.initializeFollowUpState(formatted, card, selection, param);
-            return [actions.setSlideState({state, insights: (selection as MelinaAlgorithm).insights.playerSelection})];
-        } catch (error) { //no follow up found
+            return [
+                actions.setSlideState({
+                    state,
+                    insights: (selection as MelinaAlgorithm).insights.playerSelection,
+                }),
+            ];
+        } catch (error) {
+            //no follow up found
             return [actions.requestSlideAsync.request(this.translator)];
         }
     }
@@ -84,49 +93,17 @@ export abstract class TextSlidePresenter<
         };
     }
 
+    protected selectText(selection: SelectionAlgorithm, selectedCard: TextCard): string {
+        return selectText(selection, selectedCard, this.translator);
+    }
+
     protected formatText(
         text: string,
         card: TCard,
         definedPlayers: SelectedPlayer[] | null,
         selection: SelectionAlgorithm,
     ): { formatted: string; players: SelectedPlayer[] } {
-        const fragments = this.formatter.parseTextFragments(text);
-        const playerRequirements = TextFormatter.getRequiredPlayers(fragments, card.players);
-
-        const players = gameEngine.selectPlayers(selection, playerRequirements, definedPlayers || [], card);
-
-        const requiredSips = TextFormatter.getRequiredSips(fragments);
-
-        const indexedPlayers: { [index: number]: PlayerInfo } = {};
-        for (const player of players) {
-            indexedPlayers[player.index] = player.player;
-        }
-
-        const sips: { [index: number]: number } = {};
-        for (const sipInfo of requiredSips) {
-            sips[sipInfo.sipsIndex] = selection.getSips(sipInfo.minSips);
-        }
-
-        const formatted = this.formatter.format(
-            fragments,
-            indexedPlayers,
-            sips,
-            x => this.translator.translate(`game.textFormatter.${x}`),
-            selection,
-            { boldPlayerNames: true, boldSips: true },
-        );
-
-        return { formatted: formatted, players };
-    }
-
-    selectText(selection: SelectionAlgorithm, selectedCard: TextCard): string {
-        const lang = this.translator.languageCode;
-
-        const viableContents = selectedCard.content.filter(x =>
-            _.some(x.translations, y => y.lang.toLocaleLowerCase() === lang),
-        );
-        const content = selection.selectRandomWeighted(viableContents, x => x.weight)!;
-        return content.translations.find(x => x.lang === lang)!.content;
+        return formatText(text, card, definedPlayers, selection, this.translator);
     }
 
     selectFollowUpText(
@@ -154,4 +131,60 @@ export abstract class TextSlidePresenter<
         const text = content.translations.find(x => x.lang === lang)!.content;
         return { text, players };
     }
+}
+
+export function formatText<TCard extends TextCard>(
+    text: string,
+    card: TCard,
+    definedPlayers: SelectedPlayer[] | null,
+    selection: SelectionAlgorithm,
+    translator: Translator,
+): { formatted: string; players: SelectedPlayer[] } {
+    const formatter = new TextFormatter();
+    const fragments = formatter.parseTextFragments(text);
+    const playerRequirements = TextFormatter.getRequiredPlayers(fragments, card.players);
+
+    const players = gameEngine.selectPlayers(
+        selection,
+        playerRequirements,
+        definedPlayers || [],
+        card.tags,
+    );
+
+    const requiredSips = TextFormatter.getRequiredSips(fragments);
+
+    const indexedPlayers: { [index: number]: PlayerInfo } = {};
+    for (const player of players) {
+        indexedPlayers[player.index] = player.player;
+    }
+
+    const sips: { [index: number]: number } = {};
+    for (const sipInfo of requiredSips) {
+        sips[sipInfo.sipsIndex] = selection.getSips(sipInfo.minSips);
+    }
+
+    const formatted = formatter.format(
+        fragments,
+        indexedPlayers,
+        sips,
+        x => translator.translate(`game.textFormatter.${x}`),
+        selection,
+        { boldPlayerNames: true, boldSips: true },
+    );
+
+    return { formatted: formatted, players };
+}
+
+export function selectText(
+    selection: SelectionAlgorithm,
+    selectedCard: TextCard,
+    translator: Translator,
+): string {
+    const lang = translator.languageCode;
+
+    const viableContents = selectedCard.content.filter(x =>
+        _.some(x.translations, y => y.lang.toLocaleLowerCase() === lang),
+    );
+    const content = selection.selectRandomWeighted(viableContents, x => x.weight)!;
+    return content.translations.find(x => x.lang === lang)!.content;
 }

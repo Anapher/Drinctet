@@ -58,11 +58,11 @@ it("should correctly parse Sips2:5", () => {
 it("should correctly parse gender selection fragment", () => {
     const testData: { data: string; result: GenderBasedSelectionFragment }[] = [
         { data: "asd", result: new GenderBasedSelectionFragment("asd") },
-        { data: "m/f", result: new GenderBasedSelectionFragment("m", "f") },
-        { data: "/f", result: new GenderBasedSelectionFragment("", "f") },
-        { data: "/f|Player2", result: new GenderBasedSelectionFragment("", "f", 2) },
-        { data: "m/f|Player2", result: new GenderBasedSelectionFragment("m", "f", 2) },
-        { data: "m|Player2", result: new GenderBasedSelectionFragment("m", undefined, 2) },
+        { data: "m/f", result: new GenderBasedSelectionFragment("f", "m") },
+        { data: "m/", result: new GenderBasedSelectionFragment("", "m") },
+        { data: "m/|Player2", result: new GenderBasedSelectionFragment("", "m", 2) },
+        { data: "m/f|Player2", result: new GenderBasedSelectionFragment("f", "m", 2) },
+        { data: "f|Player2", result: new GenderBasedSelectionFragment("f", undefined, 2) },
     ];
 
     for (const data of testData) {
@@ -145,7 +145,7 @@ it("should correctly decode texts", () => {
             ],
         },
         {
-            s: "[Player1], wenn du [Player2] ein bisschen kennst, dann gib {ihr/ihm} einen Kuss oder trink [sips:8]",
+            s: "[Player1], wenn du [Player2] ein bisschen kennst, dann gib {ihm/ihr} einen Kuss oder trink [sips:8]",
             result: [
                 new PlayerReferenceFragment(),
                  new RawTextFragment(", wenn du "),
@@ -167,7 +167,7 @@ it("should correctly decode texts", () => {
             ],
         },
         {
-            s: "[Player], count up to !{20-30} while [Player2] drinks {her/his} drink.",
+            s: "[Player], count up to !{20-30} while [Player2] drinks {his/her} drink.",
             result: [
                 new PlayerReferenceFragment(),
                 new RawTextFragment(", count up to "),

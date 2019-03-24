@@ -5,7 +5,12 @@ import * as Consts from "./text-decoder-consts";
 import { RawTextFragment } from "../../fragments/raw-text-fragment";
 import { PlayerReferenceFragment } from "../../fragments/player-reference-fragment";
 import { SipsFragment } from "../../fragments/sips-fragment";
-import { RandomNumberFragment, RandomNumber, NumberRange, StaticNumber } from "../../fragments/random-number-fragment";
+import {
+    RandomNumberFragment,
+    RandomNumber,
+    NumberRange,
+    StaticNumber,
+} from "../../fragments/random-number-fragment";
 import { RandomTextFragment } from "../../fragments/random-text-fragment";
 import { GenderBasedSelectionFragment } from "../../fragments/gender-based-selection-fragment";
 
@@ -239,7 +244,7 @@ export class DefaultTextDecoder implements CardTextDecoder {
                     }
 
                     if (nextChar != delimiter)
-                        throw new Error(  "The delimiter must come after the closing quotes."   );
+                        throw new Error("The delimiter must come after the closing quotes.");
 
                     result.push(value.substring(tokenStart, i).replace('""', '"'));
                     tokenStart = i + 2;
@@ -276,11 +281,8 @@ export class DefaultTextDecoder implements CardTextDecoder {
         if (splitterIndex === -1) {
             fragment.femaleText = content;
         } else {
-            if (splitterIndex !== 0) {
-                fragment.femaleText = content.substring(0, splitterIndex);
-            }
-
-            fragment.maleText = content.substring(splitterIndex + 1, content.length);
+            fragment.maleText = content.substring(0, splitterIndex);
+            fragment.femaleText = content.substring(splitterIndex + 1, content.length);
         }
 
         return fragment;

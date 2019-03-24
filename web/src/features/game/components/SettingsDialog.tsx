@@ -46,7 +46,7 @@ function SettingsDialog({ fullScreen, classes, history }: Props) {
                 onClose={() => history.push("/game")}
                 TransitionComponent={Transition}
                 fullWidth={true}
-                maxWidth="lg"
+                maxWidth="md"
                 classes={{paperScrollPaper: classes.dialogPaper, paperFullScreen: classes.fullscreenPaper}}
             >
                 <AppBar className={classes.appBar}>
