@@ -1,0 +1,11 @@
+<DownCard id="1" followUpPropability="1">
+    <DownCard.followUp>
+        <Case weight="0.5">
+            <Text lang="de">Schwarz... Alle, die auf weiß getippt haben, trinken [sips], ihr Rassisten!</Text>
+        </Case>
+        <Case weight="0.5">
+            <Text lang="de">Weiß... Alle, die auf schwarz gesetzt habe, trinken [sips].</Text>
+        </Case>
+    </DownCard.followUp>
+    <Text lang="de">An alle: Schwarz oder weiß? (Forsetzung folgt)</Text>
+</DownCard>
