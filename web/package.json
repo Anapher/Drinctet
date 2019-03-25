@@ -2,6 +2,7 @@
   "name": "drinctet",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://anapher.github.io/Drinctet/",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.15",
     "@fortawesome/free-solid-svg-icons": "^5.7.2",
@@ -42,7 +43,9 @@
     "test": "react-app-rewired test --env=jsdom",
     "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "eject": "react-scripts eject",
-    "lint": "tslint 'src/**/*.{ts,tsx}'"
+    "lint": "tslint 'src/**/*.{ts,tsx}'",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -63,6 +66,7 @@
     "@types/react-swipeable-views": "^0.13.0",
     "@types/recharts": "^1.1.14",
     "@types/redux": "^3.6.0",
+    "gh-pages": "^2.0.1",
     "prettier": "^1.16.4",
     "react-app-rewired": "^2.1.1",
     "react-localize-redux": "^3.5.2",

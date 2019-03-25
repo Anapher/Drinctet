@@ -114,6 +114,9 @@
             "dare": ["Dare", "Pflicht"],
             "instruction": ["Alright [Player99]:", "Okay [Player99]:"],
             "or": ["or", "oder"]
+        },
+        "wouldyourather": {
+            "title": ["Would you rather...", "Würdest du lieber..."]
         }
     }
 }

@@ -1,5 +1,8 @@
+import { TextCard } from "@core/cards/text-card";
+import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
 import { createStyles, Theme, Typography, WithStyles, withStyles } from "@material-ui/core";
-import { RootState, RootAction } from "DrinctetTypes";
+import { RootAction, RootState } from "DrinctetTypes";
+import { SelectedPlayer, Translator } from "GameModels";
 import Markdown from "markdown-to-jsx";
 import * as React from "react";
 import { ReactNode } from "react";
@@ -7,19 +10,11 @@ import { LocalizeContextProps, Translate, withLocalize } from "react-localize-re
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { FactCard } from "src/impl/cards/fact-card";
-import { requestSlideAsync } from "../actions";
-import {
-    defaultMarkdownOptions,
-    getRootStyles,
-    getContentStyles,
-    spaceHeaderStyles,
-} from "./base/helper";
-import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
 import * as actions from "../actions";
-import { TextCard } from "@core/cards/text-card";
-import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
-import { SelectedPlayer, Translator } from "GameModels";
+import { requestSlideAsync } from "../actions";
 import { toTranslator } from "../utils";
+import { defaultMarkdownOptions, getContentStyles, getRootStyles, spaceHeaderStyles } from "./base/helper";
+import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
 
 const mapStateToProps = (state: RootState) => ({
     state: state.game.slideState as FactSlideState,

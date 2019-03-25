@@ -19,6 +19,7 @@ import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
 import { SelectedPlayer, Translator } from "GameModels";
 import { TextCard } from "@core/cards/text-card";
 import { toTranslator } from "../utils";
+import { useSpring, animated } from "react-spring";
 
 const mapStateToProps = (state: RootState) => ({
     state: state.game.slideState as State,
@@ -62,9 +63,15 @@ function NeverEverComponent(props: Props) {
         </Typography>
     );
 
+    const springProps = useSpring({
+        opacity: 1,
+        transform: "rotate(0deg)",
+        from: { opacity: 0, transform: "rotate(20deg)" },
+    });
+
     return (
         <div className={classes.root} onClick={() => nextSlide(toTranslator(props))}>
-            <div className={classes.content}>
+            <animated.div style={springProps} className={classes.content}>
                 {header}
                 <Typography variant="h5" className={classes.instruction}>
                     <Markdown children={state.markdownContent} options={defaultMarkdownOptions} />
@@ -78,7 +85,7 @@ function NeverEverComponent(props: Props) {
                         <Translate id="slides.neverever.instruction" data={{ sips: state.sips }} />
                     </Typography>
                 </div>
-            </div>
+            </animated.div>
         </div>
     );
 }

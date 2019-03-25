@@ -1,18 +1,21 @@
 export const socialMediaPlatforms = ["Snapchat", "Instagram", "Facebook"];
 
 export const defaultSources = [
-    "bullshitfact.xml",
-    "ichundderalkohol.xml",
-    "ConversationStartersWorld.NeverHaveIEver.xml",
-    "Bevil.xml"
-    // "https://raw.githubusercontent.com/Anapher/Drinctet/master/web/public/bullshitfact.xml",
+    "cards/bullshitfact.xml",
+    "cards/ichundderalkohol.xml",
+    "cards/ConversationStartersWorld.NeverHaveIEver.xml",
+    "cards/Bevil.xml",
+    "cards/ConversationStartersWorld.TruthOrDareDare.xml",
+    "cards/ConversationStartersWorld.TruthOrDareTruth.xml",
+    "cards/ConversationStartersWorld.Wyr.xml",
 ];
 
 export const slideWeights: { [key: string]: number } = {
     FactSlide: 0,
     DownSlide: 0,
     NeverEverSlide: 0,
-    TruthOrDareSlide: 1,
+    TruthOrDareSlide: 0,
+    WouldYouRatherSlide: 0.5,
 };
 
 // if a card has one of these tags and an arranged player is selected

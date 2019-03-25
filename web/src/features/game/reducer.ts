@@ -5,6 +5,7 @@ import { getType } from "typesafe-actions";
 import { Card } from "@core/cards/card";
 import * as actions from "./actions";
 import { FollowUpSlide } from "GameModels";
+import cuid from 'cuid';
 
 export type GameState = Readonly<{
     isStarted: boolean;
@@ -27,6 +28,7 @@ export type GameState = Readonly<{
     slidesHistory: string[];
     followUp: FollowUpSlide[];
     activeFollowUp: FollowUpSlide | null;
+    currentSlideStatus: string;
 }>;
 
 export default combineReducers<GameState, RootAction>({
@@ -149,5 +151,12 @@ export default combineReducers<GameState, RootAction>({
         }
 
         return state;
-    }
+    },
+    currentSlideStatus: (state = "", action) => {
+        if (action.type === getType(actions.requestSlideAsync.success)) {
+            return cuid();
+        }
+
+        return state;
+    },
 });

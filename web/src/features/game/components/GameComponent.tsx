@@ -9,13 +9,17 @@ import SlideWrapper from "./SlideWrapper";
 import { requestSlideAsync } from "../actions";
 import { withLocalize, LocalizeContextProps } from "react-localize-redux";
 import { toTranslator } from "../utils";
-import { Fade } from "@material-ui/core";
+import { RootState } from "DrinctetTypes";
 
 const dispatchProps = {
     requestSlide: requestSlideAsync.request,
 };
 
-type Props = typeof dispatchProps & LocalizeContextProps;
+const mapStateToProps = (state: RootState) => ({
+    current: state.game.currentSlideStatus,
+});
+
+type Props = typeof dispatchProps & LocalizeContextProps & ReturnType<typeof mapStateToProps>;
 
 class GameComponent extends Component<Props> {
     public componentDidMount() {
@@ -24,10 +28,8 @@ class GameComponent extends Component<Props> {
 
     public render() {
         return (
-            <div style={{ width: "100%", height: "100%", position: "relative" }}>
-                <Fade in={true}>
-                    <SlideWrapper />
-                </Fade>
+            <div style={{ width: "100%", height: "100%", position: "relative", overflow: "hidden" }}>
+                <SlideWrapper key={this.props.current} />
                 <div style={{ top: 10, right: 10, position: "absolute" }}>
                     <GameOptions />
                 </div>
@@ -43,7 +45,7 @@ class GameComponent extends Component<Props> {
 export default compose(
     withRouter,
     connect(
-        undefined,
+        mapStateToProps,
         dispatchProps,
     ),
     withLocalize,

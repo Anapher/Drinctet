@@ -6,9 +6,8 @@ import * as React from "react";
 import { ReactNode } from "react";
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { connect } from "react-redux";
-import { Spring, config } from "react-spring/renderprops";
 import { compose } from "redux";
-import { DownCard } from "src/impl/cards/down-card";
+import { WouldYouRatherCard } from "src/impl/cards/would-you-rather-card";
 import { requestSlideAsync } from "../actions";
 import { toTranslator } from "../utils";
 import {
@@ -18,9 +17,11 @@ import {
     spaceHeaderStyles,
 } from "./base/helper";
 import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
+import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
+import { TextCard } from "@core/cards/text-card";
 
 const mapStateToProps = (state: RootState) => ({
-    state: state.game.slideState as DownSlideState,
+    state: state.game.slideState as WouldYouRatherSlideState,
 });
 
 const dispatchProps = {
@@ -46,7 +47,7 @@ type Props = ReturnType<typeof mapStateToProps> &
     WithStyles<typeof styles> &
     LocalizeContextProps;
 
-function DownSlideComponent(props: Props) {
+function WouldYouRatherSlideComponent(props: Props) {
     const { classes, nextSlide, state } = props;
     if (state === null) {
         return <div className={classes.root} />;
@@ -54,29 +55,16 @@ function DownSlideComponent(props: Props) {
 
     const header = (
         <Typography className={classes.header} variant="h3">
-            <Translate id="slides.down.title" />
+            <Translate id="slides.wouldyourather.title" />
         </Typography>
     );
 
     return (
         <div className={classes.root} onClick={() => nextSlide(toTranslator(props))}>
             <div className={classes.content}>
-                <Spring
-                    config={config.wobbly}
-                    from={{ transform: "translate(-100px, 0px)" }}
-                    to={{ transform: "translate(0px, 0px)" }}
-                >
-                    {props => (
-                        <div style={props as any}>
-                            {header}
-                            <Markdown
-                                children={state.markdownContent}
-                                options={defaultMarkdownOptions}
-                            />
-                            <div className={classes.spaceHeader}>{header}</div>
-                        </div>
-                    )}
-                </Spring>
+                {header}
+                <Markdown children={state.markdownContent} options={defaultMarkdownOptions} />
+                <div className={classes.spaceHeader}>{header}</div>
             </div>
         </div>
     );
@@ -89,25 +77,32 @@ const Component = compose(
     ),
     withStyles(styles),
     withLocalize,
-)(DownSlideComponent) as React.ComponentType;
+)(WouldYouRatherSlideComponent) as React.ComponentType;
 
-interface DownSlideState extends TextSlideState {}
-export class DownSlide extends TextSlidePresenter<DownSlideState, DownCard> {
+interface WouldYouRatherSlideState extends TextSlideState {}
+export class WouldYouRatherSlide extends TextSlidePresenter<
+    WouldYouRatherSlideState,
+    WouldYouRatherCard
+> {
     constructor(translator: Translator) {
-        super(translator, "DownCard", "DownSlide");
+        super(translator, "WyrCard", "WouldYouRatherSlide");
     }
 
     public render(): ReactNode {
         return <Component />;
     }
 
-    protected initializeState(markdownContent: string): DownSlideState {
+    selectText(selection: SelectionAlgorithm, selectedCard: TextCard): string {
+        return "..." + super.selectText(selection, selectedCard);
+    }
+
+    protected initializeState(markdownContent: string): WouldYouRatherSlideState {
         return {
             markdownContent: markdownContent,
         };
     }
 
-    protected initializeFollowUpState(markdownContent: string): DownSlideState {
+    protected initializeFollowUpState(markdownContent: string): WouldYouRatherSlideState {
         return {
             markdownContent: markdownContent,
         };

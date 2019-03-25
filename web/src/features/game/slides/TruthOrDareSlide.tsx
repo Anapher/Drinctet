@@ -27,6 +27,7 @@ import { toTranslator } from "../utils";
 import { defaultMarkdownOptions, getContentStyles, getRootStyles } from "./base/helper";
 import { SlidePresenter } from "./base/slide-presenter";
 import { formatText, selectText } from "./base/text-slide-presenter";
+import { useSpring, animated } from "react-spring";
 
 const mapStateToProps = (state: RootState) => ({
     state: state.game.slideState as TruthOrDareSlideState,
@@ -56,11 +57,11 @@ const styles = (theme: Theme) =>
             marginBottom: 15,
             [theme.breakpoints.down("sm")]: {
                 fontSize: "1.5rem",
-            }
+            },
         },
         spaceHeader: {
             visibility: "hidden",
-            marginTop: 15
+            marginTop: 15,
         },
         questionPaper: {
             padding: theme.spacing.unit * 2,
@@ -85,7 +86,6 @@ type Props = MappedActions &
 
 function QuestionComponent(props: Props) {
     const { state, players, nextSlide, classes } = props;
-    // const props = useSpring({ opacity: 1, from: { opacity: 0 } });
     const player = players.find(x => x.id === state.selectedPlayer);
     if (player === undefined) {
         nextSlide(toTranslator(props));
@@ -95,30 +95,42 @@ function QuestionComponent(props: Props) {
     const select = (decision: TruthOrDare) =>
         new TruthOrDareSlide(toTranslator(props)).select(decision, props, player);
 
+    const springProps = useSpring({
+        opacity: 1,
+        transform: "scale(1, 1)",
+        from: { opacity: 0, transform: "scale(2.5, 2.5)" },
+    });
+
     return (
-        <Paper className={classes.questionPaper}>
-            <Typography variant="h6" component="h6">
-                <Translate id="slides.truthordare.playerTruthordare" data={{ name: player.name }} />
-            </Typography>
-            <div className={classes.questionButtonsContainer}>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    style={{ marginRight: 15 }}
-                    onClick={() => select("Truth")}
-                >
-                    <Translate id="slides.truthordare.truth" />
-                </Button>
-                <Button variant="contained" color="secondary" onClick={() => select("Dare")}>
-                    <Translate id="slides.truthordare.dare" />
-                </Button>
-            </div>
-        </Paper>
+        <animated.div style={springProps}>
+            <Paper className={classes.questionPaper}>
+                <Typography variant="h6" component="h6">
+                    <Translate
+                        id="slides.truthordare.playerTruthordare"
+                        data={{ name: player.name }}
+                    />
+                </Typography>
+                <div className={classes.questionButtonsContainer}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        style={{ marginRight: 15 }}
+                        onClick={() => select("Truth")}
+                    >
+                        <Translate id="slides.truthordare.truth" />
+                    </Button>
+                    <Button variant="contained" color="secondary" onClick={() => select("Dare")}>
+                        <Translate id="slides.truthordare.dare" />
+                    </Button>
+                </div>
+            </Paper>
+        </animated.div>
     );
 }
 
 function DareComponent(props: Props) {
     const { classes, nextSlide, state } = props;
+
     const header = (
         <Typography className={classes.header} variant="h4">
             <Translate id="slides.truthordare.truth" /> <Translate id="slides.truthordare.or" />{" "}

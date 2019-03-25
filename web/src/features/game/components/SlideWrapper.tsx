@@ -1,11 +1,10 @@
-import React, { Component } from "react";
-
-import { slideComponents } from "../component-registry";
 import { Typography } from "@material-ui/core";
 import { RootState } from "DrinctetTypes";
-import { compose } from "redux";
+import React from "react";
+import { LocalizeContextProps, withLocalize } from "react-localize-redux";
 import { connect } from "react-redux";
-import { withLocalize, LocalizeContextProps } from "react-localize-redux";
+import { compose } from "redux";
+import { slideComponents } from "../component-registry";
 import { toTranslator } from "../utils";
 
 const mapStateToProps = (state: RootState) => ({
@@ -14,19 +13,16 @@ const mapStateToProps = (state: RootState) => ({
 
 type Props = ReturnType<typeof mapStateToProps> & LocalizeContextProps;
 
-class SlideWrapper extends Component<Props> {
-    render() {
-        const { selectedSlide } = this.props;
+function SlideWrapper(props: Props) {
+    const { selectedSlide } = props;
 
-        if (selectedSlide === null) {
-            return <Typography variant="h3">Loading game...</Typography>;
-        }
-        
-        const factory = slideComponents[selectedSlide];
-        const slideInitalizer = new factory(toTranslator(this.props));
-
-        return slideInitalizer.render();
+    if (selectedSlide === null) {
+        return <Typography variant="h3">Loading game...</Typography>;
     }
+
+    const factory = slideComponents[selectedSlide];
+    const slideInitalizer = new factory(toTranslator(props));
+    return slideInitalizer.render();
 }
 
 export default compose(
