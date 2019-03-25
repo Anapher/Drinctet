@@ -217,7 +217,8 @@ export class TruthOrDareSlide implements SlidePresenter {
     public select(decision: TruthOrDare, actions: MappedActions, player: PlayerInfo) {
         const selection = gameEngine.getRandomSelectionAlgorithm() as MelinaAlgorithm;
         const cardType = decision === "Dare" ? "TaskCard" : "QuestionCard";
-        const card = selection.selectCard(cardType) as TextCard;
+        const cardRef = selection.selectCard(cardType);
+        const card = cardRef.card as TextCard;
 
         const selectedText = selectText(selection, card, this.translator);
         const text = `#### ${this.translator.translate(
@@ -232,7 +233,7 @@ export class TruthOrDareSlide implements SlidePresenter {
             this.translator,
         );
 
-        actions.applyCard(card);
+        actions.applyCard(cardRef);
 
         const state: TruthOrDareSlideState = {
             isDeciding: false,

@@ -15,6 +15,7 @@ import { requestSlideAsync } from "../actions";
 import { toTranslator } from "../utils";
 import { defaultMarkdownOptions, getContentStyles, getRootStyles, spaceHeaderStyles } from "./base/helper";
 import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
+import { CardRef } from "@core/cards/card-ref";
 
 const mapStateToProps = (state: RootState) => ({
     state: state.game.slideState as FactSlideState,
@@ -145,10 +146,10 @@ export class FactSlide extends TextSlidePresenter<FactSlideState, FactCard> {
         };
     }
 
-    protected initializeCard(card: FactCard): RootAction[] {
-        return [...super.initializeCard(card), actions.enqueueFollowUp({
+    protected initializeCard(card: FactCard, cardRef: CardRef): RootAction[] {
+        return [...super.initializeCard(card, cardRef), actions.enqueueFollowUp({
             due: new Date(),
-            selectedCard: card,
+            selectedCard: cardRef,
             slideType: "FactSlide",
             param: {
                 mode: this.selectedMode,

@@ -33,6 +33,7 @@ type Props = ReturnType<typeof mapStateToProps> &
 const mapStateToProps = (state: RootState) => ({
     selectedSlide: state.game.selectedSlide,
     activeFollowUp: state.game.activeFollowUp,
+    selectedCard: state.game.selectedCard,
 });
 
 const dispatchProps = {};
@@ -60,7 +61,7 @@ class GameOptions extends Component<Props, State> {
     };
 
     render() {
-        const { classes } = this.props;
+        const { classes, selectedCard } = this.props;
         const { anchorEl } = this.state;
         const isOpen = anchorEl !== null;
 
@@ -97,7 +98,7 @@ class GameOptions extends Component<Props, State> {
                         </ListItemIcon>
                         <Translate id="game.options.insights" />
                     </MenuItem>
-                    <MenuItem onClick={this.handleClose}>
+                    <MenuItem onClick={this.handleClose} disabled={selectedCard === null}>
                         <ListItemIcon>
                             <FeedbackIcon />
                         </ListItemIcon>

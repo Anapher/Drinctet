@@ -2,16 +2,16 @@ import { PlayerSelectionInsights, SlideSelectionInsights } from './../../core/se
 import { RootAction } from "DrinctetTypes";
 import { combineReducers } from "redux";
 import { getType } from "typesafe-actions";
-import { Card } from "@core/cards/card";
 import * as actions from "./actions";
 import { FollowUpSlide } from "GameModels";
 import cuid from 'cuid';
+import { CardRef } from '@core/cards/card-ref';
 
 export type GameState = Readonly<{
     isStarted: boolean;
 
     selectedSlide: string | null;
-    selectedCard: Card | null;
+    selectedCard: CardRef | null;
 
     slideState: any | null;
 
@@ -35,7 +35,7 @@ export default combineReducers<GameState, RootAction>({
     cardsHistory: (state = [], action) => {
         switch (action.type) {
             case getType(actions.applyCard):
-                return [action.payload.id, ...state];
+                return [action.payload.card.id, ...state];
             default:
                 return state;
         }

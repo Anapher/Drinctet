@@ -67,7 +67,7 @@
         "universal": ["Universal", "Universell"],
         "currentCard": ["Current card", "Aktuelle Karte"],
         "noCard": ["No card chosen", "Keine Karte ausgewählt"],
-        "cardInfo": ["${name} (ID: ${id}, WillPower: ${wp})", "${id} (ID: ${id}, Überzeugungskraft: ${wp})"]
+        "cardInfo": ["${name} (ID: ${id}, WillPower: ${wp}, Url: ${url})", "${id} (ID: ${id}, Überzeugungskraft: ${wp}, Url: ${url})"]
     },
     "slides": {
         "fact": {

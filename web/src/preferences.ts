@@ -11,10 +11,10 @@ export const defaultSources = [
 ];
 
 export const slideWeights: { [key: string]: number } = {
-    FactSlide: 0,
-    DownSlide: 0,
-    NeverEverSlide: 0,
-    TruthOrDareSlide: 0,
+    FactSlide: 0.5,
+    DownSlide: 0.5,
+    NeverEverSlide: 0.5,
+    TruthOrDareSlide: 0.5,
     WouldYouRatherSlide: 0.5,
 };
 

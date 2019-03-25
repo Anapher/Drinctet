@@ -1,9 +1,9 @@
 import { PlayerSelectionInsights } from './../../core/selection/insights';
-import { Card } from '@core/cards/card';
 import { createStandardAction, createAsyncAction } from "typesafe-actions";
 import { FollowUpSlide, Translator } from 'GameModels';
 import { History } from 'history';
 import { SlideSelectionInsights } from '@core/selection/insights';
+import { CardRef } from '@core/cards/card-ref';
 
 export const startGame = createStandardAction("START_GAME")<History>();
 
@@ -15,7 +15,7 @@ export const requestSlideAsync = createAsyncAction(
     "NEXT_SLIDE_FAILURE",
 )<Translator, {slide: string, insights: SlideSelectionInsights | null}, string>();
 
-export const applyCard = createStandardAction("APPLY_CARD")<Card>();
+export const applyCard = createStandardAction("APPLY_CARD")<CardRef>();
 
 export const setSlideState = createStandardAction("SET_SLIDE_STATE")<{state: any, insights: PlayerSelectionInsights | null}>();
 

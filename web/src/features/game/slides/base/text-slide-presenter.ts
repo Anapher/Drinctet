@@ -9,6 +9,7 @@ import { PlayerInfo } from "@core/player-info";
 import { FollowUpSlide, SelectedPlayer, Translator } from "GameModels";
 import _ from "lodash";
 import { RootAction } from "DrinctetTypes";
+import { CardRef } from "@core/cards/card-ref";
 
 export interface TextSlideState {
     markdownContent: string;
@@ -22,7 +23,7 @@ export abstract class TextSlidePresenter<
         super(cardType, slideType);
     }
 
-    protected initializeCard(card: TCard): RootAction[] {
+    protected initializeCard(card: TCard, cardRef: CardRef): RootAction[] {
         const selection = gameEngine.getRandomSelectionAlgorithm();
         const result = new Array<RootAction>();
 
@@ -43,7 +44,7 @@ export abstract class TextSlidePresenter<
                 const due = new Date();
                 due.setSeconds(due.getSeconds() + card.followUpDelay);
 
-                result.push(actions.enqueueFollowUp(this.createFollowUp(card, players, due)));
+                result.push(actions.enqueueFollowUp(this.createFollowUp(cardRef, players, due)));
             }
         }
 
@@ -84,11 +85,11 @@ export abstract class TextSlidePresenter<
         param: any,
     ): TState;
 
-    protected createFollowUp(card: TCard, players: SelectedPlayer[], due: Date): FollowUpSlide {
+    protected createFollowUp(cardRef: CardRef, players: SelectedPlayer[], due: Date): FollowUpSlide {
         return {
             due: due,
             slideType: this.slideType,
-            selectedCard: card,
+            selectedCard: cardRef,
             param: { definedPlayers: players },
         };
     }

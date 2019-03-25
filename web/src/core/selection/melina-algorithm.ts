@@ -8,6 +8,7 @@ import { SelectionAlgorithmBase } from "./selection-algorithm-base";
 import _ from "lodash";
 import { higherArrangementPropabilityTags } from "../../preferences";
 import { Insights, PlayerSelectionInsights, PlayerSelection, CardsInsight } from "./insights";
+import { CardRef } from "@core/cards/card-ref";
 
 export class MelinaAlgorithm extends SelectionAlgorithmBase {
     /** the percentage of cards that were played from one deck once the cards get weighted much lower */
@@ -33,7 +34,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
                 willPowerWeights[card.value.willPower || 0] += card.weight * element.deck.weight;
             }
         }
-        
+
         const willPowerWeightsArray = new Array<Weighted<number | null>>();
         for (const willPower in willPowerWeights) {
             if (willPowerWeights.hasOwnProperty(willPower)) {
@@ -240,22 +241,26 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
         return result.map(x => x!);
     }
 
-    public selectCard<TCard extends Card>(cardType: string): TCard {
+    public selectCard<TCard extends Card>(cardType: string): CardRef {
         const weightedDecks = this.weightCards(this.status.decks, cardType);
-        const weightedCards: Array<Weighted<Card>> = [];
+        const weightedCards: Array<{ value: Card; deckUrl: string; weight: number }> = [];
 
         for (const deck of weightedDecks) {
             weightedCards.push(
-                ...deck.cards.map(x => ({ value: x.value, weight: x.weight * deck.deck.weight })),
+                ...deck.cards.map(x => ({
+                    value: x.value,
+                    weight: x.weight * deck.deck.weight,
+                    deckUrl: deck.deck.url,
+                })),
             );
         }
 
-        const selected = this.selectRandomFromWeightedList(weightedCards);
+        const selected = this.selectRandomWeighted(weightedCards, x => x.weight);
         if (selected === undefined) {
             throw new Error("That should not actually happen");
         }
 
-        return selected as TCard;
+        return {card: selected.value as TCard, deckUrl: selected.deckUrl};
     }
 
     public selectNextSlide(availableSlides: SlideRegistration[]): string | undefined {
