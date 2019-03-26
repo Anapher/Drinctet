@@ -5,6 +5,7 @@ import { CardRef } from "@core/cards/card-ref";
 export interface SlidePresenter {
     slideType: string;
     requiredCards: string[];
+    backgroundColor: string;
 
     initialize(): RootAction[];
     initializeFollowUp(card: CardRef | null, param: any): RootAction[];

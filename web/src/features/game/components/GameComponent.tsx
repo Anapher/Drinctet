@@ -29,7 +29,7 @@ class GameComponent extends Component<Props> {
     public render() {
         return (
             <div style={{ width: "100%", height: "100%", position: "relative", overflow: "hidden" }}>
-                <SlideWrapper key={this.props.current} />
+                <SlideWrapper />
                 <div style={{ top: 10, right: 10, position: "absolute" }}>
                     <GameOptions />
                 </div>

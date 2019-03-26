@@ -5,7 +5,7 @@ import { CSSProperties } from "@material-ui/core/styles/withStyles";
 
 export function getRootStyles(): CSSProperties {
     return {
-        backgroundColor: "#3498db",
+        backgroundColor: "transparent",
         height: "100%",
         fontSize: 25,
         display: "flex",

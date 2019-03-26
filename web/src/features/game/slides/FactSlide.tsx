@@ -27,10 +27,7 @@ const dispatchProps = {
 
 const styles = (theme: Theme) =>
     createStyles({
-        root: {
-            ...getRootStyles(),
-            backgroundColor: "#3498db",
-        },
+        root: getRootStyles(),
         content: getContentStyles(theme),
         header: {
             color: "white",
@@ -92,6 +89,7 @@ interface FactSlideState extends TextSlideState {
 export class FactSlide extends TextSlidePresenter<FactSlideState, FactCard> {
     private selectedMode: FactSlideMode;
     private players?: SelectedPlayer[];
+    backgroundColor = "#2980b9";
 
     constructor(translator: Translator) {
         super(translator, "FactCard", "FactSlide");

@@ -7,6 +7,7 @@ import { ActionType } from "typesafe-actions";
 import { CardRef } from "@core/cards/card-ref";
 
 export abstract class CardPresenter<TCard extends Card> implements SlidePresenter {
+    abstract backgroundColor: string;
     requiredCards: string[];
 
     constructor(protected cardType: string, public slideType: string) {

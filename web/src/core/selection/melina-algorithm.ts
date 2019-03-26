@@ -438,6 +438,10 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
             return 1;
         }
 
+        if (historyPosition > totalCards) {
+            return 0;
+        }
+
         return historyPosition / totalCards;
     }
 

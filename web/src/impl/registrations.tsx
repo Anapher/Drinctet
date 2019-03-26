@@ -6,6 +6,7 @@ import { JokeCardParser } from "./parsing/joke-card-parser";
 import { QuestionCardParser } from "./parsing/question-card-parser";
 import { TaskCardParser } from "./parsing/task-card-parser";
 import { WouldYouRatherCardParser } from "./parsing/would-you-rather-card-parser";
+import { DrinkCardParser } from "./parsing/drink-card-parser";
 
 type ParserRegistration = { [type: string]: new () => CardParser };
 
@@ -17,4 +18,5 @@ export const parsers: ParserRegistration = {
     QuestionCard: QuestionCardParser,
     TaskCard: TaskCardParser,
     WyrCard: WouldYouRatherCardParser,
+    DrinkCard: DrinkCardParser,
 };

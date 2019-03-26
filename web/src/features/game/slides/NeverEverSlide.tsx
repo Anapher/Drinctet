@@ -31,10 +31,7 @@ const dispatchProps = {
 
 const styles = (theme: Theme) =>
     createStyles({
-        root: {
-            ...getRootStyles(),
-            backgroundColor: "#27ae60",
-        },
+        root: getRootStyles(),
         content: getContentStyles(theme),
         header: {
             color: "white",
@@ -104,6 +101,8 @@ interface State extends TextSlideState {
 }
 
 export class NeverEverSlide extends TextSlidePresenter<State, NeverEverCard> {
+    backgroundColor = "#d35400";
+
     constructor(translator: Translator) {
         super(translator, "NeverEverCard", "NeverEverSlide");
     }

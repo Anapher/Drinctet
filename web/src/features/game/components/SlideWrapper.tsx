@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { compose } from "redux";
 import { slideComponents } from "../component-registry";
 import { toTranslator } from "../utils";
+import { useSpring, animated } from "react-spring";
 
 const mapStateToProps = (state: RootState) => ({
     selectedSlide: state.game.selectedSlide,
@@ -22,7 +23,9 @@ function SlideWrapper(props: Props) {
 
     const factory = slideComponents[selectedSlide];
     const slideInitalizer = new factory(toTranslator(props));
-    return slideInitalizer.render();
+    const springProps = useSpring({backgroundColor: slideInitalizer.backgroundColor, height: "100%"});
+
+    return <animated.div style={springProps}>{slideInitalizer.render()}</animated.div>;
 }
 
 export default compose(

@@ -44,12 +44,10 @@ const styles = (theme: Theme) =>
     createStyles({
         root: {
             ...getRootStyles(),
-            backgroundColor: "#34495e",
             cursor: "default",
         },
         clickableRoot: {
-            ...getRootStyles(),
-            backgroundColor: "#34495e",
+            ...getRootStyles()
         },
         content: getContentStyles(theme),
         header: {
@@ -209,6 +207,8 @@ interface TruthOrDareSlideState {
 }
 
 export class TruthOrDareSlide implements SlidePresenter {
+    backgroundColor = "#2c3e50";
+
     constructor(private translator: Translator) {}
 
     public slideType = "TruthOrDareSlide";

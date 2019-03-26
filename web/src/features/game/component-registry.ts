@@ -5,6 +5,7 @@ import { FactSlide } from "./slides/FactSlide";
 import { NeverEverSlide } from "./slides/NeverEverSlide";
 import { Translator } from "GameModels";
 import { WouldYouRatherSlide } from './slides/WouldYouRatherSlide';
+import { DrinkSlide } from './slides/DrinkSlide';
 
 export type SlideComponents = { [type: string]: new(translator: Translator) => SlidePresenter };
 
@@ -14,4 +15,5 @@ export const slideComponents: SlideComponents = {
     NeverEverSlide,
     TruthOrDareSlide,
     WouldYouRatherSlide,
+    DrinkSlide
 };

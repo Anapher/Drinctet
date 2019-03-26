@@ -29,10 +29,7 @@ const dispatchProps = {
 
 const styles = (theme: Theme) =>
     createStyles({
-        root: {
-            ...getRootStyles(),
-            backgroundColor: "#16a085",
-        },
+        root: getRootStyles(),
         content: getContentStyles(theme),
         header: {
             color: "white",
@@ -93,6 +90,8 @@ const Component = compose(
 
 interface DownSlideState extends TextSlideState {}
 export class DownSlide extends TextSlidePresenter<DownSlideState, DownCard> {
+    backgroundColor = "#c0392b";
+
     constructor(translator: Translator) {
         super(translator, "DownCard", "DownSlide");
     }
