@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28705.295
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Drinctet.Linter", "Drinctet.Linter\Drinctet.Linter.csproj", "{46E90620-E8D8-4757-9D48-8ADE40204DFA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46E90620-E8D8-4757-9D48-8ADE40204DFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46E90620-E8D8-4757-9D48-8ADE40204DFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46E90620-E8D8-4757-9D48-8ADE40204DFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46E90620-E8D8-4757-9D48-8ADE40204DFA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4C2AC3CA-E209-46F1-A268-02DBCD60D388}
+	EndGlobalSection
+EndGlobal
