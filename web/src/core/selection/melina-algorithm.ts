@@ -409,12 +409,16 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
         }
 
         const slidesCount = this.status.slidesHistory.length;
-        if (slidesCount % 12 === 0) {
+        if (slidesCount % 12 === 0 && slidesCount !== 0) {
             const id = slidesCount / 12;
             if (!_.includes(memory, `SLIDES_${id}`)) {
                 result++;
                 addedMemory.push(`SLIDES_${id}`);
             }
+        }
+
+        if (result > 5) {
+            result = 5;
         }
 
         return { willPower: result, memory: addedMemory };

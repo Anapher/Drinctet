@@ -82,5 +82,6 @@ function nextSlide(translator: Translator): RootAction[] {
             insights: (selection as MelinaAlgorithm).insights.slideWeights!,
         }),
         ...slideActions,
+        ...willPowerActions
     ];
 }
