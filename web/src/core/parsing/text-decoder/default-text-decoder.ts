@@ -13,6 +13,7 @@ import {
 } from "../../fragments/random-number-fragment";
 import { RandomTextFragment } from "../../fragments/random-text-fragment";
 import { GenderBasedSelectionFragment } from "../../fragments/gender-based-selection-fragment";
+import { SocialMediaPlatformFragment } from "@core/fragments/social-media-platform-fragment";
 
 export class DefaultTextDecoder implements CardTextDecoder {
     decode(s: string): TextFragment[] {
@@ -125,6 +126,10 @@ export class DefaultTextDecoder implements CardTextDecoder {
             }
 
             return sipsFragment;
+        }
+
+        if (content === Consts.SocialMediaVariable) {
+            return new SocialMediaPlatformFragment();
         }
 
         return new RawTextFragment(content);

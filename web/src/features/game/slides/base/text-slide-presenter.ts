@@ -1,4 +1,4 @@
-import { MelinaAlgorithm } from "./../../../../core/selection/melina-algorithm";
+import { MelinaAlgorithm } from "@core/selection/melina-algorithm";
 import { TextCard } from "@core/cards/text-card";
 import { CardPresenter } from "./card-presenter";
 import * as gameEngine from "../../game-engine";
@@ -10,6 +10,7 @@ import { FollowUpSlide, SelectedPlayer, Translator } from "GameModels";
 import _ from "lodash";
 import { RootAction } from "DrinctetTypes";
 import { CardRef } from "@core/cards/card-ref";
+import store from "../../../../store";
 
 export interface TextSlideState {
     markdownContent: string;
@@ -164,10 +165,13 @@ export function formatText<TCard extends TextCard>(
         sips[sipInfo.sipsIndex] = selection.getSips(sipInfo.minSips);
     }
 
+    const socialMediaPlatform = store.getState().settings.socialMediaPlatform;
+
     const formatted = formatter.format(
         fragments,
         indexedPlayers,
         sips,
+        socialMediaPlatform,
         x => translator.translate(`game.textFormatter.${x}`),
         selection,
         { boldPlayerNames: true, boldSips: true },

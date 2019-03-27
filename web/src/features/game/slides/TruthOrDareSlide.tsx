@@ -28,6 +28,7 @@ import { defaultMarkdownOptions, getContentStyles, getRootStyles } from "./base/
 import { SlidePresenter } from "./base/slide-presenter";
 import { formatText, selectText } from "./base/text-slide-presenter";
 import { useSpring, animated } from "react-spring";
+import colors from "./colors";
 
 const mapStateToProps = (state: RootState) => ({
     state: state.game.slideState as TruthOrDareSlideState,
@@ -207,7 +208,7 @@ interface TruthOrDareSlideState {
 }
 
 export class TruthOrDareSlide implements SlidePresenter {
-    backgroundColor = "#2c3e50";
+    backgroundColor = colors.truthOrDare;
 
     constructor(private translator: Translator) {}
 

@@ -9,6 +9,7 @@ export const defaultSources = [
     "cards/ConversationStartersWorld.TruthOrDareTruth.xml",
     "cards/ConversationStartersWorld.Wyr.xml",
     "cards/common.xml",
+    "cards/Picolo/Picolo.xml",
 ];
 
 export const slideWeights: { [key: string]: number } = {
@@ -18,6 +19,9 @@ export const slideWeights: { [key: string]: number } = {
     TruthOrDareSlide: 0.5,
     WouldYouRatherSlide: 0.5,
     DrinkSlide: 0.5,
+    VirusSlide: 0.5,
+    NoIdeaLosesSlide: 0.5,
+    GroupGameSlide: 0.5,
 };
 
 // if a card has one of these tags and an arranged player is selected

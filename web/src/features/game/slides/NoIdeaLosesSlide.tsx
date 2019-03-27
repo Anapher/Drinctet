@@ -1,28 +1,21 @@
-import { createStyles, Theme, Typography, WithStyles, withStyles } from "@material-ui/core";
+import { createStyles, Theme, WithStyles, withStyles } from "@material-ui/core";
 import { RootState } from "DrinctetTypes";
 import { Translator } from "GameModels";
 import Markdown from "markdown-to-jsx";
 import * as React from "react";
 import { ReactNode } from "react";
-import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
+import { LocalizeContextProps, withLocalize } from "react-localize-redux";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { WouldYouRatherCard } from "src/impl/cards/would-you-rather-card";
+import { NoIdeaLosesCard } from "src/impl/cards/no-idea-loses-card";
 import { requestSlideAsync } from "../actions";
 import { toTranslator } from "../utils";
-import {
-    defaultMarkdownOptions,
-    getContentStyles,
-    getRootStyles,
-    spaceHeaderStyles,
-} from "./base/helper";
+import { defaultMarkdownOptions, getContentStyles, getRootStyles, spaceHeaderStyles } from "./base/helper";
 import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
-import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
-import { TextCard } from "@core/cards/text-card";
 import colors from "./colors";
 
 const mapStateToProps = (state: RootState) => ({
-    state: state.game.slideState as WouldYouRatherSlideState,
+    state: state.game.slideState as NoIdeaLosesSlideState,
 });
 
 const dispatchProps = {
@@ -45,24 +38,16 @@ type Props = ReturnType<typeof mapStateToProps> &
     WithStyles<typeof styles> &
     LocalizeContextProps;
 
-function WouldYouRatherSlideComponent(props: Props) {
+function NoIdeaLosesSlideComponent(props: Props) {
     const { classes, nextSlide, state } = props;
     if (state === null) {
         return <div className={classes.root} />;
     }
 
-    const header = (
-        <Typography className={classes.header} variant="h3">
-            <Translate id="slides.wouldyourather.title" />
-        </Typography>
-    );
-
     return (
         <div className={classes.root} onClick={() => nextSlide(toTranslator(props))}>
             <div className={classes.content}>
-                {header}
                 <Markdown children={state.markdownContent} options={defaultMarkdownOptions} />
-                <div className={classes.spaceHeader}>{header}</div>
             </div>
         </div>
     );
@@ -75,34 +60,27 @@ const Component = compose(
     ),
     withStyles(styles),
     withLocalize,
-)(WouldYouRatherSlideComponent) as React.ComponentType;
+)(NoIdeaLosesSlideComponent) as React.ComponentType;
 
-interface WouldYouRatherSlideState extends TextSlideState {}
+interface NoIdeaLosesSlideState extends TextSlideState {}
+export class NoIdeaLosesSlide extends TextSlidePresenter<NoIdeaLosesSlideState, NoIdeaLosesCard> {
+    backgroundColor = colors.noIdeaLoses;
 
-export class WouldYouRatherSlide extends TextSlidePresenter<
-    WouldYouRatherSlideState,
-    WouldYouRatherCard
-> {
-    backgroundColor = colors.wouldYouRather;
     constructor(translator: Translator) {
-        super(translator, "WyrCard", "WouldYouRatherSlide");
+        super(translator, "NoIdeaLosesCard", "NoIdeaLosesSlide");
     }
 
     public render(): ReactNode {
         return <Component />;
     }
 
-    selectText(selection: SelectionAlgorithm, selectedCard: TextCard): string {
-        return "..." + super.selectText(selection, selectedCard);
-    }
-
-    protected initializeState(markdownContent: string): WouldYouRatherSlideState {
+    protected initializeState(markdownContent: string): NoIdeaLosesSlideState {
         return {
             markdownContent: markdownContent,
         };
     }
 
-    protected initializeFollowUpState(markdownContent: string): WouldYouRatherSlideState {
+    protected initializeFollowUpState(markdownContent: string): NoIdeaLosesSlideState {
         return {
             markdownContent: markdownContent,
         };

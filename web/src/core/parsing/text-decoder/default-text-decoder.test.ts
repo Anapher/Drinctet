@@ -7,6 +7,7 @@ import { GenderBasedSelectionFragment } from "../../fragments/gender-based-selec
 import { StaticNumber, NumberRange, RandomNumberFragment } from "../../fragments/random-number-fragment";
 import { RawTextFragment } from "../../fragments/raw-text-fragment";
 import { RandomTextFragment } from "../../fragments/random-text-fragment";
+import { SocialMediaPlatformFragment } from "@core/fragments/social-media-platform-fragment";
 
 const decoder = new DefaultTextDecoder();
 
@@ -81,6 +82,11 @@ it("should parse number array", () => {
         new StaticNumber(2),
     ]);
 });
+
+it("should parse social media variable", () => {
+    const result = decoder.parseVariableFragment("SocialMediaPlatform");
+    expect(result).toEqual(new SocialMediaPlatformFragment());
+})
 
 it("(splitQuoted) should correctly parse quoted data", () => {
     const testData: { data: string; result: string[] }[] = [
@@ -179,6 +185,14 @@ it("should correctly decode texts", () => {
                 new RawTextFragment(" drink.")
             ],
         },
+        {
+            s: "[Player], send a text message on [SocialMediaPlatform]",
+            result: [
+                new PlayerReferenceFragment(),
+                new RawTextFragment(", send a text message on "),
+                new SocialMediaPlatformFragment()
+            ]
+        }
     ];
 
     for (const data of testData) {

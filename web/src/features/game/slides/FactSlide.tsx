@@ -16,6 +16,7 @@ import { toTranslator } from "../utils";
 import { defaultMarkdownOptions, getContentStyles, getRootStyles, spaceHeaderStyles } from "./base/helper";
 import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
 import { CardRef } from "@core/cards/card-ref";
+import colors from "./colors";
 
 const mapStateToProps = (state: RootState) => ({
     state: state.game.slideState as FactSlideState,
@@ -49,7 +50,7 @@ function FactSlideComponent(props: Props) {
 
     const header = (
         <Typography className={classes.header} variant="h3">
-            <Translate id={`slides.fact.title${state.isFollowUp ? ".follow" : ""}`} />
+            <Translate id={`slides.fact.title${state.isFollowUp ? (state.isTrue ? ".true" : ".false") : ""}`} />
         </Typography>
     );
 
@@ -67,6 +68,7 @@ function FactSlideComponent(props: Props) {
 interface FactSlideFollowUpParam {
     mode: FactSlideMode;
     players: SelectedPlayer[];
+    isTrue: boolean;
 }
 
 const Component = compose(
@@ -84,12 +86,13 @@ const availableFactSlideModes: FactSlideMode[] = ["singleplayer", "multiplayer"]
 interface FactSlideState extends TextSlideState {
     isFollowUp: boolean;
     mode: FactSlideMode;
+    isTrue: boolean;
 }
 
 export class FactSlide extends TextSlidePresenter<FactSlideState, FactCard> {
     private selectedMode: FactSlideMode;
     private players?: SelectedPlayer[];
-    backgroundColor = "#2980b9";
+    backgroundColor = colors.fact;
 
     constructor(translator: Translator) {
         super(translator, "FactCard", "FactSlide");
@@ -123,7 +126,7 @@ export class FactSlide extends TextSlidePresenter<FactSlideState, FactCard> {
 
     protected initializeState(
         markdownContent: string,
-        _card: FactCard,
+        card: FactCard,
         players: SelectedPlayer[],
     ): FactSlideState {
         this.players = players;
@@ -132,15 +135,17 @@ export class FactSlide extends TextSlidePresenter<FactSlideState, FactCard> {
             isFollowUp: false,
             markdownContent: markdownContent,
             mode: this.selectedMode,
+            isTrue: card.isTrueFact,
         };
     }
 
-    protected initializeFollowUpState(markdownContent: string, param: any): FactSlideState {
+    protected initializeFollowUpState(markdownContent: string, card: FactCard,  param: any): FactSlideState {
         const { mode } = param as FactSlideFollowUpParam;
         return {
             isFollowUp: true,
             markdownContent: markdownContent,
             mode,
+            isTrue: card.isTrueFact,
         };
     }
 

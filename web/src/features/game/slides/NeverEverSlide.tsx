@@ -20,6 +20,7 @@ import { SelectedPlayer, Translator } from "GameModels";
 import { TextCard } from "@core/cards/text-card";
 import { toTranslator } from "../utils";
 import { useSpring, animated } from "react-spring";
+import colors from "./colors";
 
 const mapStateToProps = (state: RootState) => ({
     state: state.game.slideState as State,
@@ -101,7 +102,7 @@ interface State extends TextSlideState {
 }
 
 export class NeverEverSlide extends TextSlidePresenter<State, NeverEverCard> {
-    backgroundColor = "#d35400";
+    backgroundColor = colors.neverEver;
 
     constructor(translator: Translator) {
         super(translator, "NeverEverCard", "NeverEverSlide");

@@ -138,5 +138,3 @@ it("(checkIfWeightedZero) should correctly return if one is weighted zero", () =
     expect(algorithm.testCheckIfWeightedZero(2, array)).toBe(false);
     expect(algorithm.testCheckIfWeightedZero(3, array)).toBe(true);
 });
-
-it("")

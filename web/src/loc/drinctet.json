@@ -67,12 +67,13 @@
         "universal": ["Universal", "Universell"],
         "currentCard": ["Current card", "Aktuelle Karte"],
         "noCard": ["No card chosen", "Keine Karte ausgewählt"],
-        "cardInfo": ["${name} (ID: ${id}, WillPower: ${wp}, Url: ${url})", "${id} (ID: ${id}, Überzeugungskraft: ${wp}, Url: ${url})"]
+        "cardInfo": ["${name} (ID: ${id}, WillPower: ${wp}, Url: ${url})", "${name} (ID: ${id}, Überzeugungskraft: ${wp}, Url: ${url})"]
     },
     "slides": {
         "fact": {
             "title": ["Fact?", "Fakt?"],
-            "title.follow": ["Fact!", "Fakt!"],
+            "title.true": ["True!", "Wahr!"],
+            "title.false": ["False!", "Falsch!"],
             "singleplayer": [
                 "[Player], decide if the following statement is true or false:",
                 "[Player], entscheide, ob folgende Aussage wahr oder falsch ist:"
@@ -117,6 +118,12 @@
         },
         "wouldyourather": {
             "title": ["Would you rather...", "Würdest du lieber..."]
+        },
+        "groupgame": {
+            "title": ["Game", "Spiel"]
+        },
+        "virus": {
+            "title": ["Virus", "Virus"]
         }
     }
 }

@@ -12,6 +12,7 @@ import { requestSlideAsync } from "../actions";
 import { toTranslator } from "../utils";
 import { defaultMarkdownOptions, getContentStyles, getRootStyles, spaceHeaderStyles } from "./base/helper";
 import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
+import colors from "./colors";
 
 const mapStateToProps = (state: RootState) => ({
     state: state.game.slideState as DrinkSlideState,
@@ -63,7 +64,7 @@ const Component = compose(
 
 interface DrinkSlideState extends TextSlideState {}
 export class DrinkSlide extends TextSlidePresenter<DrinkSlideState, DrinkCard> {
-    backgroundColor = "#27ae60";
+    backgroundColor = colors.drink;
 
     constructor(translator: Translator) {
         super(translator, "DrinkCard", "DrinkSlide");

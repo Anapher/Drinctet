@@ -53,10 +53,13 @@
     <Text lang="de">[Player], trinke [sips], wenn du *nicht* die Hauptstadt von !{Kanada,Frankreich,Griechenland} kennst.</Text>
 </DrinkCard>
 <TaskCard id="EQJcl" willPower="5">
-    <Text lang="de">[Player1:f], zeig [Player2:m] deine Brüste, oder trink dein Glas aus.</Text>
+    <Text lang="de">Zeig [Player2:o] deine Brüste, oder trink dein Glas aus.</Text>
+</TaskCard>
+<TaskCard id="EQJci" willPower="2">
+    <Text lang="de">Zeig die letzten 5 Fotos, die du mit deinem Handy gemacht hast.</Text>
 </TaskCard>
 <NoIdeaLosesCard id="zNmix">
-    <Text lang="de">Gemüsesorten</Text>
+    <Text lang="de">Neues Thema und [sips] für den Verlierer: *Gemüsesorten*.</Text>
     <Text lang="en">Vegetables</Text>
 </NoIdeaLosesCard>
 <TaskCard id="8QzcQ" willPower="4">

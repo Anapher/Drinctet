@@ -68,7 +68,7 @@
 </QuestionCard>
 <QuestionCard id="QeSB" willPower="2">
   <Text lang="en">What is the most embarrassing thing in your room?</Text>
-  <Text lang="de">Was ist das peinlichste was du in deinem Zimmer hast?</Text>
+  <Text lang="de">Was ist das peinlichste, was du in deinem Zimmer hast?</Text>
 </QuestionCard>
 <QuestionCard id="vESV" willPower="3">
   <Text lang="en">Why did you break up with your last boyfriend or girlfriend?</Text>

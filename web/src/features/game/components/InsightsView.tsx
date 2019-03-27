@@ -14,7 +14,7 @@ export default class InsightsView extends Component {
                 <Grid item xs={12} style={{marginTop: 10}}>
                     <InsightsCurrentSlide />
                 </Grid>
-                <Grid item xs={12} style={{marginTop: 10}}>
+                <Grid item xs={12} style={{marginTop: 20}}>
                     <InsightsCards />
                 </Grid>
             </Grid>

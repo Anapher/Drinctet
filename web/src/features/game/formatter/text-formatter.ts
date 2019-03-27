@@ -14,6 +14,7 @@ import {
     NumberRange,
     StaticNumber,
 } from "@core/fragments/random-number-fragment";
+import { SocialMediaPlatformFragment } from "@core/fragments/social-media-platform-fragment";
 
 export class TextFormatter {
     public parseTextFragments(s: string): TextFragment[] {
@@ -64,6 +65,7 @@ export class TextFormatter {
         fragments: TextFragment[],
         players: { [index: number]: PlayerInfo },
         sips: { [index: number]: number },
+        socialMediaPlatform: string,
         translate: (key: string) => string,
         selection: SelectionAlgorithm,
         options: Partial<FormatOptions>,
@@ -132,6 +134,8 @@ export class TextFormatter {
                 } else if (number instanceof StaticNumber) {
                     result += number.i;
                 }
+            } else if (fragment instanceof SocialMediaPlatformFragment) {
+                result += socialMediaPlatform;
             }
         }
 
