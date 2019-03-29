@@ -11,6 +11,7 @@ import { slideComponents } from "./component-registry";
 import { of } from "rxjs";
 import { Translator } from "GameModels";
 import { getSlideRegistrations } from "./slides-processor";
+import Fullscreen from "@utils/fullscreen";
 
 export const nextSlideEpic: Epic<RootAction, RootAction, RootState, Services> = action$ =>
     action$.pipe(
@@ -27,6 +28,7 @@ export const redirectOnGameStartedEpic: Epic<
     action$.pipe(
         filter(isActionOf(actions.startGame)),
         tap(action => action.payload.push("/game")),
+        tap(() => Fullscreen.requestFullscreen(window.document.documentElement)),
         ignoreElements(),
     );
 

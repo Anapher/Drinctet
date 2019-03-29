@@ -11,12 +11,15 @@ import DonutLargeIcon from "@material-ui/icons/DonutLarge";
 import FeedbackIcon from "@material-ui/icons/Feedback";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import SettingsIcon from "@material-ui/icons/Settings";
+import FullscreenIcon from "@material-ui/icons/Fullscreen";
+import FullscreenExitIcon from "@material-ui/icons/FullscreenExit";
 import { RootState } from "DrinctetTypes";
 import React, { Component, ComponentType } from "react";
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { RouterProps, withRouter } from "react-router";
+import Fullscreen from "@utils/fullscreen";
 
 const styles = createStyles({
     button: {
@@ -40,12 +43,26 @@ const dispatchProps = {};
 
 interface State {
     anchorEl: HTMLElement | null;
+    isFullscreen: boolean;
 }
 
 class GameOptions extends Component<Props, State> {
     readonly state: State = {
         anchorEl: null,
+        isFullscreen: false,
     };
+
+    componentDidMount() {
+        Fullscreen.onfullscreenchange = () => {
+            console.log(Fullscreen.fullscreenElement);
+            
+            this.setState(state => ({ ...state, isFullscreen: Fullscreen.fullscreenElement }));
+        };
+    }
+
+    componentWillUnmount() {
+        Fullscreen.onfullscreenchange = null;
+    }
 
     handleMenuOpenClick = (event: React.MouseEvent<HTMLElement>) => {
         this.setState({ anchorEl: event.currentTarget });
@@ -60,9 +77,20 @@ class GameOptions extends Component<Props, State> {
         this.props.history.push(`/game/${path}`);
     };
 
+    toggleFullscreen = () => {
+        const { isFullscreen } = this.state;
+        if (isFullscreen) {
+            Fullscreen.exitFullscreen();
+        } else {
+            Fullscreen.requestFullscreen(window.document.documentElement);
+        }
+
+        this.handleClose();
+    };
+
     render() {
         const { classes, selectedCard } = this.props;
-        const { anchorEl } = this.state;
+        const { anchorEl, isFullscreen } = this.state;
         const isOpen = anchorEl !== null;
 
         return (
@@ -84,9 +112,7 @@ class GameOptions extends Component<Props, State> {
                         },
                     }}
                 >
-                    <MenuItem
-                        onClick={() => this.handleNavigate("settings")}
-                    >
+                    <MenuItem onClick={() => this.handleNavigate("settings")}>
                         <ListItemIcon>
                             <SettingsIcon />
                         </ListItemIcon>
@@ -103,6 +129,12 @@ class GameOptions extends Component<Props, State> {
                             <FeedbackIcon />
                         </ListItemIcon>
                         <Translate id="game.options.reportCard" />
+                    </MenuItem>
+                    <MenuItem onClick={this.toggleFullscreen}>
+                        <ListItemIcon>
+                            {isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
+                        </ListItemIcon>
+                        <Translate id={isFullscreen ? "game.options.exitFullscreen" : "game.options.fullscreen"} />
                     </MenuItem>
                 </Menu>
             </div>
