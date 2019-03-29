@@ -120,7 +120,7 @@ export class NeverEverSlide extends TextSlidePresenter<State, NeverEverCard> {
     ): State {
         return {
             markdownContent: markdownContent,
-            sips: selection.getSips(2),
+            sips: selection.getSips(2), // at least two sips so the text can be plural
         };
     }
 

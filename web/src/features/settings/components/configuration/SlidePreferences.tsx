@@ -28,13 +28,18 @@ function SlidePreferences({ slides, setSlideWeight }: Props) {
                 <Translate id="settings.configuration.slides" />
             </Typography>
             <ItemPreferences items={slides} onChangeWeight={x => setSlideWeight(x)} />
-            <Translate id="settings.configuration.slidesProjection" data={{count: totalCards}} />
-            {slidePercentages.map((x, i) => (
-                <React.Fragment key={x.value.value}>
-                    <b>{x.value.value}</b>: {x.part}
-                    {i < slidePercentages.length -1 ? ", " : null}
-                </React.Fragment>
-            ))}
+            <Typography>
+                <Translate
+                    id="settings.configuration.slidesProjection"
+                    data={{ count: totalCards }}
+                />
+                {slidePercentages.map((x, i) => (
+                    <React.Fragment key={x.value.value}>
+                        <b style={{fontWeight: "bolder"}}>{x.value.value}</b>: {x.part}
+                        {i < slidePercentages.length - 1 ? ", " : null}
+                    </React.Fragment>
+                ))}
+            </Typography>
         </div>
     );
 }

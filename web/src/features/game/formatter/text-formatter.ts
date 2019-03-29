@@ -1,26 +1,17 @@
-import { RandomTextFragment } from "@core/fragments/random-text-fragment";
-import { PlayerInfo } from "@core/player-info";
-import { SipsFragment } from "@core/fragments/sips-fragment";
-import { PlayerReferenceFragment } from "@core/fragments/player-reference-fragment";
-import { DefaultTextDecoder } from "@core/parsing/text-decoder/default-text-decoder";
-import { TextFragment } from "@core/text-fragment";
 import { PlayerSetting } from "@core/cards/player-setting";
-import _ from "lodash";
-import { RawTextFragment } from "@core/fragments/raw-text-fragment";
 import { GenderBasedSelectionFragment } from "@core/fragments/gender-based-selection-fragment";
-import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
-import {
-    RandomNumberFragment,
-    NumberRange,
-    StaticNumber,
-} from "@core/fragments/random-number-fragment";
+import { PlayerReferenceFragment } from "@core/fragments/player-reference-fragment";
+import { NumberRange, RandomNumberFragment, StaticNumber } from "@core/fragments/random-number-fragment";
+import { RandomTextFragment } from "@core/fragments/random-text-fragment";
+import { RawTextFragment } from "@core/fragments/raw-text-fragment";
+import { SipsFragment } from "@core/fragments/sips-fragment";
 import { SocialMediaPlatformFragment } from "@core/fragments/social-media-platform-fragment";
+import { PlayerInfo } from "@core/player-info";
+import { RandomUtils } from "@core/selection/selection-algorithm";
+import { TextFragment } from "@core/text-fragment";
+import _ from "lodash";
 
 export class TextFormatter {
-    public parseTextFragments(s: string): TextFragment[] {
-        return new DefaultTextDecoder().decode(s);
-    }
-
     public static getRequiredPlayers(fragments: TextFragment[], playerSettings: PlayerSetting[]) {
         const requiredPlayers = new Array<PlayerSetting>();
 
@@ -61,13 +52,13 @@ export class TextFormatter {
         return Object.values(sips).map(x => x[0]);
     }
 
-    public format(
+    public static format(
         fragments: TextFragment[],
         players: { [index: number]: PlayerInfo },
         sips: { [index: number]: number },
         socialMediaPlatform: string,
         translate: (key: string) => string,
-        selection: SelectionAlgorithm,
+        selection: RandomUtils,
         options: Partial<FormatOptions>,
     ): string {
         let result = "";
@@ -93,7 +84,7 @@ export class TextFormatter {
 
                 const sip = sips[fragment.sipsIndex];
                 if (sip === 1) {
-                    translate("oneSip");
+                    result += translate("oneSip");
                 } else {
                     result += `${sip} ${translate("sips")}`;
                 }
@@ -117,7 +108,10 @@ export class TextFormatter {
                 }
 
                 const player = players[referencedPlayer];
-                result += player.gender === "Female" ? fragment.femaleText : fragment.maleText;
+                const text = player.gender === "Female" ? fragment.femaleText : fragment.maleText;
+                if (text !== undefined) {
+                    result += text;
+                }
             } else if (fragment instanceof RandomTextFragment) {
                 const text = selection.selectRandomWeighted(fragment.texts, () => 1);
                 result += text;

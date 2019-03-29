@@ -24,7 +24,7 @@ export type GameState = Readonly<{
 
     startTime: Date | null;
 
-    cardsHistory: string[];
+    cardsHistory: CardRef[];
     slidesHistory: string[];
     followUp: FollowUpSlide[];
     activeFollowUp: FollowUpSlide | null;
@@ -35,7 +35,7 @@ export default combineReducers<GameState, RootAction>({
     cardsHistory: (state = [], action) => {
         switch (action.type) {
             case getType(actions.applyCard):
-                return [action.payload.card.id, ...state];
+                return [action.payload, ...state];
             default:
                 return state;
         }
@@ -93,7 +93,7 @@ export default combineReducers<GameState, RootAction>({
             case getType(actions.enqueueFollowUp):
                 return [...state, action.payload];
             case getType(actions.activateFollowUp):
-                return state.filter(x => x !== action.payload);
+                return state.filter(x => x.due !== action.payload.due);
             default:
                 return state;
         }

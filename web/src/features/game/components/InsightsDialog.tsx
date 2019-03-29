@@ -33,6 +33,7 @@ const styles = (theme: Theme) => createStyles({
         flexGrow: 1,
         margin: theme.spacing.unit,
         overflowY: "auto",
+        overflowX: "hidden",
     },
 });
 

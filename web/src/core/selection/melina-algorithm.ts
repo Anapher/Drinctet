@@ -1,14 +1,14 @@
+import { CardRef } from "@core/cards/card-ref";
+import _ from "lodash";
+import { higherArrangementPropabilityTags } from "../../preferences";
 import { CardDeck } from "../card-deck";
 import { Card } from "../cards/card";
 import { GenderRequirement, PlayerSetting } from "../cards/player-setting";
-import { PlayerInfo, Gender } from "../player-info";
+import { Gender, PlayerInfo } from "../player-info";
 import { SlideRegistration } from "../slide-registration";
 import { Weighted } from "../weighted";
+import { CardsInsight, Insights, PlayerSelection, PlayerSelectionInsights } from "./insights";
 import { SelectionAlgorithmBase } from "./selection-algorithm-base";
-import _ from "lodash";
-import { higherArrangementPropabilityTags } from "../../preferences";
-import { Insights, PlayerSelectionInsights, PlayerSelection, CardsInsight } from "./insights";
-import { CardRef } from "@core/cards/card-ref";
 
 export class MelinaAlgorithm extends SelectionAlgorithmBase {
     /** the percentage of cards that were played from one deck once the cards get weighted much lower */
@@ -16,37 +16,65 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
 
     public readonly insights: Insights = new Insights();
 
-    public getAllCardDeckStatistics(): CardsInsight {
-        const weighted = this.weightCards(this.status.decks, null);
-        const deckWeights = new Array<Weighted<CardDeck>>();
+    public getAllCardDeckStatistics(cardType: string | null = null): CardsInsight {
+        const weightedDecks = this.weightCards(this.status.decks, cardType);
+        const deckWeights: { [deckUrl: string]: number } = {};
         const willPowerWeights: { [willPower: number]: number } = {};
+        const willPowerCounter: { [willPower: number]: number } = {};
 
-        for (const element of weighted) {
-            deckWeights.push({
-                value: element.deck,
-                weight: element.cards.reduce((x, y) => x + y.weight, 0) * element.deck.weight,
+        const allCards = new Array<Weighted<CardRef>>();
+        for (const deck of weightedDecks) {
+            allCards.push(
+                ...deck.cards.map(x => ({
+                    value: { card: x.value, deckUrl: deck.deck.url },
+                    weight: x.weight * deck.deck.weight,
+                })),
+            );
+        }
+
+        this.boostWillPower(allCards);
+
+        for (const deck of this.status.decks) {
+            deckWeights[deck.url] = 0;
+        }
+
+        for (const card of allCards) {
+            const { value, weight } = card;
+
+            const deck = this.status.decks.find(x => x.url === value.deckUrl)!;
+
+            deckWeights[value.deckUrl] += weight * deck.weight;
+
+            const willPower = value.card.willPower || 0;
+            if (willPowerCounter[willPower] === undefined) {
+                willPowerWeights[willPower] = 0;
+                willPowerCounter[willPower] = 0;
+            }
+
+            willPowerWeights[willPower] += weight * deck.weight;
+            willPowerCounter[willPower] += 1;
+        }
+        
+        const willPowerWeightsArray: Weighted<{
+            willPower: number | null;
+            count: number;
+        }>[] = Object.keys(willPowerWeights).map(propName => {
+            const willPower = Number(propName);
+            return ({
+                value: {
+                    willPower: willPower === 0 ? null : willPower,
+                    count: willPowerCounter[willPower],
+                },
+                weight: willPowerWeights[willPower],
             });
+        });
 
-            for (const card of element.cards) {
-                if (willPowerWeights[card.value.willPower || 0] === undefined) {
-                    willPowerWeights[card.value.willPower || 0] = 0;
-                }
-                willPowerWeights[card.value.willPower || 0] += card.weight * element.deck.weight;
-            }
-        }
+        const decksArray = Object.keys(deckWeights).map(url => {
+            const deck = this.status.decks.find(x => x.url === url)!;
+            return { value: deck, weight: deckWeights[url] * deck.weight };
+        });
 
-        const willPowerWeightsArray = new Array<Weighted<number | null>>();
-        for (const willPower in willPowerWeights) {
-            if (willPowerWeights.hasOwnProperty(willPower)) {
-                const element = willPowerWeights[willPower];
-                willPowerWeightsArray.push({
-                    value: Number(willPower) === 0 ? null : Number(willPower),
-                    weight: element,
-                });
-            }
-        }
-
-        return { decks: deckWeights, willPower: willPowerWeightsArray };
+        return { decks: decksArray, willPower: willPowerWeightsArray, totalCards: allCards.length };
     }
 
     public selectPlayers(
@@ -143,7 +171,6 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
                         }
                     }
 
-                    console.log(`${p.name} -> ${weight}`);
                     selectionRoundInsights.push({ playerId: p.id, weight, chosen: false });
                     return weight;
                 })!;
@@ -241,26 +268,80 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
         return result.map(x => x!);
     }
 
-    public selectCard<TCard extends Card>(cardType: string): CardRef {
+    public selectCard(cardType: string): CardRef {
         const weightedDecks = this.weightCards(this.status.decks, cardType);
-        const weightedCards: Array<{ value: Card; deckUrl: string; weight: number }> = [];
 
+        const allCards = new Array<Weighted<CardRef>>();
         for (const deck of weightedDecks) {
-            weightedCards.push(
+            allCards.push(
                 ...deck.cards.map(x => ({
-                    value: x.value,
+                    value: { card: x.value, deckUrl: deck.deck.url },
                     weight: x.weight * deck.deck.weight,
-                    deckUrl: deck.deck.url,
                 })),
             );
         }
 
-        const selected = this.selectRandomWeighted(weightedCards, x => x.weight);
+        this.boostWillPower(allCards);
+
+        for (const card of allCards) {
+            const deck = this.status.decks.find(x => x.url === card.value.deckUrl)!;
+            card.weight *= deck.weight;
+        }
+
+        const selected = this.selectRandomWeighted(allCards, x => x.weight);
         if (selected === undefined) {
             throw new Error("That should not actually happen");
         }
 
-        return {card: selected.value as TCard, deckUrl: selected.deckUrl};
+        return selected.value;
+    }
+
+    private boostWillPower(cards: Weighted<CardRef>[]): void {
+        const willPower = this.status.willPower;
+
+        const perfectCards = cards.filter(
+            x => x.value.card.willPower === willPower || x.value.card.willPower === willPower - 1,
+        );
+        const unplayedCards = perfectCards.filter(
+            x =>
+                this.status.cardsHistory.findIndex(
+                    y => y.deckUrl === x.value.deckUrl && y.card.id === x.value.card.id,
+                ) === -1,
+        );
+
+        // played cards / all cards
+        const percentage = (perfectCards.length - unplayedCards.length) / perfectCards.length;
+
+        // console.log(
+        //     `wp: ${willPower}, perfect: ${perfectCards.length}, unplayed: ${
+        //         unplayedCards.length
+        //     }, percentage: ${percentage}`,
+        // );
+
+        // we don't boost if we already played 10% (deckExhaustionLimit) of the cards
+        if (this.deckExhaustionLimit > percentage && unplayedCards.length > 50) {
+            const totalWeight = cards.reduce((x, y) => x + y.weight, 0);
+            const unplayedWeight = unplayedCards.reduce((x, y) => x + y.weight, 0);
+
+            console.log(`total: ${totalWeight}, unplayed: ${unplayedWeight}`);
+
+            const targetPercentage = 0.7;
+            if (totalWeight * targetPercentage > unplayedWeight) {
+                const factor =
+                    totalWeight * targetPercentage -
+                    unplayedWeight +
+                    unplayedWeight / unplayedWeight;
+
+                // const diff = (totalWeight * targetPercentage - unplayedWeight);
+                // const add = diff / unplayedCards.length;
+                console.log("factor: " + factor);
+
+                // const add = (totalWeight - unplayedWeight) / perfectCards.length;
+                for (const perfectCard of unplayedCards) {
+                    perfectCard.weight = perfectCard.weight * factor;
+                }
+            }
+        }
     }
 
     public selectNextSlide(availableSlides: SlideRegistration[]): string | undefined {
@@ -309,6 +390,14 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
             weightedSlides.push({ weight: factor * slideSettings.weight, value: slide });
         }
 
+        if (weightedSlides.length > 2 && this.status.slidesHistory.length > 0) {
+            const lastSlideType = this.status.slidesHistory[0];
+            const lastSlide = weightedSlides.find(x => x.value.slideType === lastSlideType);
+            if (lastSlide !== undefined) {
+                lastSlide.weight = 0;
+            }
+        }
+        
         this.insights.slideWeights = {
             weights: weightedSlides.map(x => ({ weight: x.weight, value: x.value.slideType })),
         };
@@ -322,7 +411,9 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
     }
 
     public getSips(min: number): number {
-        return min + 1;
+        min = Math.max(min, 1);
+
+        return Math.max(min,  Math.floor(this.getRandom() * 4) + 1);
     }
 
     protected weightCards(
@@ -357,9 +448,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
 
         for (const deck of filtered) {
             // cards from this deck that were already played
-            const cardsPlayed = this.status.cardsHistory.filter(
-                x => deck.cards.findIndex(y => y.id === x) > -1,
-            );
+            const cardsPlayed = this.status.cardsHistory.filter(x => x.deckUrl === deck.url);
 
             // compute the deck exhaustion factor
             let exhaustionFactor: number;
@@ -367,7 +456,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
             const percentage = cardsPlayed.length / deck.cards.length;
             if (percentage > this.deckExhaustionLimit) {
                 // cubic reduction
-                exhaustionFactor = Math.pow(1.1 - percentage, 2) * 0.5;
+                exhaustionFactor = Math.pow(Math.max(1.1 - percentage, 0.1), 2) * 0.5;
             } else {
                 exhaustionFactor = 1;
             }
@@ -375,11 +464,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
             const weightedCards: Array<Weighted<Card>> = [];
             for (const card of deck.cards) {
                 const willPowerRating = this.rateWillPower(card.willPower, willPower);
-                const historyFactor = this.getHistoryFactor(
-                    card.id,
-                    this.status.cardsHistory,
-                    totalCards,
-                );
+                const historyFactor = this.getHistoryFactor(card.id, cardsPlayed, totalCards);
                 const tagsFactor = this.getTagsFactor(card.tags, this.status.tags);
                 const weight = exhaustionFactor * willPowerRating * historyFactor * tagsFactor;
                 if (weight === 0) {
@@ -436,8 +521,8 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
     }
 
     /** return a value between 0 and 1 that returns 1 if the card was never played and a smaller number if the card was played recently */
-    protected getHistoryFactor(id: string, history: string[], totalCards: number) {
-        const historyPosition = history.findIndex(x => x === id);
+    protected getHistoryFactor(id: string, history: CardRef[], totalCards: number) {
+        const historyPosition = history.findIndex(x => x.card.id === id);
         if (historyPosition === -1) {
             return 1;
         }

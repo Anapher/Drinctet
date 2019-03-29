@@ -23,5 +23,6 @@ export interface PlayerSelection {
 
 export interface CardsInsight {
     decks: Weighted<CardDeck>[];
-    willPower: Weighted<number | null>[];
+    willPower: Weighted<{willPower: number | null, count: number}>[];
+    totalCards: number;
 }

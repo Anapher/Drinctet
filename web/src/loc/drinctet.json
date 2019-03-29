@@ -67,7 +67,9 @@
         "universal": ["Universal", "Universell"],
         "currentCard": ["Current card", "Aktuelle Karte"],
         "noCard": ["No card chosen", "Keine Karte ausgewählt"],
-        "cardInfo": ["${name} (ID: ${id}, WillPower: ${wp}, Url: ${url})", "${name} (ID: ${id}, Überzeugungskraft: ${wp}, Url: ${url})"]
+        "cardInfo": ["${name} (ID: ${id}, WillPower: ${wp}, Url: ${url})", "${name} (ID: ${id}, Überzeugungskraft: ${wp}, Url: ${url})"],
+        "allCards": ["All cards", "Alle Karten"],
+        "cards": ["cards", "Karten"]
     },
     "slides": {
         "fact": {
@@ -117,13 +119,21 @@
             "or": ["or", "oder"]
         },
         "wouldyourather": {
-            "title": ["Would you rather...", "Würdest du lieber..."]
+            "title": ["Would you rather...", "Würdest du lieber..."],
+            "instruction": [
+                "Vote all at once, the minority drinks ${sips} sips",
+                "Stimmt alle Gleichzeitig ab, die Minderheit trinkt ${sips} Schlucke."
+            ]
         },
         "groupgame": {
             "title": ["Game", "Spiel"]
         },
         "virus": {
             "title": ["Virus", "Virus"]
+        },
+        "task": {
+            "title": ["Task", "Aufgabe"],
+            "instruction": ["If you don't do it, drink [sips:4].", "Wenn du dich weigerst, trink [sips:4]."]
         }
     }
 }

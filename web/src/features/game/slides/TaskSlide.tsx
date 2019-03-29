@@ -1,13 +1,13 @@
-import { createStyles, Theme, Typography, WithStyles, withStyles } from "@material-ui/core";
+import { createStyles, Theme, WithStyles, withStyles, Typography } from "@material-ui/core";
 import { RootState } from "DrinctetTypes";
-import { Translator, SelectedPlayer } from "GameModels";
+import { Translator } from "GameModels";
 import Markdown from "markdown-to-jsx";
 import * as React from "react";
 import { ReactNode } from "react";
-import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
+import { LocalizeContextProps, withLocalize, Translate } from "react-localize-redux";
 import { connect } from "react-redux";
 import { compose } from "redux";
-import { WouldYouRatherCard } from "src/impl/cards/would-you-rather-card";
+import { TaskCard } from "src/impl/cards/task-card";
 import { requestSlideAsync } from "../actions";
 import { toTranslator } from "../utils";
 import {
@@ -17,12 +17,12 @@ import {
     spaceHeaderStyles,
 } from "./base/helper";
 import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
+import colors from "./colors";
 import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
 import { TextCard } from "@core/cards/text-card";
-import colors from "./colors";
 
 const mapStateToProps = (state: RootState) => ({
-    state: state.game.slideState as WouldYouRatherSlideState,
+    state: state.game.slideState as TaskSlideState,
 });
 
 const dispatchProps = {
@@ -38,9 +38,6 @@ const styles = (theme: Theme) =>
             marginBottom: 15,
         },
         spaceHeader: spaceHeaderStyles(theme),
-        instruction: {
-            color: "white",
-        },
     });
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -48,7 +45,7 @@ type Props = ReturnType<typeof mapStateToProps> &
     WithStyles<typeof styles> &
     LocalizeContextProps;
 
-function WouldYouRatherSlideComponent(props: Props) {
+function TaskSlideComponent(props: Props) {
     const { classes, nextSlide, state } = props;
     if (state === null) {
         return <div className={classes.root} />;
@@ -56,7 +53,7 @@ function WouldYouRatherSlideComponent(props: Props) {
 
     const header = (
         <Typography className={classes.header} variant="h3">
-            <Translate id="slides.wouldyourather.title" />
+            <Translate id="slides.task.title" />
         </Typography>
     );
 
@@ -65,15 +62,7 @@ function WouldYouRatherSlideComponent(props: Props) {
             <div className={classes.content}>
                 {header}
                 <Markdown children={state.markdownContent} options={defaultMarkdownOptions} />
-                <div style={{ position: "relative" }}>
-                    <Typography
-                        style={{ marginTop: 20 }}
-                        className={classes.instruction}
-                        variant="h6"
-                    >
-                        <Translate id="slides.wouldyourather.instruction" data={{ sips: state.sips }} />
-                    </Typography>
-                </div>
+                <div className={classes.spaceHeader}>{header}</div>
             </div>
         </div>
     );
@@ -86,19 +75,14 @@ const Component = compose(
     ),
     withStyles(styles),
     withLocalize,
-)(WouldYouRatherSlideComponent) as React.ComponentType;
+)(TaskSlideComponent) as React.ComponentType;
 
-interface WouldYouRatherSlideState extends TextSlideState {
-    sips: number;
-}
+interface TaskSlideState extends TextSlideState {}
+export class TaskSlide extends TextSlidePresenter<TaskSlideState, TaskCard> {
+    backgroundColor = colors.task;
 
-export class WouldYouRatherSlide extends TextSlidePresenter<
-    WouldYouRatherSlideState,
-    WouldYouRatherCard
-> {
-    backgroundColor = colors.wouldYouRather;
     constructor(translator: Translator) {
-        super(translator, "WyrCard", "WouldYouRatherSlide");
+        super(translator, "TaskCard", "TaskSlide");
     }
 
     public render(): ReactNode {
@@ -106,25 +90,23 @@ export class WouldYouRatherSlide extends TextSlidePresenter<
     }
 
     selectText(selection: SelectionAlgorithm, selectedCard: TextCard): string {
-        return "..." + super.selectText(selection, selectedCard);
+        let task = super.selectText(selection, selectedCard);
+        if (/[A-Z-a-z]$/g.test(task)) {
+            task = task + ".";
+        }
+
+        return "[Player99]: " + task + " " + this.translator.translate("slides.task.instruction");
     }
 
-    protected initializeState(
-        markdownContent: string,
-        _card: WouldYouRatherCard,
-        _players: SelectedPlayer[],
-        selection: SelectionAlgorithm,
-    ): WouldYouRatherSlideState {
+    protected initializeState(markdownContent: string): TaskSlideState {
         return {
             markdownContent: markdownContent,
-            sips: selection.getSips(2), // at least two sips so the text can be plural
         };
     }
 
-    protected initializeFollowUpState(markdownContent: string): WouldYouRatherSlideState {
+    protected initializeFollowUpState(markdownContent: string): TaskSlideState {
         return {
             markdownContent: markdownContent,
-            sips: 0,
         };
     }
 }

@@ -16,7 +16,7 @@ class ItemPreferences extends React.Component<Props> {
             <Grid container>
                 {items.map(x => (
                     <Grid key={x.value} item container alignItems="center">
-                        <Grid item xs={4} lg={2}>
+                        <Grid item xs={4} lg={3}>
                             <Typography
                                 style={{
                                     opacity: x.weight === 0 ? 0.5 : 1,
@@ -25,7 +25,7 @@ class ItemPreferences extends React.Component<Props> {
                                 {x.value}
                             </Typography>
                         </Grid>
-                        <Grid item xs={8} lg={10}>
+                        <Grid item xs={8} lg={9}>
                             <Slider
                                 max={1}
                                 min={0}

@@ -1,16 +1,17 @@
-import { MelinaAlgorithm } from "@core/selection/melina-algorithm";
+import { CardRef } from "@core/cards/card-ref";
 import { TextCard } from "@core/cards/text-card";
-import { CardPresenter } from "./card-presenter";
-import * as gameEngine from "../../game-engine";
-import * as actions from "../../actions";
-import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
-import { TextFormatter } from "../../formatter/text-formatter";
+import { DefaultTextDecoder } from "@core/parsing/text-decoder/default-text-decoder";
 import { PlayerInfo } from "@core/player-info";
+import { MelinaAlgorithm } from "@core/selection/melina-algorithm";
+import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
+import { RootAction } from "DrinctetTypes";
 import { FollowUpSlide, SelectedPlayer, Translator } from "GameModels";
 import _ from "lodash";
-import { RootAction } from "DrinctetTypes";
-import { CardRef } from "@core/cards/card-ref";
 import store from "../../../../store";
+import * as actions from "../../actions";
+import { TextFormatter } from "../../formatter/text-formatter";
+import * as gameEngine from "../../game-engine";
+import { CardPresenter } from "./card-presenter";
 
 export interface TextSlideState {
     markdownContent: string;
@@ -142,8 +143,7 @@ export function formatText<TCard extends TextCard>(
     selection: SelectionAlgorithm,
     translator: Translator,
 ): { formatted: string; players: SelectedPlayer[] } {
-    const formatter = new TextFormatter();
-    const fragments = formatter.parseTextFragments(text);
+    const fragments = new DefaultTextDecoder().decode(text);
     const playerRequirements = TextFormatter.getRequiredPlayers(fragments, card.players);
 
     const players = gameEngine.selectPlayers(
@@ -167,7 +167,7 @@ export function formatText<TCard extends TextCard>(
 
     const socialMediaPlatform = store.getState().settings.socialMediaPlatform;
 
-    const formatted = formatter.format(
+    const formatted = TextFormatter.format(
         fragments,
         indexedPlayers,
         sips,

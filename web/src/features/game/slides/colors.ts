@@ -7,5 +7,6 @@ export default {
     noIdeaLoses: "#192a56", //pico void (dark blue)
     truthOrDare: "#2c3e50", //Midnight blue
     virus: "#27ae60", //nephritis (green)
-    wouldYouRather: "#8e44ad", //wisteria (purple)
+    wouldYouRather: "#00b894", //mint leaf (purple)
+    task: "#a29bfe", //shy moment (blue)
 };
