@@ -12,18 +12,21 @@ import { initialize, LocalizeProvider, NamedLanguage } from "react-localize-redu
 import drinctetTranslations from "./loc/drinctet.json";
 import { renderToStaticMarkup } from "react-dom/server";
 import { defaultSources } from "./preferences";
+import * as serviceWorker from "./serviceWorker";
 
 for (const src of defaultSources) {
     store.dispatch(addSource(src));
     store.dispatch(loadSourceAsync.request(src));
 }
 
-store.dispatch(addPlayer({ name: "Vincent", gender: "Male" }));
-store.dispatch(addPlayer({ name: "Melina", gender: "Female" }));
-store.dispatch(addPlayer({ name: "Bursod", gender: "Male" }));
-store.dispatch(addPlayer({ name: "Larny", gender: "Female" }));
-store.dispatch(addPlayer({ name: "Sven", gender: "Male" }));
-store.dispatch(addPlayer({ name: "Hufeld", gender: "Male" }));
+if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+    store.dispatch(addPlayer({ name: "Vincent", gender: "Male" }));
+    store.dispatch(addPlayer({ name: "Melina", gender: "Female" }));
+    store.dispatch(addPlayer({ name: "Bursod", gender: "Male" }));
+    store.dispatch(addPlayer({ name: "Larny", gender: "Female" }));
+    store.dispatch(addPlayer({ name: "Sven", gender: "Male" }));
+    store.dispatch(addPlayer({ name: "Hufeld", gender: "Male" }));
+}
 
 var userLang = (navigator.language || ((navigator as any).userLanguage as string) || "en").split(
     "-",
@@ -52,3 +55,6 @@ const Root = () => (
 );
 
 render(<Root />, document.getElementById("root"));
+
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.register();
