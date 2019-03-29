@@ -4,7 +4,8 @@
         "players.playerName": ["Player name", "Spielername"],
         "sources": ["Cards", "Karten"],
         "sources.sourceUrl": ["Source url", "Quellen Url"],
-        "configuration": ["Configuration", "Konfiguration"]
+        "configuration": ["Configuration", "Konfiguration"],
+        "willBeRemoved": ["Will be removed!", "Wird entfernt!"]
     },
     "settings.configuration": {
         "language": ["Language", "Sprache"],
@@ -45,7 +46,9 @@
         "options": {
             "settings": ["Settings", "Einstellungen"],
             "insights": ["Insights", "Insights"],
-            "reportCard": ["Report card", "Karte melden"]
+            "reportCard": ["Report card", "Karte melden"],
+            "fullscreen": ["Fullscreen", "Vollbild"],
+            "exitFullscreen": ["Exit fullscreen", "Vollbild verlassen"]
         },
         "close": ["Close", "Schließen"]
     },

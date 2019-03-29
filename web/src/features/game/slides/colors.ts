@@ -1,12 +1,12 @@
 export default {
-    down: "#c0392b", //pomegrenate (red)
-    drink: "#2980b9", //belize hole (blue)
-    fact: "#f39c12", //orange
-    groupGame: "#16a085", //green sea
-    neverEver: "#d35400", //pumpkin
+    down: "#c23616", //pomegrenate (red)
+    drink: "#2470A3", //belize hole (blue)
+    fact: "#D5880B", //orange
+    groupGame: "#664EDF", //green sea
+    neverEver: "#C75000", //pumpkin
     noIdeaLoses: "#192a56", //pico void (dark blue)
     truthOrDare: "#2c3e50", //Midnight blue
-    virus: "#27ae60", //nephritis (green)
-    wouldYouRather: "#00b894", //mint leaf (purple)
-    task: "#a29bfe", //shy moment (blue)
+    virus: "##219150",
+    wouldYouRather: "#273c75",
+    task: "##667293",
 };

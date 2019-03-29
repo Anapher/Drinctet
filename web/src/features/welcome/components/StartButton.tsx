@@ -1,12 +1,12 @@
-import { withStyles, WithStyles, createStyles } from "@material-ui/core";
+import { createStyles, withStyles, WithStyles } from "@material-ui/core";
 import Fab from "@material-ui/core/Fab";
 import { RootState } from "DrinctetTypes";
 import * as React from "react";
+import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { connect } from "react-redux";
+import { RouteComponentProps, withRouter } from "react-router";
 import { compose } from "redux";
 import { startGame } from "../../game/actions";
-import { withLocalize, LocalizeContextProps, Translate } from "react-localize-redux";
-import { withRouter, RouteComponentProps } from "react-router";
 
 const styles = createStyles({
     root: {
@@ -33,24 +33,32 @@ type Props = ReturnType<typeof mapStateToProps> &
     LocalizeContextProps &
     RouteComponentProps;
 
-function StartButton(props: Props) {
-    const { classes, startGame, settings, history } = props;
+class StartButton extends React.Component<Props> {
+    startGame = () => {
+        const { startGame, history } = this.props;
 
-    const arePlayersSelected = settings.players.length > 0;
-    const areSourcesAdded = settings.sources.filter(x => x.cards !== undefined).length > 0;
-    const areSourcesLoading = settings.sources.filter(x => x.isLoading).length > 0;
+        startGame(history);
+    };
 
-    return (
-        <Fab
-            variant="extended"
-            size="large"
-            disabled={!arePlayersSelected || !areSourcesAdded || areSourcesLoading}
-            classes={{ root: classes.root }}
-            onClick={() => startGame(history)}
-        >
-            <Translate id="welcome.startGame" />
-        </Fab>
-    );
+    render() {
+        const { classes, settings } = this.props;
+
+        const arePlayersSelected = settings.players.length > 0;
+        const areSourcesAdded = settings.sources.filter(x => x.cards !== undefined).length > 0;
+        const areSourcesLoading = settings.sources.filter(x => x.isLoading).length > 0;
+
+        return (
+            <Fab
+                variant="extended"
+                size="large"
+                disabled={!arePlayersSelected || !areSourcesAdded || areSourcesLoading}
+                classes={{ root: classes.root }}
+                onClick={this.startGame}
+            >
+                <Translate id="welcome.startGame" />
+            </Fab>
+        );
+    }
 }
 
 export default compose(
@@ -60,5 +68,5 @@ export default compose(
         dispatchProps,
     ),
     withLocalize,
-    withRouter
+    withRouter,
 )(StartButton) as React.ComponentType;

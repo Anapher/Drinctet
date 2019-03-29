@@ -13,6 +13,7 @@ export function getRootStyles(): CSSProperties {
         justifyContent: "center",
         color: "white",
         cursor: "pointer",
+        "-webkit-tap-highlight-color": "rgba(255, 255, 255, 0)"
     };
 }
 

@@ -6,8 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVenus, faMars } from "@fortawesome/free-solid-svg-icons";
 import { Icon } from "@material-ui/core";
 import Input from "@material-ui/core/Input";
+import { withLocalize, LocalizeContextProps } from "react-localize-redux";
 
-interface Props {
+interface Props extends LocalizeContextProps {
     name: string;
     gender: Gender;
     onRemoveClick: () => void;
@@ -21,7 +22,7 @@ const getIconButtonStyle = (): React.CSSProperties => ({
     height: 48,
 });
 
-function PlayerListItem({ name, gender, onRemoveClick, onSwapGenderClick, onNameChanged }: Props) {
+function PlayerListItem({ name, gender, onRemoveClick, onSwapGenderClick, onNameChanged, translate }: Props) {
     return (
         <div style={{ display: "flex" }}>
             <IconButton
@@ -39,7 +40,7 @@ function PlayerListItem({ name, gender, onRemoveClick, onSwapGenderClick, onName
                     if (!name) onRemoveClick();
                 }}
                 style={{ flexGrow: 1, marginLeft: 5, marginRight: 5 }}
-                placeholder="Will be removed!"
+                placeholder={translate("settings.willBeRemoved") as string}
                 value={name}
                 onChange={ev => onNameChanged(ev.currentTarget.value)}
             />
@@ -55,4 +56,4 @@ function PlayerListItem({ name, gender, onRemoveClick, onSwapGenderClick, onName
     );
 }
 
-export default PlayerListItem;
+export default withLocalize(PlayerListItem);
