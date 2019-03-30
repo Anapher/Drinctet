@@ -15,6 +15,7 @@ import {
     getContentStyles,
     getRootStyles,
     spaceHeaderStyles,
+    getHeaderStyles,
 } from "./base/helper";
 import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
 import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
@@ -34,7 +35,7 @@ const styles = (theme: Theme) =>
         root: getRootStyles(),
         content: getContentStyles(theme),
         header: {
-            color: "white",
+            ...getHeaderStyles(theme),
             marginBottom: 15,
         },
         spaceHeader: spaceHeaderStyles(theme),

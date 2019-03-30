@@ -1,34 +1,44 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { compose } from "redux";
-import GameOptions from "./GameOptions";
-import { Route, Switch, withRouter } from "react-router-dom";
-import SettingsDialog from "./SettingsDialog";
-import InsightsDialog from "./InsightsDialog";
-import SlideWrapper from "./SlideWrapper";
-import { requestSlideAsync } from "../actions";
-import { withLocalize, LocalizeContextProps } from "react-localize-redux";
-import { toTranslator } from "../utils";
 import { RootState } from "DrinctetTypes";
-
-const dispatchProps = {
-    requestSlide: requestSlideAsync.request,
-};
+import React, { Component } from "react";
+import { LocalizeContextProps, withLocalize } from "react-localize-redux";
+import { connect, DispatchProp } from "react-redux";
+import { Route, Switch, withRouter } from "react-router-dom";
+import { compose } from "redux";
+import { OpeningSlide } from "../slides/OpeningSlide";
+import GameOptions from "./GameOptions";
+import InsightsDialog from "./InsightsDialog";
+import SettingsDialog from "./SettingsDialog";
+import SlideWrapper from "./SlideWrapper";
+import * as actions from "../actions";
 
 const mapStateToProps = (state: RootState) => ({
     current: state.game.currentSlideStatus,
 });
 
-type Props = typeof dispatchProps & LocalizeContextProps & ReturnType<typeof mapStateToProps>;
+type Props = LocalizeContextProps & ReturnType<typeof mapStateToProps> & DispatchProp;
 
 class GameComponent extends Component<Props> {
     public componentDidMount() {
-        this.props.requestSlide(toTranslator(this.props));
+        const openingSlide = new OpeningSlide();
+        const slideActions = openingSlide.initialize();
+
+        this.props.dispatch(
+            actions.requestSlideAsync.success({
+                slide: openingSlide.slideType,
+                insights: null,
+            }),
+        );
+
+        for (const action of slideActions) {
+            this.props.dispatch(action);
+        }
     }
 
     public render() {
         return (
-            <div style={{ width: "100%", height: "100%", position: "relative", overflow: "hidden" }}>
+            <div
+                style={{ width: "100%", height: "100%", position: "relative", overflow: "hidden" }}
+            >
                 <SlideWrapper />
                 <div style={{ top: 10, right: 10, position: "absolute" }}>
                     <GameOptions />
@@ -44,9 +54,6 @@ class GameComponent extends Component<Props> {
 
 export default compose(
     withRouter,
-    connect(
-        mapStateToProps,
-        dispatchProps,
-    ),
+    connect(mapStateToProps),
     withLocalize,
 )(GameComponent) as React.ComponentType;

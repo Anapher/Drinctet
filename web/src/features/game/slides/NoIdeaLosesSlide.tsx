@@ -10,7 +10,7 @@ import { compose } from "redux";
 import { NoIdeaLosesCard } from "src/impl/cards/no-idea-loses-card";
 import { requestSlideAsync } from "../actions";
 import { toTranslator } from "../utils";
-import { defaultMarkdownOptions, getContentStyles, getRootStyles, spaceHeaderStyles } from "./base/helper";
+import { defaultMarkdownOptions, getContentStyles, getRootStyles } from "./base/helper";
 import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
 import colors from "./colors";
 
@@ -26,11 +26,6 @@ const styles = (theme: Theme) =>
     createStyles({
         root: getRootStyles(),
         content: getContentStyles(theme),
-        header: {
-            color: "white",
-            marginBottom: 15,
-        },
-        spaceHeader: spaceHeaderStyles(theme),
     });
 
 type Props = ReturnType<typeof mapStateToProps> &

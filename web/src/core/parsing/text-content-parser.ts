@@ -40,9 +40,11 @@ export class TextContentParser {
         const translations: TextTranslation[] = [];
         const textElement = new TextElement();
 
-        const weight = Number(element.getAttribute("weight"));
-        if (!isNaN(weight)) {
-            textElement.weight = weight;
+        const weight = element.getAttribute("weight");
+        if (weight !== null && !isNaN(Number(weight))) {
+            textElement.weight = Number(weight);
+        } else {
+            textElement.weight = 1;
         }
 
         const texts = element.getElementsByTagName("Text");
@@ -64,7 +66,7 @@ export class TextContentParser {
         if (element.textContent === null) {
             throw new Error("The text content of the element is empty.");
         }
-        
+
         return new TextTranslation(lang, element.textContent);
     }
 }

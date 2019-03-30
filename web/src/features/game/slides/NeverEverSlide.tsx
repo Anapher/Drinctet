@@ -4,6 +4,7 @@ import {
     defaultMarkdownOptions,
     getContentStyles,
     spaceHeaderStyles,
+    getHeaderStyles,
 } from "./base/helper";
 import { RootState } from "DrinctetTypes";
 import { requestSlideAsync } from "../actions";
@@ -35,7 +36,7 @@ const styles = (theme: Theme) =>
         root: getRootStyles(),
         content: getContentStyles(theme),
         header: {
-            color: "white",
+            ...getHeaderStyles(theme),
             marginBottom: 15,
         },
         instruction: {

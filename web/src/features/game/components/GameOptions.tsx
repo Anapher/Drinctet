@@ -54,8 +54,6 @@ class GameOptions extends Component<Props, State> {
 
     componentDidMount() {
         Fullscreen.onfullscreenchange = () => {
-            console.log(Fullscreen.fullscreenElement);
-            
             this.setState(state => ({ ...state, isFullscreen: Fullscreen.fullscreenElement }));
         };
     }

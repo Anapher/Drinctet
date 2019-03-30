@@ -1,13 +1,12 @@
+import { AppBar, Grid, Tab, Tabs, Theme } from "@material-ui/core";
+import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
 import * as React from "react";
-import { AppBar, Tabs, Tab, Theme, Grid } from "@material-ui/core";
-import SwipeableViews from "react-swipeable-views";
-import { withStyles, createStyles, WithStyles } from "@material-ui/core/styles";
+import { LocalizeContextProps, withLocalize } from "react-localize-redux";
 import AddPlayerForm from "./AddPlayerForm";
-import PlayerList from "./PlayerList";
 import AddSourceForm from "./AddSourceForm";
-import SourcesList from "./SourcesList";
-import { withLocalize, LocalizeContextProps } from "react-localize-redux";
 import Configuration from "./Configuration";
+import PlayerList from "./PlayerList";
+import SourcesList from "./SourcesList";
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -17,6 +16,20 @@ const styles = (theme: Theme) =>
             display: "flex",
             flexDirection: "column",
         },
+        tabContainer: {
+            display: "flex",
+            flexDirection: "column",
+            height: "100%",
+        },
+        firstChildMargins: {
+            marginTop: 24,
+            marginLeft: 24,
+            marginRight: 24,
+        },
+        fillRemaining: {
+            flexGrow: 1,
+            height: 0,
+        },
     });
 
 interface Props extends LocalizeContextProps, WithStyles<typeof styles> {
@@ -25,6 +38,48 @@ interface Props extends LocalizeContextProps, WithStyles<typeof styles> {
 
 interface State {
     value: number;
+}
+
+function PlayersTab({ classes }: Props) {
+    return (
+        <Grid className={classes.tabContainer}>
+            <div className={classes.firstChildMargins}>
+                <AddPlayerForm />
+            </div>
+            <div
+                className={classes.fillRemaining}
+                style={{
+                    overflow: "auto",
+                    margin: "24px 24px 0 24px",
+                }}
+            >
+                <PlayerList />
+            </div>
+        </Grid>
+    );
+}
+
+function SourcesTab({ classes }: Props) {
+    return (
+        <Grid className={classes.tabContainer}>
+            <div className={classes.firstChildMargins}>
+                <AddSourceForm />
+            </div>
+            <div className={classes.fillRemaining} style={{ overflow: "auto" }}>
+                <SourcesList />
+            </div>
+        </Grid>
+    );
+}
+
+function SettingsTab({ classes }: Props) {
+    return (
+        <Grid className={classes.tabContainer}>
+            <div className={classes.fillRemaining} style={{ overflowX: "hidden" }}>
+                <Configuration />
+            </div>
+        </Grid>
+    );
 }
 
 class SettingsView extends React.Component<Props, State> {
@@ -41,13 +96,14 @@ class SettingsView extends React.Component<Props, State> {
     };
 
     render() {
-        const { theme, classes, translate } = this.props;
+        const { classes, translate } = this.props;
+        const { value } = this.state;
 
         return (
             <div className={classes.root}>
                 <AppBar position="static" color="default">
                     <Tabs
-                        value={this.state.value}
+                        value={value}
                         onChange={this.handleChange}
                         indicatorColor="primary"
                         textColor="primary"
@@ -58,61 +114,9 @@ class SettingsView extends React.Component<Props, State> {
                         <Tab label={translate("settings.configuration")} />
                     </Tabs>
                 </AppBar>
-                <SwipeableViews
-                    axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-                    index={this.state.value}
-                    ignoreNativeScroll={true}
-                    style={{ flexGrow: 1 }}
-                    containerStyle={{ height: "100%" }}
-                    onChangeIndex={this.handleChangeIndex}
-                >
-                    <Grid
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            height: "100%",
-                        }}
-                    >
-                        <div style={{ marginTop: 24, marginLeft: 24, marginRight: 24 }}>
-                            <AddPlayerForm />
-                        </div>
-                        <div
-                            style={{
-                                flexGrow: 1,
-                                height: 0,
-                                overflow: "auto",
-                                margin: "24px 24px 0 24px",
-                            }}
-                        >
-                            <PlayerList />
-                        </div>
-                    </Grid>
-                    <Grid
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            height: "100%",
-                        }}
-                    >
-                        <div style={{ marginTop: 24, marginLeft: 24, marginRight: 24 }}>
-                            <AddSourceForm />
-                        </div>
-                        <div style={{ flexGrow: 1, height: 0, overflow: "auto" }}>
-                            <SourcesList />
-                        </div>
-                    </Grid>
-                    <Grid
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            height: "100%",
-                        }}
-                    >
-                        <div style={{ flexGrow: 1, height: 0, overflowX: "hidden" }}>
-                            <Configuration />
-                        </div>
-                    </Grid>
-                </SwipeableViews>
+                {value === 0 && PlayersTab(this.props)}
+                {value === 1 && SourcesTab(this.props)}
+                {value === 2 && SettingsTab(this.props)}
             </div>
         );
     }

@@ -13,7 +13,7 @@ import { FactCard } from "src/impl/cards/fact-card";
 import * as actions from "../actions";
 import { requestSlideAsync } from "../actions";
 import { toTranslator } from "../utils";
-import { defaultMarkdownOptions, getContentStyles, getRootStyles, spaceHeaderStyles } from "./base/helper";
+import { defaultMarkdownOptions, getContentStyles, getRootStyles, spaceHeaderStyles, getHeaderStyles } from "./base/helper";
 import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
 import { CardRef } from "@core/cards/card-ref";
 import colors from "./colors";
@@ -31,7 +31,7 @@ const styles = (theme: Theme) =>
         root: getRootStyles(),
         content: getContentStyles(theme),
         header: {
-            color: "white",
+            ...getHeaderStyles(theme),
             marginBottom: 15,
         },
         spaceHeader: spaceHeaderStyles(theme),

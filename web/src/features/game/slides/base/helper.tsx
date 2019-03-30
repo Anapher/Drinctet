@@ -1,6 +1,6 @@
 import { ParsingOptions } from "markdown-to-jsx";
 import * as React from "react";
-import { Theme } from "@material-ui/core";
+import { Theme, Typography } from "@material-ui/core";
 import { CSSProperties } from "@material-ui/core/styles/withStyles";
 
 export function getRootStyles(): CSSProperties {
@@ -39,16 +39,25 @@ export function spaceHeaderStyles(theme: Theme): CSSProperties {
     return {
         visibility: "hidden",
         [theme.breakpoints.down("sm")]: {
-            display: "none",
+            fontSize: "2rem",
         }
     };
 }
 
+export function getHeaderStyles(theme: Theme): CSSProperties {
+    return {
+        color: "white",
+        [theme.breakpoints.down("sm")]: {
+            fontSize: "2rem",
+        }
+    }
+}
+
 function MyParagaph({ children, ...props }: any) {
     return (
-        <p {...props} style={{ marginBlockStart: 5, marginBlockEnd: 5 }}>
+        <Typography {...props} style={{ marginBlockStart: 5, marginBlockEnd: 5, color: "white", fontSize: "1.2rem" }}>
             {children}
-        </p>
+        </Typography>
     );
 }
 
