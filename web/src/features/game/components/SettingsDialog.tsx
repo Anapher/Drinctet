@@ -1,23 +1,13 @@
-import {
-    AppBar,
-    Button,
-    createStyles,
-    Slide,
-    Toolbar,
-    Typography,
-    WithStyles,
-    withStyles,
-    IconButton,
-} from "@material-ui/core";
+import { AppBar, Button, createStyles, IconButton, Slide, Toolbar, Typography, WithStyles, withStyles } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import withMobileDialog, { InjectedProps } from "@material-ui/core/withMobileDialog";
 import { WithWidth } from "@material-ui/core/withWidth";
+import PeopleIcon from "@material-ui/icons/People";
 import React from "react";
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 import { compose } from "redux";
 import SettingsView from "./SettingsView";
-import PeopleIcon from "@material-ui/icons/People";
 
 function Transition(props: any) {
     return <Slide direction="up" {...props} />;
@@ -70,7 +60,7 @@ function SettingsDialog({ fullScreen, classes, history }: Props) {
                         </Typography>
                         <IconButton
                             color="inherit"
-                            onClick={() => history.push("/play/arrangements")}
+                            onClick={() => history.push("/play/game/settings/arrangements")}
                         >
                             <PeopleIcon />
                         </IconButton>

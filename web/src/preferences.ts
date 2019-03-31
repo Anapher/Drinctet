@@ -11,6 +11,7 @@ export const defaultSources = [
     "cards/common.xml",
     "cards/Picolo/Picolo.xml",
     "cards/Picolo/Picolo.Silly.xml",
+    "cards/realfacts.xml",
 ];
 
 export const slideWeights: { [key: string]: number } = {

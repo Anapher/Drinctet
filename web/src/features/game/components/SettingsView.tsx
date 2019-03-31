@@ -4,7 +4,7 @@ import * as React from "react";
 import { LocalizeContextProps, withLocalize } from "react-localize-redux";
 import { Route } from "react-router-dom";
 import { compose } from "redux";
-import PlayerArrangementsDialog from "../../../features/play/components/PlayerArrangementsDialog";
+import PlayerArrangementsDialog from "../../play/components/PlayerArrangementsDialog";
 import ConfigurationRoute from "../../../routes/ConfigurationRoute";
 import PlayRoute from "../../../routes/PlayRoute";
 import SourcesRoute from "../../../routes/SourcesRoute";
@@ -75,7 +75,7 @@ class SettingsView extends React.Component<Props, State> {
                 {value === 1 && <SourcesRoute />}
                 {value === 2 && <ConfigurationRoute />}
 
-                <Route path="/play/arrangements" component={PlayerArrangementsDialog} />
+                <Route path="/play/game/settings/arrangements" component={PlayerArrangementsDialog} />
             </div>
         );
     }
@@ -83,5 +83,5 @@ class SettingsView extends React.Component<Props, State> {
 
 export default compose(
     withLocalize,
-    withStyles(styles, { withTheme: true })
+    withStyles(styles, { withTheme: true }),
 )(SettingsView) as React.ComponentType;

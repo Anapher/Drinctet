@@ -22,24 +22,25 @@ function Transition(props: any) {
     return <Slide direction="up" {...props} />;
 }
 
-const styles = (theme: Theme) => createStyles({
-    appBar: {
-        position: "relative",
-    },
-    flex: {
-        flex: 1,
-    },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing.unit * 2,
-    },
-    dialogPaper: {
-        height: "80vh",
-    },
-    fullscreenPaper: {
-        height: "100vh",
-    },
-});
+const styles = (theme: Theme) =>
+    createStyles({
+        appBar: {
+            position: "relative",
+        },
+        flex: {
+            flex: 1,
+        },
+        content: {
+            flexGrow: 1,
+            padding: theme.spacing.unit * 2,
+        },
+        dialogPaper: {
+            height: "80vh",
+        },
+        fullscreenPaper: {
+            height: "100vh",
+        },
+    });
 
 interface Props
     extends InjectedProps,
@@ -50,34 +51,32 @@ interface Props
 
 function PlayerArrangementsDialog({ fullScreen, classes, history }: Props) {
     return (
-        <div>
-            <Dialog
-                fullScreen={fullScreen}
-                open={true}
-                onClose={() => history.goBack()}
-                TransitionComponent={Transition}
-                fullWidth={true}
-                maxWidth="md"
-                classes={{
-                    paperScrollPaper: classes.dialogPaper,
-                    paperFullScreen: classes.fullscreenPaper,
-                }}
-            >
-                <AppBar className={classes.appBar}>
-                    <Toolbar>
-                        <Typography variant="h6" color="inherit" className={classes.flex}>
-                            <Translate id="play.playerArrangements" />
-                        </Typography>
-                        <Button color="inherit" onClick={() => history.goBack()}>
-                            <Translate id="close" />
-                        </Button>
-                    </Toolbar>
-                </AppBar>
-                <div className={classes.content}>
-                    <PlayerArrangements />
-                </div>
-            </Dialog>
-        </div>
+        <Dialog
+            fullScreen={fullScreen}
+            open={true}
+            onClose={() => history.goBack()}
+            TransitionComponent={Transition}
+            fullWidth={true}
+            maxWidth="md"
+            classes={{
+                paperScrollPaper: classes.dialogPaper,
+                paperFullScreen: classes.fullscreenPaper,
+            }}
+        >
+            <AppBar className={classes.appBar}>
+                <Toolbar>
+                    <Typography variant="h6" color="inherit" className={classes.flex}>
+                        <Translate id="play.playerArrangements" />
+                    </Typography>
+                    <Button color="inherit" onClick={() => history.goBack()}>
+                        <Translate id="close" />
+                    </Button>
+                </Toolbar>
+            </AppBar>
+            <div className={classes.content}>
+                <PlayerArrangements />
+            </div>
+        </Dialog>
     );
 }
 

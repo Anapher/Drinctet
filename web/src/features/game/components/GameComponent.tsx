@@ -13,12 +13,16 @@ import * as actions from "../actions";
 
 const mapStateToProps = (state: RootState) => ({
     current: state.game.currentSlideStatus,
+    selectedSlide: state.game.selectedSlide,
 });
 
 type Props = LocalizeContextProps & ReturnType<typeof mapStateToProps> & DispatchProp;
 
 class GameComponent extends Component<Props> {
     public componentDidMount() {
+        if (this.props.selectedSlide !== null) {
+            return;
+        }
         const openingSlide = new OpeningSlide();
         const slideActions = openingSlide.initialize();
 
