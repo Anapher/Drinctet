@@ -3,15 +3,11 @@ import { RootAction } from "DrinctetTypes";
 import { SourceInfo } from "SettingsModels";
 import { combineReducers } from "redux";
 import { getType } from "typesafe-actions";
-import { PlayerArrangement } from "@core/player-arrangement";
-import { PlayerInfo } from "@core/player-info";
 import * as actions from "./actions";
 import { slideWeights } from "../../preferences";
 import _ from "lodash";
 
 export type SettingsState = Readonly<{
-    players: PlayerInfo[];
-    arrangements: PlayerArrangement[];
     preferOppositeGenders: boolean;
     slides: Array<Weighted<string>>;
     socialMediaPlatform: string;
@@ -20,20 +16,6 @@ export type SettingsState = Readonly<{
 }>;
 
 export default combineReducers<SettingsState, RootAction>({
-    players: (state = [], action) => {
-        switch (action.type) {
-            case getType(actions.addPlayer):
-                return [...state, action.payload];
-            case getType(actions.removePlayer):
-                return state.filter(x => x.id !== action.payload);
-            case getType(actions.updatePlayer):
-                return state.map(player =>
-                    player.id === action.payload.id ? action.payload : player,
-                );
-            default:
-                return state;
-        }
-    },
     sources: (state = [], action) => {
         switch (action.type) {
             case getType(actions.addSource):
@@ -68,16 +50,6 @@ export default combineReducers<SettingsState, RootAction>({
                         ? { ...item, weight: action.payload.weight }
                         : item,
                 );
-            default:
-                return state;
-        }
-    },
-    arrangements: (state = [], action) => {
-        switch (action.type) {
-            case getType(actions.addPlayerArrangment):
-                return [...state, action.payload];
-            case getType(actions.removePlayerArrangment):
-                return state.filter(x => x.p1 !== action.payload);
             default:
                 return state;
         }

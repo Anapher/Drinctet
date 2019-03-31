@@ -1,6 +1,6 @@
 import * as React from "react";
 import { addPlayer } from "../actions";
-import { Gender } from "../../../core/player-info";
+import { Gender } from "@core/player-info";
 import { connect } from "react-redux";
 import Button from "@material-ui/core/Button";
 import Input from "@material-ui/core/Input";

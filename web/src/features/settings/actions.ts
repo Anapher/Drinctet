@@ -1,22 +1,7 @@
-import { PlayerArrangement } from './../../core/player-arrangement';
 import { Weighted } from "@core/weighted";
-import cuid from "cuid";
 import { SourceInfo } from "SettingsModels";
 import { createAsyncAction, createStandardAction } from "typesafe-actions";
 import { Card } from "@core/cards/card";
-import { Gender, PlayerInfo } from "@core/player-info";
-
-export const addPlayer = createStandardAction("ADD_PLAYER").map(
-    (playerInfo: { name: string; gender: Gender }): { payload: PlayerInfo } => ({
-        payload: {
-            name: playerInfo.name,
-            gender: playerInfo.gender,
-            id: cuid(),
-        },
-    }),
-);
-export const updatePlayer = createStandardAction("UPDATE_PLAYER")<PlayerInfo>();
-export const removePlayer = createStandardAction("REMOVE_PLAYER")<string>();
 
 export const addSource = createStandardAction("ADD_SOURCE").map(
     (url: string): { payload: SourceInfo } => ({
@@ -43,9 +28,6 @@ export const setSourceWeight = createStandardAction("SET_SOURCE_WEIGHT")<Weighte
 export const setPreferOppositeGenders = createStandardAction("SET_PREFER_OPPOSITE_GENDERS")<
     boolean
 >();
-
-export const addPlayerArrangment = createStandardAction("ADD_PLAYER_ARRANGEMENT")<PlayerArrangement>();
-export const removePlayerArrangment = createStandardAction("REMOVE_PLAYER_ARRANGEMENT")<string>();
 
 export const setSocialMediaPlatform = createStandardAction("SET_SOCIAL_MEDIA_PLATFORM")<string>();
 

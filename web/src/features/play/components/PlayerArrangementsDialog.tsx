@@ -1,4 +1,14 @@
-import { AppBar, Button, createStyles, Slide, Toolbar, Typography, WithStyles, withStyles } from "@material-ui/core";
+import {
+    AppBar,
+    Button,
+    createStyles,
+    Slide,
+    Toolbar,
+    Typography,
+    WithStyles,
+    withStyles,
+    Theme,
+} from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import withMobileDialog, { InjectedProps } from "@material-ui/core/withMobileDialog";
 import { WithWidth } from "@material-ui/core/withWidth";
@@ -6,13 +16,13 @@ import React from "react";
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 import { compose } from "redux";
-import SettingsView from "../../settings/components/SettingsView";
+import PlayerArrangements from "./PlayerArrangements";
 
 function Transition(props: any) {
     return <Slide direction="up" {...props} />;
 }
 
-const styles = createStyles({
+const styles = (theme: Theme) => createStyles({
     appBar: {
         position: "relative",
     },
@@ -21,13 +31,14 @@ const styles = createStyles({
     },
     content: {
         flexGrow: 1,
+        padding: theme.spacing.unit * 2,
     },
     dialogPaper: {
-        height: "80vh"
+        height: "80vh",
     },
     fullscreenPaper: {
-        height: "100vh"
-    }
+        height: "100vh",
+    },
 });
 
 interface Props
@@ -37,30 +48,33 @@ interface Props
         LocalizeContextProps,
         RouteComponentProps {}
 
-function SettingsDialog({ fullScreen, classes, history }: Props) {
+function PlayerArrangementsDialog({ fullScreen, classes, history }: Props) {
     return (
         <div>
             <Dialog
                 fullScreen={fullScreen}
                 open={true}
-                onClose={() => history.push("/play/game")}
+                onClose={() => history.push("/play")}
                 TransitionComponent={Transition}
                 fullWidth={true}
                 maxWidth="md"
-                classes={{paperScrollPaper: classes.dialogPaper, paperFullScreen: classes.fullscreenPaper}}
+                classes={{
+                    paperScrollPaper: classes.dialogPaper,
+                    paperFullScreen: classes.fullscreenPaper,
+                }}
             >
                 <AppBar className={classes.appBar}>
                     <Toolbar>
                         <Typography variant="h6" color="inherit" className={classes.flex}>
-                            <Translate id="game.options.settings" />
+                            <Translate id="play.playerArrangements" />
                         </Typography>
-                        <Button color="inherit" onClick={() => history.push("/play/game")}>
+                        <Button color="inherit" onClick={() => history.push("/play")}>
                             <Translate id="close" />
                         </Button>
                     </Toolbar>
                 </AppBar>
                 <div className={classes.content}>
-                    <SettingsView />
+                    <PlayerArrangements />
                 </div>
             </Dialog>
         </div>
@@ -72,4 +86,4 @@ export default compose(
     withStyles(styles),
     withLocalize,
     withRouter,
-)(SettingsDialog) as React.ComponentType;
+)(PlayerArrangementsDialog) as React.ComponentType;

@@ -2,10 +2,10 @@ import { AppBar, Grid, Tab, Tabs, Theme } from "@material-ui/core";
 import { createStyles, withStyles, WithStyles } from "@material-ui/core/styles";
 import * as React from "react";
 import { LocalizeContextProps, withLocalize } from "react-localize-redux";
-import AddPlayerForm from "./AddPlayerForm";
+import AddPlayerForm from "../../play/components/AddPlayerForm";
 import AddSourceForm from "./AddSourceForm";
 import Configuration from "./Configuration";
-import PlayerList from "./PlayerList";
+import PlayerList from "../../play/components/PlayerList";
 import SourcesList from "./SourcesList";
 
 const styles = (theme: Theme) =>

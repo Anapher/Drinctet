@@ -18,7 +18,7 @@ import React, { Component, ComponentType } from "react";
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { RouterProps, withRouter } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router";
 import Fullscreen from "@utils/fullscreen";
 
 const styles = createStyles({
@@ -31,7 +31,7 @@ type Props = ReturnType<typeof mapStateToProps> &
     typeof dispatchProps &
     LocalizeContextProps &
     WithStyles<typeof styles> &
-    RouterProps;
+    RouteComponentProps;
 
 const mapStateToProps = (state: RootState) => ({
     selectedSlide: state.game.selectedSlide,
@@ -72,7 +72,7 @@ class GameOptions extends Component<Props, State> {
 
     handleNavigate = (path: string) => {
         this.handleClose();
-        this.props.history.push(`/game/${path}`);
+        this.props.history.push(`/play/game/${path}`);
     };
 
     toggleFullscreen = () => {

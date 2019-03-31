@@ -10,7 +10,7 @@ const mapStateToProps = (state: RootState) => ({
     slide: state.game.selectedSlide,
     slideInsights: state.game.slideInsights,
     playerInsights: state.game.playerInsights,
-    players: state.settings.players,
+    players: state.play.players,
     cardRef: state.game.selectedCard,
 });
 

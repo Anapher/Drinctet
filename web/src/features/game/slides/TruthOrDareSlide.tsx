@@ -32,7 +32,7 @@ import colors from "./colors";
 
 const mapStateToProps = (state: RootState) => ({
     state: state.game.slideState as TruthOrDareSlideState,
-    players: state.settings.players,
+    players: state.play.players,
 });
 
 const dispatchProps = {

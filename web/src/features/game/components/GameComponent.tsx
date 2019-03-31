@@ -44,8 +44,8 @@ class GameComponent extends Component<Props> {
                     <GameOptions />
                 </div>
                 <Switch>
-                    <Route path="/game/settings" component={SettingsDialog} />
-                    <Route path="/game/insights" component={InsightsDialog} />
+                    <Route path="/play/game/settings" component={SettingsDialog} />
+                    <Route path="/play/game/insights" component={InsightsDialog} />
                 </Switch>
             </div>
         );

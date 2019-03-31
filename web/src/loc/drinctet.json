@@ -1,4 +1,16 @@
 {
+    "close": ["Close", "Schließen"],
+    "menu": {
+        "play": ["Play", "Spielen"],
+        "sources": ["Cards", "Karten"],
+        "configuration": ["Configuration", "Konfiguration"],
+        "drinkingGames": ["Drinking Games", "Trinkspiele"],
+        "about": ["About", "Über"]
+    },
+    "play": {
+        "start": ["Start", "Starten"],
+        "playerArrangements": ["Player Arrangements", "Verkuppeln"]
+    },
     "settings": {
         "players": ["Players", "Spieler"],
         "players.playerName": ["Player name", "Spielername"],
@@ -50,7 +62,6 @@
             "fullscreen": ["Fullscreen", "Vollbild"],
             "exitFullscreen": ["Exit fullscreen", "Vollbild verlassen"]
         },
-        "close": ["Close", "Schließen"],
         "welcome": ["Welcome to Drinctet (Drink That!)", "Willkommen zu Drinctet (Drink That!)"],
         "openingInfo": ["Instructions: If you drink, you don't drive and if you drive, you don't drink (we don't mean water!). That's the only rule.\n\nDrinctet can be installed as an app (it's more convenient), simply press in Android Chrome at the top right on \"Add to Home Screen\"\n\n#### Drink responsibly and much! Happy drinking!", "Belehrung: **Wer trinkt fährt nicht und wer fährt trinkt nicht (und damit ist nicht Wasser gemeint!).** Das ist die einzige Spielregel.\n\nDrinctet kann als App installiert werden (ist komfortabler), dafür einfach in Android Chrome oben rechts auf \"Zum Startbildschirm hinzufügen\" tippen\n\n####Trinkt verantwortungsvoll und viel! Frohes Saufen!"],
         "tapToContinue": ["Tap to continue", "Tippe zum Fortsetzen"]

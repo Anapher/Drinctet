@@ -1,7 +1,7 @@
 import { Weighted } from "@core/weighted";
-import { Grid, Typography } from "@material-ui/core";
-import * as React from "react";
+import { Typography } from "@material-ui/core";
 import { Slider } from "@material-ui/lab";
+import * as React from "react";
 
 interface Props {
     items: Weighted<string>[];
@@ -13,32 +13,64 @@ class ItemPreferences extends React.Component<Props> {
         const { items, onChangeWeight } = this.props;
 
         return (
-            <Grid container>
-                {items.map(x => (
-                    <Grid key={x.value} item container alignItems="center">
-                        <Grid item xs={4} lg={3}>
-                            <Typography
-                                style={{
-                                    opacity: x.weight === 0 ? 0.5 : 1,
-                                }}
-                            >
-                                {x.value}
-                            </Typography>
-                        </Grid>
-                        <Grid item xs={8} lg={9}>
-                            <Slider
-                                max={1}
-                                min={0}
-                                style={{ padding: "20px 0"}}
-                                step={0.05}
-                                value={x.weight}
-                                onChange={(_, v) => onChangeWeight({ value: x.value, weight: v })}
-                            />
-                        </Grid>
-                    </Grid>
-                ))}
-            </Grid>
+            <table>
+                <tbody>
+                    {items.map(x => 
+                        <tr key={x.value}>
+                            <td>
+                                <Typography
+                                    style={{
+                                        opacity: x.weight === 0 ? 0.5 : 1,
+                                    }}
+                                >
+                                    {x.value}
+                                </Typography>
+                            </td>
+                            <td style={{width: "100%"}}>
+                                <Slider
+                                    max={1}
+                                    min={0}
+                                    style={{ padding: "20px 0 20px 5px", width: "100%" }}
+                                    step={0.05}
+                                    value={x.weight}
+                                    onChange={(_, v) =>
+                                        onChangeWeight({ value: x.value, weight: v })
+                                    }
+                                />
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
+            </table>
         );
+
+        // return (
+        //     <Grid container>
+        //         {items.map(x => (
+        //             <Grid key={x.value} item container alignItems="center">
+        //                 <Grid item>
+        //                     <Typography
+        //                         style={{
+        //                             opacity: x.weight === 0 ? 0.5 : 1,
+        //                         }}
+        //                     >
+        //                         {x.value}
+        //                     </Typography>
+        //                 </Grid>
+        //                 <Grid item xs={8} lg={9}>
+        //                     <Slider
+        //                         max={1}
+        //                         min={0}
+        //                         style={{ padding: "20px 0" }}
+        //                         step={0.05}
+        //                         value={x.weight}
+        //                         onChange={(_, v) => onChangeWeight({ value: x.value, weight: v })}
+        //                     />
+        //                 </Grid>
+        //             </Grid>
+        //         ))}
+        //     </Grid>
+        // );
     }
 }
 

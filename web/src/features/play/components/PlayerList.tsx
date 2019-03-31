@@ -4,13 +4,13 @@ import ListItem from "@material-ui/core/ListItem";
 import { RootState } from "DrinctetTypes";
 import * as React from "react";
 import { connect } from "react-redux";
-import { PlayerInfo } from "../../../core/player-info";
+import { PlayerInfo } from "@core/player-info";
 import { removePlayer, updatePlayer } from "../actions";
 import * as selectors from "../selectors";
 import PlayerListItem from "./PlayerListItem";
 
 const mapStateToProps = (state: RootState) => ({
-  players: selectors.getPlayers(state.settings),
+  players: selectors.getPlayers(state.play),
 });
 
 const dispatchProps = {

@@ -33,7 +33,7 @@ function ChangeLanguage({ activeLanguage, languages, setActiveLanguage, classes 
                             id: "language-input",
                         }}
                         style={{ width: "100%" }}
-                        value={activeLanguage.code}
+                        value={activeLanguage === undefined ? "en" : activeLanguage.code}
                         onChange={ev => setActiveLanguage(ev.target.value)}
                     >
                         {languages.map(lang => (

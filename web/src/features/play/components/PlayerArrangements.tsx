@@ -1,45 +1,25 @@
-import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
+import React from "react";
 import {
     Typography,
-    Switch,
-    FormControlLabel,
-    createStyles,
-    withStyles,
+    WithStyles,
     Grid,
     FormControl,
     InputLabel,
     Select,
     Input,
     MenuItem,
+    createStyles,
+    withStyles,
     Theme,
-    WithStyles,
 } from "@material-ui/core";
-import * as React from "react";
+import { addPlayerArrangment, removePlayerArrangment } from "../actions";
 import { RootState } from "DrinctetTypes";
-import {
-    setPreferOppositeGenders,
-    addPlayerArrangment,
-    removePlayerArrangment,
-} from "../../actions";
+import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
+import { compose } from "redux";
 import { connect } from "react-redux";
-
-const mapStateToProps = (state: RootState) => ({
-    preferOppositeGenders: state.settings.preferOppositeGenders,
-    players: state.settings.players,
-    arrangements: state.settings.arrangements,
-});
-
-const dispatchProps = {
-    setPreferOppositeGenders,
-    addPlayerArrangment,
-    removePlayerArrangment,
-};
 
 const styles = (theme: Theme) =>
     createStyles({
-        section: {
-            marginTop: 10,
-        },
         arrangmentItem: {
             borderBottom: "1px solid #d8d8d8",
             paddingBottom: 5,
@@ -52,14 +32,22 @@ const styles = (theme: Theme) =>
         },
     });
 
+const mapStateToProps = (state: RootState) => ({
+    players: state.play.players,
+    arrangements: state.play.arrangements,
+});
+
+const dispatchProps = {
+    addPlayerArrangment,
+    removePlayerArrangment,
+};
+
 type Props = ReturnType<typeof mapStateToProps> &
     typeof dispatchProps &
     LocalizeContextProps &
     WithStyles<typeof styles>;
 
-function PlayerSettings({
-    preferOppositeGenders,
-    setPreferOppositeGenders,
+function PlayerArrangements({
     classes,
     players,
     arrangements,
@@ -68,19 +56,7 @@ function PlayerSettings({
 }: Props) {
     return (
         <div>
-            <Typography variant="h5">
-                <Translate id="settings.configuration.playerSettings" />
-            </Typography>
-            <FormControlLabel
-                control={
-                    <Switch
-                        checked={preferOppositeGenders}
-                        onChange={(_, c) => setPreferOppositeGenders(c)}
-                    />
-                }
-                label={<Translate id="settings.configuration.playerSettings.pairOppositeGenders" />}
-            />
-            <Typography className={classes.section} variant="subtitle2">
+            <Typography variant="subtitle2">
                 <Translate id="settings.configuration.arrangements" />
             </Typography>
             <Typography>
@@ -154,7 +130,11 @@ function PlayerSettings({
     );
 }
 
-export default connect(
-    mapStateToProps,
-    dispatchProps,
-)(withStyles(styles)(withLocalize(PlayerSettings)));
+export default compose(
+    connect(
+        mapStateToProps,
+        dispatchProps,
+    ),
+    withStyles(styles),
+    withLocalize,
+)(PlayerArrangements) as React.ComponentType;

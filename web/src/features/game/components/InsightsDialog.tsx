@@ -13,7 +13,7 @@ import {
     Theme,
 } from "@material-ui/core";
 import { withLocalize, LocalizeContextProps, Translate } from "react-localize-redux";
-import { withRouter, RouterProps } from "react-router";
+import { withRouter, RouteComponentProps } from "react-router";
 import { compose } from "redux";
 import { WithWidth } from "@material-ui/core/withWidth";
 import InsightsView from "./InsightsView";
@@ -42,7 +42,7 @@ interface Props
         Partial<WithWidth>,
         WithStyles<typeof styles>,
         LocalizeContextProps,
-        RouterProps {}
+        RouteComponentProps {}
 
 function InsightsDialog({ fullScreen, classes, history }: Props) {
     return (
@@ -50,7 +50,7 @@ function InsightsDialog({ fullScreen, classes, history }: Props) {
             <Dialog
                 fullScreen={fullScreen}
                 open={true}
-                onClose={() => history.push("/game")}
+                onClose={() => history.push("/play/game")}
                 TransitionComponent={Transition}
                 fullWidth={true}
                 maxWidth="md"
@@ -60,8 +60,8 @@ function InsightsDialog({ fullScreen, classes, history }: Props) {
                         <Typography variant="h6" color="inherit" className={classes.flex}>
                             <Translate id="game.options.insights" />
                         </Typography>
-                        <Button color="inherit" onClick={() => history.push("/game")}>
-                            <Translate id="game.close" />
+                        <Button color="inherit" onClick={() => history.push("/play/game")}>
+                            <Translate id="close" />
                         </Button>
                     </Toolbar>
                 </AppBar>
