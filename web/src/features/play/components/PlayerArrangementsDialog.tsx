@@ -54,7 +54,7 @@ function PlayerArrangementsDialog({ fullScreen, classes, history }: Props) {
             <Dialog
                 fullScreen={fullScreen}
                 open={true}
-                onClose={() => history.push("/play")}
+                onClose={() => history.goBack()}
                 TransitionComponent={Transition}
                 fullWidth={true}
                 maxWidth="md"
@@ -68,7 +68,7 @@ function PlayerArrangementsDialog({ fullScreen, classes, history }: Props) {
                         <Typography variant="h6" color="inherit" className={classes.flex}>
                             <Translate id="play.playerArrangements" />
                         </Typography>
-                        <Button color="inherit" onClick={() => history.push("/play")}>
+                        <Button color="inherit" onClick={() => history.goBack()}>
                             <Translate id="close" />
                         </Button>
                     </Toolbar>

@@ -1,4 +1,14 @@
-import { AppBar, Button, createStyles, Slide, Toolbar, Typography, WithStyles, withStyles } from "@material-ui/core";
+import {
+    AppBar,
+    Button,
+    createStyles,
+    Slide,
+    Toolbar,
+    Typography,
+    WithStyles,
+    withStyles,
+    IconButton,
+} from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import withMobileDialog, { InjectedProps } from "@material-ui/core/withMobileDialog";
 import { WithWidth } from "@material-ui/core/withWidth";
@@ -6,7 +16,8 @@ import React from "react";
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 import { compose } from "redux";
-import SettingsView from "../../settings/components/SettingsView";
+import SettingsView from "./SettingsView";
+import PeopleIcon from "@material-ui/icons/People";
 
 function Transition(props: any) {
     return <Slide direction="up" {...props} />;
@@ -23,11 +34,11 @@ const styles = createStyles({
         flexGrow: 1,
     },
     dialogPaper: {
-        height: "80vh"
+        height: "80vh",
     },
     fullscreenPaper: {
-        height: "100vh"
-    }
+        height: "100vh",
+    },
 });
 
 interface Props
@@ -47,14 +58,23 @@ function SettingsDialog({ fullScreen, classes, history }: Props) {
                 TransitionComponent={Transition}
                 fullWidth={true}
                 maxWidth="md"
-                classes={{paperScrollPaper: classes.dialogPaper, paperFullScreen: classes.fullscreenPaper}}
+                classes={{
+                    paperScrollPaper: classes.dialogPaper,
+                    paperFullScreen: classes.fullscreenPaper,
+                }}
             >
                 <AppBar className={classes.appBar}>
                     <Toolbar>
                         <Typography variant="h6" color="inherit" className={classes.flex}>
                             <Translate id="game.options.settings" />
                         </Typography>
-                        <Button color="inherit" onClick={() => history.push("/play/game")}>
+                        <IconButton
+                            color="inherit"
+                            onClick={() => history.push("/play/arrangements")}
+                        >
+                            <PeopleIcon />
+                        </IconButton>
+                        <Button color="inherit" onClick={() => history.goBack()}>
                             <Translate id="close" />
                         </Button>
                     </Toolbar>

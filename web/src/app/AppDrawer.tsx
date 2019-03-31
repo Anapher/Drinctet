@@ -6,9 +6,9 @@ import {
     ListItemIcon,
     ListItemText,
     Theme,
-    Typography,
     WithStyles,
     withStyles,
+    Typography,
 } from "@material-ui/core";
 import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
 import LayersIcon from "@material-ui/icons/Layers";
@@ -22,10 +22,7 @@ import { compose } from "redux";
 
 const styles = (theme: Theme) =>
     createStyles({
-        toolbar: {
-            ...theme.mixins.toolbar,
-            paddingLeft: theme.spacing.unit,
-        },
+        toolbar: { ...theme.mixins.toolbar, paddingLeft: 20, display: "flex", alignItems: "center" },
     });
 
 type Props = WithStyles<typeof styles> & RouteComponentProps & LocalizeContextProps;
@@ -78,16 +75,20 @@ function renderRoutes({ translate, history }: Props, routes: Route[]) {
 function MainDrawer(props: Props) {
     const { classes } = props;
     return (
-        <List>
+        <div>
             <div className={classes.toolbar}>
-                <Typography variant="h6">Drinctet</Typography>
-                <Typography>Drink That!</Typography>
+                <div>
+                    <Typography variant="h6">Drinctet</Typography>
+                    <Typography>The goal is to drink that!</Typography>
+                </div>
             </div>
             <Divider />
-            {renderRoutes(props, drinctetRoutes)}
-            <Divider />
-            {renderRoutes(props, secondaryRoutes)}
-        </List>
+            <List>
+                {renderRoutes(props, drinctetRoutes)}
+                <Divider />
+                {renderRoutes(props, secondaryRoutes)}
+            </List>
+        </div>
     );
 }
 
