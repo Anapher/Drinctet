@@ -1,0 +1,2 @@
+# Image Game
+The Image Game is all about votes, if you get the most votes you lose (or win, if you enjoy taking shots!). The first player has to start by saying something descriptive. Such as: “Had most girlfriends/boyfriends”. Everyone then points at the whom they think fits the description the most. If you receive the most votes you have to drink. 

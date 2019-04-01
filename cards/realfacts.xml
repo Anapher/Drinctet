@@ -1,0 +1,35 @@
+﻿<!-- Proof: www.bio.miami.edu/hare/scary.html -->
+<FactCard id="1" is="true">
+    <Text lang="de">Ein weibliches und ein männliches Kanninchen können, sofern keines stirbt, in sieben Jahren eine Population von 184 Milliarden Kanninchen erschaffen.</Text>
+    <Text lang="en">Two rabbits can have 184 billion rabbits in 7 years account for no death.</Text>
+</FactCard>
+<!-- https://www.reddit.com/r/askscience/comments/b2vkwl/is_it_possible_for_animals_to_be_allergic_to/ -->
+<FactCard id="2" is="true">
+    <Text lang="de">Hunde können gegen Menschen allergisch sein.</Text>
+    <Text lang="en">It is possible for dogs to be allergic to humans.</Text>
+</FactCard>
+<!-- https://www.reddit.com/r/AskReddit/comments/1hxo5o/what_is_a_fact_that_is_true_but_very_hard_to/ -->
+<FactCard id="YzA" is="true">
+    <Text lang="de">Luftpolsterfolie wurde ursprünglich als Tapete entwickelt.</Text>
+    <Text lang="en">Bubble Wrap was originally designed to be used as textured wallpaper.</Text>
+</FactCard>
+<FactCard id="0N6" is="true">
+    <Text lang="de">Feuerzeuge wurden vor Streichhölzern erfunden.</Text>
+    <Text lang="en">Lighters were invented before matches.</Text>
+</FactCard>
+<FactCard id="9bL" is="true">
+    <Text lang="de">Eine Mikrowelle ist ungefährlich zu benutzen, weil die Wellen zu groß für das Gitter in der Glasscheibe sind und nicht durch passen.</Text>
+</FactCard>
+<!-- https://www.reddit.com/r/AskReddit/comments/66t2ni/what_is_a_scientific_fact_that_you_know_is_true/ -->
+<FactCard id="by" is="true">
+    <Text lang="de">Haie entstanden vor den Bäumen.</Text>
+    <Text lang="en">Sharks existed before trees.</Text>
+</FactCard>
+<!-- https://www.thefactsite.com/top-100-random-funny-facts/ -->
+<FactCard id="WGd" is="true">
+    <Text lang="de">Wenn man den Schwanz eines Kangerus vom Boden hebt, kann es nicht hüpfen.</Text>
+    <Text lang="en">If you lift a kangeroo's tail off the ground it can't hop.</Text>
+</FactCard>
+<FactCard id="DLO" is="true">
+    <Text lang="de"> Zu jedem Zeitpunkt sind ca. 0.7% der Weltbevölkerung betrunken.</Text>
+</FactCard>

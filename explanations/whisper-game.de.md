@@ -1,0 +1,2 @@
+# The whisper game
+Die Gruppe denkt sich eine Frage aus, und einer wird ausgewählt, der diese Frage beantworten muss, jedoch nur zu den Mitspielern, die vorher einen Shot trinken. Du erfährst die Antwort nicht, wenn du nicht trinkst. Jeder Spieler muss immer abwägen, ob ihm die Antwort der Shot wert ist - denn am liebsten möchte man immer die Antwort kennen.
