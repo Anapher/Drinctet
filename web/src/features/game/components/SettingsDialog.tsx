@@ -8,6 +8,7 @@ import {
     Typography,
     WithStyles,
     withStyles,
+    Theme,
 } from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import withMobileDialog, { InjectedProps } from "@material-ui/core/withMobileDialog";
@@ -23,7 +24,7 @@ function Transition(props: any) {
     return <Slide direction="up" {...props} />;
 }
 
-const styles = createStyles({
+const styles = (theme: Theme) => createStyles({
     appBar: {
         position: "relative",
     },
@@ -34,7 +35,9 @@ const styles = createStyles({
         flexGrow: 1,
     },
     dialogPaper: {
-        minHeight: "80vh",
+        [theme.breakpoints.up("md")]: {
+            height: "80vh",
+        }
     },
 });
 

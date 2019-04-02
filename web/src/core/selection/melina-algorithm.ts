@@ -54,19 +54,19 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
             willPowerWeights[willPower] += weight * deck.weight;
             willPowerCounter[willPower] += 1;
         }
-        
+
         const willPowerWeightsArray: Weighted<{
             willPower: number | null;
             count: number;
         }>[] = Object.keys(willPowerWeights).map(propName => {
             const willPower = Number(propName);
-            return ({
+            return {
                 value: {
                     willPower: willPower === 0 ? null : willPower,
                     count: willPowerCounter[willPower],
                 },
                 weight: willPowerWeights[willPower],
-            });
+            };
         });
 
         const decksArray = Object.keys(deckWeights).map(url => {
@@ -397,7 +397,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
                 lastSlide.weight = 0;
             }
         }
-        
+
         this.insights.slideWeights = {
             weights: weightedSlides.map(x => ({ weight: x.weight, value: x.value.slideType })),
         };
@@ -413,7 +413,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
     public getSips(min: number): number {
         min = Math.max(min, 1);
 
-        return Math.max(min,  Math.floor(this.getRandom() * 4) + 1);
+        return Math.max(min, Math.floor(this.getRandom() * 4) + 1);
     }
 
     protected weightCards(
@@ -425,6 +425,7 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
                 if (type !== null && card.type !== type) {
                     return false;
                 }
+
                 return (
                     card.tags.length === 0 ||
                     card.tags.findIndex(x => {
@@ -438,7 +439,6 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
         }));
 
         // cards are now of the correct type and playable
-
         const totalCards = filtered.reduce((x, y) => x + y.cards.length, 0);
 
         // every card should be rated by x when 0 < x <= 1
@@ -553,52 +553,6 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
         }
 
         return 0.5;
-    }
-
-    protected filterDecks(decks: CardDeck[]): CardDeck[] {
-        const filteredDecks: CardDeck[] = [];
-
-        for (const deck of decks) {
-            // remove disabled decks
-            if (deck.weight <= 0) {
-                continue;
-            }
-
-            const cards: Card[] = [];
-            for (const card of deck.cards) {
-                if (!this.verifyPlayerSpecification(this.status.players, card.players)) {
-                    continue;
-                }
-
-                let weightedZero = false;
-                for (const tag of card.tags) {
-                    if (this.checkIfWeightedZero(tag, this.status.tags)) {
-                        weightedZero = true;
-                        break;
-                    }
-                }
-
-                if (weightedZero) {
-                    continue;
-                }
-
-                if (!card.condition(this.status)) {
-                    continue;
-                }
-
-                cards.push(card);
-            }
-
-            if (cards.length > 0) {
-                filteredDecks.push({ cards, weight: deck.weight, url: deck.url });
-            }
-        }
-
-        return filteredDecks;
-    }
-
-    protected checkIfWeightedZero<T>(value: T, weights: Array<Weighted<T>>): boolean {
-        return weights.findIndex(x => x.value === value && x.weight <= 0) > -1;
     }
 
     protected verifyPlayerSpecification(

@@ -51,6 +51,18 @@ const games: DrinkingGame[] = [
             { lang: "en", name: "Whisper Game" },
         ],
     },
+    {
+        name: "bus-driver",
+        translations: [
+            { lang: "de", name: "Busfahrer" },
+        ],
+    },
+    {
+        name: "submarine",
+        translations: [
+            { lang: "de", name: "U-Boot" },
+        ],
+    },
 ];
 
 export default games;

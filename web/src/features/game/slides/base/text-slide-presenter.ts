@@ -30,7 +30,17 @@ export abstract class TextSlidePresenter<
         const result = new Array<RootAction>();
 
         const text = this.selectText(selection, card);
-        const { formatted, players } = this.formatText(text, card, null, selection);
+        let formatted: string;
+        let players: SelectedPlayer[];
+
+        try {
+            const result = this.formatText(text, card, null, selection);
+            formatted = result.formatted;
+            players = result.players;
+        } catch (error) {
+            // likely not enough players
+            return [actions.requestSlideAsync.request(this.translator)];
+        }
 
         const state = this.initializeState(formatted, card, players, selection);
         result.push(
@@ -87,7 +97,11 @@ export abstract class TextSlidePresenter<
         param: any,
     ): TState;
 
-    protected createFollowUp(cardRef: CardRef, players: SelectedPlayer[], due: Date): FollowUpSlide {
+    protected createFollowUp(
+        cardRef: CardRef,
+        players: SelectedPlayer[],
+        due: Date,
+    ): FollowUpSlide {
         return {
             due: due,
             slideType: this.slideType,

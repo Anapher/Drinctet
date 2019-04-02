@@ -130,11 +130,3 @@ it("(verifyPlayerSpecification) should correctly not match two female to small g
     );
     expect(result).toBe(false);
 });
-
-it("(checkIfWeightedZero) should correctly return if one is weighted zero", () => {
-    const array: Array<Weighted<number>> = [{value: 1, weight: 1}, {value: 2, weight: .4}, {value: 3, weight: 0}];
-
-    expect(algorithm.testCheckIfWeightedZero(1, array)).toBe(false);
-    expect(algorithm.testCheckIfWeightedZero(2, array)).toBe(false);
-    expect(algorithm.testCheckIfWeightedZero(3, array)).toBe(true);
-});

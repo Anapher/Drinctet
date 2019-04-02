@@ -3,7 +3,15 @@ import { TextCard } from "@core/cards/text-card";
 import { PlayerInfo } from "@core/player-info";
 import { PlayerSelectionInsights } from "@core/selection/insights";
 import { MelinaAlgorithm } from "@core/selection/melina-algorithm";
-import { Button, createStyles, Paper, Theme, Typography, WithStyles, withStyles } from "@material-ui/core";
+import {
+    Button,
+    createStyles,
+    Paper,
+    Theme,
+    Typography,
+    WithStyles,
+    withStyles,
+} from "@material-ui/core";
 import { cardMarkdownOptions } from "@utils/material-markdown";
 import { RootAction, RootState } from "DrinctetTypes";
 import { Translator } from "GameModels";
@@ -22,6 +30,7 @@ import * as baseStyles from "./base/helper";
 import { SlidePresenter } from "./base/slide-presenter";
 import { formatText, selectText } from "./base/text-slide-presenter";
 import colors from "./colors";
+import { CardRef } from "@core/cards/card-ref";
 
 const mapStateToProps = (state: RootState) => ({
     state: state.game.slideState as TruthOrDareSlideState,
@@ -55,10 +64,13 @@ const styles = (theme: Theme) =>
             marginTop: 15,
         },
         questionPaper: {
-            padding: theme.spacing.unit,
+            padding: theme.spacing.unit * 2,
             [theme.breakpoints.up("sm")]: {
-                padding: theme.spacing.unit * 2,
                 width: theme.spacing.unit * 50,
+            },
+            [theme.breakpoints.down("xs")]: {
+                width: "80vw",
+                margin: theme.spacing.unit,
             },
         },
         questionButtonsContainer: {
@@ -99,7 +111,7 @@ function QuestionComponent(props: Props) {
     return (
         <animated.div style={springProps}>
             <Paper className={classes.questionPaper}>
-                <Typography style={{fontSize: 17, fontWeight: 500}}>
+                <Typography style={{ fontSize: 17, fontWeight: 500 }}>
                     <Translate
                         id="slides.truthordare.playerTruthordare"
                         data={{ name: player.name }}
@@ -220,23 +232,41 @@ export class TruthOrDareSlide implements SlidePresenter {
     public select(decision: TruthOrDare, actions: MappedActions, player: PlayerInfo) {
         const selection = gameEngine.getRandomSelectionAlgorithm() as MelinaAlgorithm;
         const cardType = decision === "Dare" ? "TaskCard" : "QuestionCard";
-        const cardRef = selection.selectCard(cardType);
-        const card = cardRef.card as TextCard;
 
-        const selectedText = selectText(selection, card, this.translator);
-        const text = `#### ${this.translator.translate(
-            "slides.truthordare.instruction",
-        )}\n${selectedText}`;
+        let formatted: string | null = null;
+        let cardRef: CardRef;
 
-        const { formatted } = formatText(
-            text,
-            card,
-            [{ index: 99, player }],
-            selection,
-            this.translator,
-        );
+        for (let i = 0; i < 5; i++) {
+            cardRef = selection.selectCard(cardType);
+            const card = cardRef.card as TextCard;
 
-        actions.applyCard(cardRef);
+            const selectedText = selectText(selection, card, this.translator);
+            const text = `#### ${this.translator.translate(
+                "slides.truthordare.instruction",
+            )}\n${selectedText}`;
+
+            try {
+                const result = formatText(
+                    text,
+                    card,
+                    [{ index: 99, player }],
+                    selection,
+                    this.translator,
+                );
+
+                formatted = result.formatted;
+            } catch (error) {
+                // likely not enough players
+                continue;
+            }
+        }
+
+        if (formatted === null) {
+            actions.nextSlide(this.translator);
+            return;
+        }
+
+        actions.applyCard(cardRef!);
 
         const state: TruthOrDareSlideState = {
             isDeciding: false,

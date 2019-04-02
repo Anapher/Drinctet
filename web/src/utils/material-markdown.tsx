@@ -21,7 +21,15 @@ const SizedHeader = (fontSize: string) => ({ children, ...props }: any) => {
 
 function Paragraph({ children, ...props }: any) {
     return (
-        <Typography {...props} color="inherit" style={{ marginBlockStart: 5, marginBlockEnd: 5 }}>
+        <Typography {...props} color="inherit" component="p">
+            {children}
+        </Typography>
+    );
+}
+
+function Code({ children, ...props }: any) {
+    return (
+        <Typography {...props} color="inherit" component="p" style={{fontSize: "0.8em", fontFamily: "source-code-pro, Menlo, Monaco, Consolas, 'Courier New',monospace"}}>
             {children}
         </Typography>
     );
@@ -61,6 +69,10 @@ export const markdownOptions: ParsingOptions = {
             component: SizedHeader("1.1em"),
             props: {},
         },
+        code: {
+            component: Code,
+            props: {}
+        }
     },
 };
 
