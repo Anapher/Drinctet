@@ -1,6 +1,8 @@
+import { CardRef } from "@core/cards/card-ref";
 import { TextCard } from "@core/cards/text-card";
 import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
 import { createStyles, Theme, Typography, WithStyles, withStyles } from "@material-ui/core";
+import { cardMarkdownOptions } from "@utils/material-markdown";
 import { RootAction, RootState } from "DrinctetTypes";
 import { SelectedPlayer, Translator } from "GameModels";
 import Markdown from "markdown-to-jsx";
@@ -13,9 +15,8 @@ import { FactCard } from "src/impl/cards/fact-card";
 import * as actions from "../actions";
 import { requestSlideAsync } from "../actions";
 import { toTranslator } from "../utils";
-import { defaultMarkdownOptions, getContentStyles, getRootStyles, spaceHeaderStyles, getHeaderStyles } from "./base/helper";
+import * as baseStyles from "./base/helper";
 import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
-import { CardRef } from "@core/cards/card-ref";
 import colors from "./colors";
 
 const mapStateToProps = (state: RootState) => ({
@@ -28,13 +29,13 @@ const dispatchProps = {
 
 const styles = (theme: Theme) =>
     createStyles({
-        root: getRootStyles(),
-        content: getContentStyles(theme),
+        root: baseStyles.rootStyle(),
+        content: baseStyles.contentStyle(theme),
         header: {
-            ...getHeaderStyles(theme),
-            marginBottom: 15,
+            ...baseStyles.headerStyle(theme),
+            marginBottom: 10,
         },
-        spaceHeader: spaceHeaderStyles(theme),
+        hidden: baseStyles.hidden(),
     });
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -49,7 +50,7 @@ function FactSlideComponent(props: Props) {
     }
 
     const header = (
-        <Typography className={classes.header} variant="h3">
+        <Typography className={classes.header} variant="h4" color="inherit">
             <Translate id={`slides.fact.title${state.isFollowUp ? (state.isTrue ? ".true" : ".false") : ""}`} />
         </Typography>
     );
@@ -58,8 +59,8 @@ function FactSlideComponent(props: Props) {
         <div className={classes.root} onClick={() => nextSlide(toTranslator(props))}>
             <div className={classes.content}>
                 {header}
-                <Markdown children={state.markdownContent} options={defaultMarkdownOptions} />
-                <div className={classes.spaceHeader}>{header}</div>
+                <Markdown children={state.markdownContent} options={cardMarkdownOptions} />
+                <div className={classes.hidden}>{header}</div>
             </div>
         </div>
     );

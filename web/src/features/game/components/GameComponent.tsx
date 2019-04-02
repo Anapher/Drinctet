@@ -44,7 +44,7 @@ class GameComponent extends Component<Props> {
                 style={{ width: "100%", height: "100%", position: "relative", overflow: "hidden" }}
             >
                 <SlideWrapper />
-                <div style={{ top: 10, right: 10, position: "absolute" }}>
+                <div style={{ top: 10, right: 10, position: "absolute", zIndex: 100 }}>
                     <GameOptions />
                 </div>
                 <Switch>

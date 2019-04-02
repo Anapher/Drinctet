@@ -1,4 +1,5 @@
 import { createStyles, Theme, WithStyles, withStyles } from "@material-ui/core";
+import { cardMarkdownOptions } from "@utils/material-markdown";
 import { RootState } from "DrinctetTypes";
 import { Translator } from "GameModels";
 import Markdown from "markdown-to-jsx";
@@ -10,7 +11,7 @@ import { compose } from "redux";
 import { DrinkCard } from "src/impl/cards/drink-card";
 import { requestSlideAsync } from "../actions";
 import { toTranslator } from "../utils";
-import { defaultMarkdownOptions, getContentStyles, getRootStyles } from "./base/helper";
+import * as baseStyles from "./base/helper";
 import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
 import colors from "./colors";
 
@@ -24,8 +25,8 @@ const dispatchProps = {
 
 const styles = (theme: Theme) =>
     createStyles({
-        root: getRootStyles(),
-        content: getContentStyles(theme),
+        root: baseStyles.rootStyle(),
+        content: baseStyles.contentStyle(theme),
     });
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -42,7 +43,7 @@ function DrinkSlideComponent(props: Props) {
     return (
         <div className={classes.root} onClick={() => nextSlide(toTranslator(props))}>
             <div className={classes.content}>
-                <Markdown children={state.markdownContent} options={defaultMarkdownOptions} />
+                <Markdown children={state.markdownContent} options={cardMarkdownOptions} />
             </div>
         </div>
     );

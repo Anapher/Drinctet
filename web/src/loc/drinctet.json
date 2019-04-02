@@ -60,7 +60,8 @@
             "insights": ["Insights", "Insights"],
             "reportCard": ["Report card", "Karte melden"],
             "fullscreen": ["Fullscreen", "Vollbild"],
-            "exitFullscreen": ["Exit fullscreen", "Vollbild verlassen"]
+            "exitFullscreen": ["Exit fullscreen", "Vollbild verlassen"],
+            "exit": ["Exit", "Beenden"]
         },
         "welcome": ["Welcome to Drinctet (Drink That!)", "Willkommen zu Drinctet (Drink That!)"],
         "openingInfo": ["Instructions: If you drink, you don't drive and if you drive, you don't drink (we don't mean water!). That's the only rule.\n\nDrinctet can be installed as an app (it's more convenient), simply press in Android Chrome at the top right on \"Add to Home Screen\"\n\n#### Drink responsibly and much! Happy drinking!", "Belehrung: **Wer trinkt fährt nicht und wer fährt trinkt nicht (und damit ist nicht Wasser gemeint!).** Das ist die einzige Spielregel.\n\nDrinctet kann als App installiert werden (ist komfortabler), dafür einfach in Android Chrome oben rechts auf \"Zum Startbildschirm hinzufügen\" tippen\n\n####Trinkt verantwortungsvoll und viel! Frohes Saufen!"],
@@ -133,13 +134,15 @@
             "truth": ["Truth", "Wahrheit"],
             "dare": ["Dare", "Pflicht"],
             "instruction": ["Alright [Player99]:", "Okay [Player99]:"],
-            "or": ["or", "oder"]
+            "or": ["or", "oder"],
+            "refuseTruth": ["If you refuse to tell the truth, down your drink.", "Wenn du dich weigerst die Wahrheit zusagen, ex dein Getränk."],
+            "refuseDare": ["If you don't want to do it, down your drink.", "Wenn du dich weigerst, ex dein Getränk."]
         },
         "wouldyourather": {
             "title": ["Would you rather...", "Würdest du lieber..."],
             "instruction": [
                 "Vote all at once, the minority drinks ${sips} sips",
-                "Stimmt alle Gleichzeitig ab, die Minderheit trinkt ${sips} Schlucke."
+                "Stimmt alle Gleichzeitig ab, die Verlierer trinken ${sips} Schlucke."
             ]
         },
         "groupgame": {
@@ -150,7 +153,7 @@
         },
         "task": {
             "title": ["Task", "Aufgabe"],
-            "instruction": ["If you don't do it, drink [sips:4].", "Wenn du dich weigerst, trink [sips:4]."]
+            "instruction": ["If you don't do it, down your drink.", "Wenn du dich weigerst, ex dein Getränk."]
         }
     }
 }

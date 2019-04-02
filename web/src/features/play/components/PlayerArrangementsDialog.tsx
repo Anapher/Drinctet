@@ -33,6 +33,7 @@ const styles = (theme: Theme) =>
         content: {
             flexGrow: 1,
             padding: theme.spacing.unit * 2,
+            overflowX: "auto",
         },
         dialogPaper: {
             height: "80vh",

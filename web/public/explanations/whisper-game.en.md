@@ -1,0 +1,2 @@
+# The whisper game
+The group comes up with a question, and one is selected to answer it, but only to those who take a shot. If you don't drink, you don't get to learn the answer. So you can either feel left out or drink up and get your curiosity solved.

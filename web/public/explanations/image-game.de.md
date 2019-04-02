@@ -1,0 +1,2 @@
+# Image Game
+Beim Image Game geht es nur um Abstimmungen, wenn du die meisten Stimmen kriegst verlierst du (oder gewinnst, je nach dem ob du gerne trinkst). Der erste Spieler beginnt, indem er eine Person beschreibt, z. B. "Hatte die meisten Freunde/Freundinnen". Jeder zeigt dann auf den, von dem er denkt, dass er am ehesten auf die Beschreibung passt. Wenn du die meisten Stimmen bekommst, musst du trinken.

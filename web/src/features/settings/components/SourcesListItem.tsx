@@ -17,7 +17,7 @@ import React from "react";
 import { Slider } from "@material-ui/lab";
 
 interface LoadingFailedItemProps {
-    errorMessage: string | undefined;
+    errorMessage: string | null;
     onReloadClick: () => void;
 }
 

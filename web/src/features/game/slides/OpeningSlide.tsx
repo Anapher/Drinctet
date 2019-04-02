@@ -1,16 +1,17 @@
-import { createStyles, Theme, WithStyles, withStyles, Typography } from "@material-ui/core";
-import { RootState, RootAction } from "DrinctetTypes";
+import { createStyles, Theme, Typography, WithStyles, withStyles } from "@material-ui/core";
+import { cardMarkdownOptions } from "@utils/material-markdown";
+import { RootAction, RootState } from "DrinctetTypes";
 import Markdown from "markdown-to-jsx";
 import * as React from "react";
-import { LocalizeContextProps, withLocalize, Translate } from "react-localize-redux";
+import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { connect } from "react-redux";
+import { animated as animatedDom, useSpring } from "react-spring";
+import { animated, Keyframes } from "react-spring/renderprops";
 import { compose } from "redux";
 import * as actions from "../actions";
 import { toTranslator } from "../utils";
-import { defaultMarkdownOptions, getContentStyles, getRootStyles } from "./base/helper";
+import * as baseStyles from "./base/helper";
 import { SlidePresenter } from "./base/slide-presenter";
-import { Keyframes, animated } from "react-spring/renderprops";
-import { useSpring, animated as animatedDom } from "react-spring";
 
 const color = "#2980b9";
 const progressColor = "#3498db";
@@ -26,7 +27,7 @@ const dispatchProps = {
 const styles = (theme: Theme) =>
     createStyles({
         root: {
-            ...getRootStyles(),
+            ...baseStyles.rootStyle(),
             backgroundColor: color,
             position: "relative",
         },
@@ -40,11 +41,16 @@ const styles = (theme: Theme) =>
             zIndex: 5,
         },
         content: {
-            ...getContentStyles(theme),
+            ...baseStyles.contentStyle(theme),
             zIndex: 10,
+            [theme.breakpoints.down("sm")]: {
+                width: "100%",
+                marginLeft: 30,
+                marginRight: 30,
+                fontSize: 16,
+            },
         },
         header: {
-            color: "white",
             marginBottom: 20,
         },
     });
@@ -92,18 +98,21 @@ function OpeningSlideComponent(props: Props) {
     return (
         <div
             className={classes.root}
-            onClick={() => new Date() > continuationDate && nextSlide(toTranslator(props))}
+            onClick={() =>
+                (new Date() > continuationDate || process.env.NODE_ENV === "development") &&
+                nextSlide(toTranslator(props))
+            }
         >
             <Container native>
                 {(props: any) => <animated.div className={classes.rootProgress} style={props} />}
             </Container>
             <div className={classes.content}>
-                <Typography variant="h5" className={classes.header} gutterBottom>
+                <Typography variant="h5" color="inherit" className={classes.header} gutterBottom>
                     <Translate id="game.welcome" />
                 </Typography>
                 <Markdown
                     children={translate("game.openingInfo") as string}
-                    options={defaultMarkdownOptions}
+                    options={cardMarkdownOptions}
                 />
                 <animatedDom.div style={tapToContinueProps}>
                     <Typography style={{ color: "white", marginTop: 20 }} variant="h6">

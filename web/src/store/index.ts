@@ -5,6 +5,7 @@ import services from "../services";
 import rootEpic from "./root-epic";
 import { composeEnhancers } from "./utils";
 import rootReducer from "./root-reducer";
+import { loadState, persistState } from "./storage";
 
 export const epicMiddleware = createEpicMiddleware<RootAction, RootAction, RootState, Services>({
     dependencies: services,
@@ -17,10 +18,11 @@ const middlewares = [epicMiddleware];
 const enhancer = composeEnhancers(applyMiddleware(...middlewares));
 
 // rehydrate state on app start
-const initialState = {};
+const initialState = loadState();
 
 // create store
 const store = createStore(rootReducer, initialState, enhancer);
+persistState(store);
 
 epicMiddleware.run(rootEpic);
 

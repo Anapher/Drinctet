@@ -1,22 +1,17 @@
-import { createStyles, Theme, WithStyles, withStyles, Typography } from "@material-ui/core";
+import { createStyles, Theme, Typography, WithStyles, withStyles } from "@material-ui/core";
+import { cardMarkdownOptions } from "@utils/material-markdown";
 import { RootState } from "DrinctetTypes";
 import { Translator } from "GameModels";
 import Markdown from "markdown-to-jsx";
 import * as React from "react";
 import { ReactNode } from "react";
-import { LocalizeContextProps, withLocalize, Translate } from "react-localize-redux";
+import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { VirusCard } from "src/impl/cards/virus-card";
 import { requestSlideAsync } from "../actions";
 import { toTranslator } from "../utils";
-import {
-    defaultMarkdownOptions,
-    getContentStyles,
-    getRootStyles,
-    spaceHeaderStyles,
-    getHeaderStyles
-} from "./base/helper";
+import * as baseStyles from "./base/helper";
 import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
 import colors from "./colors";
 
@@ -30,13 +25,13 @@ const dispatchProps = {
 
 const styles = (theme: Theme) =>
     createStyles({
-        root: getRootStyles(),
-        content: getContentStyles(theme),
+        root: baseStyles.rootStyle(),
+        content: baseStyles.contentStyle(theme),
         header: {
-            ...getHeaderStyles(theme),
-            marginBottom: 15,
+            ...baseStyles.headerStyle(theme),
+            marginBottom: 10,
         },
-        spaceHeader: spaceHeaderStyles(theme),
+        hidden: baseStyles.hidden(),
     });
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -51,7 +46,7 @@ function VirusSlideComponent(props: Props) {
     }
 
     const header = (
-        <Typography className={classes.header} variant="h3">
+        <Typography className={classes.header} variant="h3" color="inherit">
             <Translate id="slides.virus.title" />
         </Typography>
     );
@@ -60,8 +55,8 @@ function VirusSlideComponent(props: Props) {
         <div className={classes.root} onClick={() => nextSlide(toTranslator(props))}>
             <div className={classes.content}>
                 {header}
-                <Markdown children={state.markdownContent} options={defaultMarkdownOptions} />
-                <div className={classes.spaceHeader}>{header}</div>
+                <Markdown children={state.markdownContent} options={cardMarkdownOptions} />
+                <div className={classes.hidden}>{header}</div>
             </div>
         </div>
     );

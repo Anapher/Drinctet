@@ -8,8 +8,8 @@ export const addSource = createStandardAction("ADD_SOURCE").map(
         payload: {
             url,
             isLoading: false,
-            errorMessage: undefined,
-            cards: undefined,
+            errorMessage: null,
+            cards: null,
             weight: 0.5,
             tags: []
         },

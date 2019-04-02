@@ -15,9 +15,19 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { defaultSources } from "./preferences";
 import * as serviceWorker from "./serviceWorker";
 
-for (const src of defaultSources) {
-    store.dispatch(addSource(src));
-    store.dispatch(loadSourceAsync.request(src));
+const state = store.getState();
+
+if (state.settings.sources.length === 0) {
+    for (const src of defaultSources) {
+        const url = `${process.env.PUBLIC_URL}/${src}`;
+        store.dispatch(addSource(url));
+        store.dispatch(loadSourceAsync.request(url));
+    }
+}
+else {
+    for (const src of state.settings.sources) {
+        store.dispatch(loadSourceAsync.request(src.url));
+    }
 }
 
 if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {

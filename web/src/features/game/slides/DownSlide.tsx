@@ -11,15 +11,10 @@ import { compose } from "redux";
 import { DownCard } from "src/impl/cards/down-card";
 import { requestSlideAsync } from "../actions";
 import { toTranslator } from "../utils";
-import {
-    defaultMarkdownOptions,
-    getContentStyles,
-    getRootStyles,
-    spaceHeaderStyles,
-    getHeaderStyles,
-} from "./base/helper";
+import * as baseStyles from "./base/helper";
 import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
 import colors from "./colors";
+import { cardMarkdownOptions } from "@utils/material-markdown";
 
 const mapStateToProps = (state: RootState) => ({
     state: state.game.slideState as DownSlideState,
@@ -31,13 +26,13 @@ const dispatchProps = {
 
 const styles = (theme: Theme) =>
     createStyles({
-        root: getRootStyles(),
-        content: getContentStyles(theme),
+        root: baseStyles.rootStyle(),
+        content: baseStyles.contentStyle(theme),
         header: {
-            ...getHeaderStyles(theme),
+            ...baseStyles.headerStyle(theme),
             marginBottom: 15,
         },
-        spaceHeader: spaceHeaderStyles(theme),
+        hidden: baseStyles.hidden()
     });
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -52,7 +47,7 @@ function DownSlideComponent(props: Props) {
     }
 
     const header = (
-        <Typography className={classes.header} variant="h3">
+        <Typography className={classes.header} variant="h3" color="inherit">
             <Translate id="slides.down.title" />
         </Typography>
     );
@@ -70,9 +65,9 @@ function DownSlideComponent(props: Props) {
                             {header}
                             <Markdown
                                 children={state.markdownContent}
-                                options={defaultMarkdownOptions}
+                                options={cardMarkdownOptions}
                             />
-                            <div className={classes.spaceHeader}>{header}</div>
+                            <div className={classes.hidden}>{header}</div>
                         </div>
                     )}
                 </Spring>

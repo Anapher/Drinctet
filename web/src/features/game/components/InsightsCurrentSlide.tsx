@@ -140,7 +140,11 @@ function renderSlideWeights({ slide, slideInsights }: Props) {
 
 class InsightsCurrentSlide extends Component<Props> {
     render() {
-        const { playerInsights, classes, cardRef } = this.props;
+        const { playerInsights, classes, cardRef, slideInsights } = this.props;
+        if (slideInsights === null) {
+            return null;
+        }
+
         return (
             <div>
                 <Typography variant="h5">
@@ -160,8 +164,13 @@ class InsightsCurrentSlide extends Component<Props> {
                                 data={{
                                     name: cardRef.card.type,
                                     id: cardRef.card.id,
-                                    wp: cardRef.card.willPower === undefined ? <Translate id="insights.universal"/> : cardRef.card.willPower,
-                                    url: cardRef.deckUrl
+                                    wp:
+                                        cardRef.card.willPower === undefined ? (
+                                            <Translate id="insights.universal" />
+                                        ) : (
+                                            cardRef.card.willPower
+                                        ),
+                                    url: cardRef.deckUrl,
                                 }}
                             />
                         </span>

@@ -81,6 +81,7 @@ function MainAppBar({ classes, handleToggleDrawer, history, sources, players, st
                         <React.Fragment>
                             <IconButton
                                 color="inherit"
+                                disabled={players.length < 3}
                                 onClick={() => history.push("/play/arrangements")}
                             >
                                 <PeopleIcon />

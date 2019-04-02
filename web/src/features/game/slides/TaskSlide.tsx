@@ -1,26 +1,21 @@
-import { createStyles, Theme, WithStyles, withStyles, Typography } from "@material-ui/core";
+import { TextCard } from "@core/cards/text-card";
+import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
+import { createStyles, Theme, Typography, WithStyles, withStyles } from "@material-ui/core";
+import { cardMarkdownOptions } from "@utils/material-markdown";
 import { RootState } from "DrinctetTypes";
 import { Translator } from "GameModels";
 import Markdown from "markdown-to-jsx";
 import * as React from "react";
 import { ReactNode } from "react";
-import { LocalizeContextProps, withLocalize, Translate } from "react-localize-redux";
+import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { connect } from "react-redux";
 import { compose } from "redux";
 import { TaskCard } from "src/impl/cards/task-card";
 import { requestSlideAsync } from "../actions";
 import { toTranslator } from "../utils";
-import {
-    defaultMarkdownOptions,
-    getContentStyles,
-    getRootStyles,
-    spaceHeaderStyles,
-    getHeaderStyles,
-} from "./base/helper";
+import * as baseStyles from "./base/helper";
 import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
 import colors from "./colors";
-import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
-import { TextCard } from "@core/cards/text-card";
 
 const mapStateToProps = (state: RootState) => ({
     state: state.game.slideState as TaskSlideState,
@@ -32,13 +27,13 @@ const dispatchProps = {
 
 const styles = (theme: Theme) =>
     createStyles({
-        root: getRootStyles(),
-        content: getContentStyles(theme),
+        root: baseStyles.rootStyle(),
+        content: baseStyles.contentStyle(theme),
         header: {
-            ...getHeaderStyles(theme),
-            marginBottom: 15,
+            ...baseStyles.headerStyle(theme),
+            marginBottom: 10,
         },
-        spaceHeader: spaceHeaderStyles(theme),
+        hidden: baseStyles.hidden(),
     });
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -53,7 +48,7 @@ function TaskSlideComponent(props: Props) {
     }
 
     const header = (
-        <Typography className={classes.header} variant="h3">
+        <Typography className={classes.header} variant="h3" color="inherit">
             <Translate id="slides.task.title" />
         </Typography>
     );
@@ -62,8 +57,11 @@ function TaskSlideComponent(props: Props) {
         <div className={classes.root} onClick={() => nextSlide(toTranslator(props))}>
             <div className={classes.content}>
                 {header}
-                <Markdown children={state.markdownContent} options={defaultMarkdownOptions} />
-                <div className={classes.spaceHeader}>{header}</div>
+                <Markdown children={state.markdownContent} options={cardMarkdownOptions} />
+                <Typography style={{ opacity: 0.8, marginTop: 10 }} color="inherit">
+                    <Translate id="slides.task.instruction" />
+                </Typography>
+                <div className={classes.hidden}>{header}</div>
             </div>
         </div>
     );
@@ -96,7 +94,7 @@ export class TaskSlide extends TextSlidePresenter<TaskSlideState, TaskCard> {
             task = task + ".";
         }
 
-        return "[Player99]: " + task + " " + this.translator.translate("slides.task.instruction");
+        return "[Player99]: " + task;
     }
 
     protected initializeState(markdownContent: string): TaskSlideState {

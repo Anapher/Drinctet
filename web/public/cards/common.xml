@@ -83,3 +83,6 @@
 <JokeCard id="77R">
     <Text lang="de">Einer zum anderen: Hey, wie geht's, was machst du so? - Ich studiere Duaaal. - Hast du mich gerade Aal genannt?</Text>
 </JokeCard>
+<TaskCard id="78R" willPower="4">
+    <Text lang="de">Kneif [Player:f] in die Brustwarzen.</Text>
+</TaskCard>

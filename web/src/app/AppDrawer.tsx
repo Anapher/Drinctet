@@ -1,4 +1,5 @@
 import {
+    Collapse,
     createStyles,
     Divider,
     List,
@@ -6,10 +7,12 @@ import {
     ListItemIcon,
     ListItemText,
     Theme,
+    Typography,
     WithStyles,
     withStyles,
-    Typography,
 } from "@material-ui/core";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import FlightTakeoffIcon from "@material-ui/icons/FlightTakeoff";
 import LayersIcon from "@material-ui/icons/Layers";
 import PersonIcon from "@material-ui/icons/Person";
@@ -19,10 +22,19 @@ import React from "react";
 import { LocalizeContextProps, withLocalize } from "react-localize-redux";
 import { RouteComponentProps, withRouter } from "react-router";
 import { compose } from "redux";
+import DrinkingGameItems from "../features/drinking-games/DrinkingGameItems";
 
 const styles = (theme: Theme) =>
     createStyles({
-        toolbar: { ...theme.mixins.toolbar, paddingLeft: 20, display: "flex", alignItems: "center" },
+        toolbar: {
+            ...theme.mixins.toolbar,
+            paddingLeft: 20,
+            display: "flex",
+            alignItems: "center",
+        },
+        nested: {
+            paddingLeft: theme.spacing.unit * 4,
+        },
     });
 
 type Props = WithStyles<typeof styles> & RouteComponentProps & LocalizeContextProps;
@@ -49,10 +61,6 @@ const drinctetRoutes: Route[] = [
 
 const secondaryRoutes: Route[] = [
     {
-        path: "/drinkingGames",
-        icon: <ReceiptIcon />,
-    },
-    {
         path: "/about",
         icon: <PersonIcon />,
     },
@@ -72,6 +80,49 @@ function renderRoutes({ translate, history }: Props, routes: Route[]) {
     ));
 }
 
+interface ExpandableItemState {
+    isOpen: boolean;
+}
+
+class DrinkingGamesMenu extends React.Component<Props, ExpandableItemState> {
+    readonly state = { isOpen: false };
+
+    componentDidMount() {
+        if (this.props.location.pathname.startsWith("/drinkingGames")) {
+            this.setState({ isOpen: true });
+        }
+    }
+
+    handleClick = (event: React.SyntheticEvent) => {
+        this.setState(state => ({ isOpen: !state.isOpen }));
+        event.stopPropagation();
+    };
+
+    render() {
+        const { translate, classes } = this.props;
+        const { isOpen } = this.state;
+        const name = "drinkingGames";
+        return (
+            <React.Fragment>
+                <ListItem button onClick={this.handleClick} selected={false}>
+                    <ListItemIcon>
+                        <ReceiptIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={translate(`menu.${name}`)} />
+                    {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                </ListItem>
+                <Collapse in={isOpen} timeout="auto" unmountOnExit>
+                    <List disablePadding>
+                        <div className={classes.nested}>
+                            <DrinkingGameItems />
+                        </div>
+                    </List>
+                </Collapse>
+            </React.Fragment>
+        );
+    }
+}
+
 function MainDrawer(props: Props) {
     const { classes } = props;
     return (
@@ -83,10 +134,11 @@ function MainDrawer(props: Props) {
                 </div>
             </div>
             <Divider />
+            <List>{renderRoutes(props, drinctetRoutes)}</List>
+            <Divider />
             <List>
-                {renderRoutes(props, drinctetRoutes)}
-                <Divider />
-                {renderRoutes(props, secondaryRoutes)}
+                <DrinkingGamesMenu {...props} />
+                <List>{renderRoutes(props, secondaryRoutes)}</List>
             </List>
         </div>
     );

@@ -1,4 +1,14 @@
-import { AppBar, Button, createStyles, IconButton, Slide, Toolbar, Typography, WithStyles, withStyles } from "@material-ui/core";
+import {
+    AppBar,
+    Button,
+    createStyles,
+    IconButton,
+    Slide,
+    Toolbar,
+    Typography,
+    WithStyles,
+    withStyles,
+} from "@material-ui/core";
 import Dialog from "@material-ui/core/Dialog";
 import withMobileDialog, { InjectedProps } from "@material-ui/core/withMobileDialog";
 import { WithWidth } from "@material-ui/core/withWidth";
@@ -24,10 +34,7 @@ const styles = createStyles({
         flexGrow: 1,
     },
     dialogPaper: {
-        height: "80vh",
-    },
-    fullscreenPaper: {
-        height: "100vh",
+        minHeight: "80vh",
     },
 });
 
@@ -50,7 +57,6 @@ function SettingsDialog({ fullScreen, classes, history }: Props) {
                 maxWidth="md"
                 classes={{
                     paperScrollPaper: classes.dialogPaper,
-                    paperFullScreen: classes.fullscreenPaper,
                 }}
             >
                 <AppBar className={classes.appBar}>

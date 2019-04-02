@@ -32,7 +32,7 @@ export default combineReducers<SettingsState, RootAction>({
                         ? {
                               ...item,
                               cards: action.payload.cards,
-                              errorMessage: undefined,
+                              errorMessage: null,
                               isLoading: false,
                               tags: _.uniq(_.flatten(action.payload.cards.map(x => x.tags)).map(x => (x as string).toLowerCase()))
                           }

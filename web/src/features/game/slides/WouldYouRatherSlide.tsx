@@ -1,6 +1,9 @@
+import { TextCard } from "@core/cards/text-card";
+import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
 import { createStyles, Theme, Typography, WithStyles, withStyles } from "@material-ui/core";
+import { cardMarkdownOptions } from "@utils/material-markdown";
 import { RootState } from "DrinctetTypes";
-import { Translator, SelectedPlayer } from "GameModels";
+import { SelectedPlayer, Translator } from "GameModels";
 import Markdown from "markdown-to-jsx";
 import * as React from "react";
 import { ReactNode } from "react";
@@ -10,16 +13,8 @@ import { compose } from "redux";
 import { WouldYouRatherCard } from "src/impl/cards/would-you-rather-card";
 import { requestSlideAsync } from "../actions";
 import { toTranslator } from "../utils";
-import {
-    defaultMarkdownOptions,
-    getContentStyles,
-    getRootStyles,
-    spaceHeaderStyles,
-    getHeaderStyles,
-} from "./base/helper";
+import * as baseStyles from "./base/helper";
 import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
-import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
-import { TextCard } from "@core/cards/text-card";
 import colors from "./colors";
 
 const mapStateToProps = (state: RootState) => ({
@@ -32,16 +27,9 @@ const dispatchProps = {
 
 const styles = (theme: Theme) =>
     createStyles({
-        root: getRootStyles(),
-        content: getContentStyles(theme),
-        header: {
-            ...getHeaderStyles(theme),
-            marginBottom: 15,
-        },
-        spaceHeader: spaceHeaderStyles(theme),
-        instruction: {
-            color: "white",
-        },
+        root: baseStyles.rootStyle(),
+        content: baseStyles.contentStyle(theme),
+        header: baseStyles.smallHeaderStyle(theme),
     });
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -56,7 +44,7 @@ function WouldYouRatherSlideComponent(props: Props) {
     }
 
     const header = (
-        <Typography className={classes.header} variant="h3">
+        <Typography className={classes.header} variant="h6" color="inherit">
             <Translate id="slides.wouldyourather.title" />
         </Typography>
     );
@@ -65,14 +53,13 @@ function WouldYouRatherSlideComponent(props: Props) {
         <div className={classes.root} onClick={() => nextSlide(toTranslator(props))}>
             <div className={classes.content}>
                 {header}
-                <Markdown children={state.markdownContent} options={defaultMarkdownOptions} />
+                <Markdown children={state.markdownContent} options={cardMarkdownOptions} />
                 <div style={{ position: "relative" }}>
-                    <Typography
-                        style={{ marginTop: 20 }}
-                        className={classes.instruction}
-                        variant="h6"
-                    >
-                        <Translate id="slides.wouldyourather.instruction" data={{ sips: state.sips }} />
+                    <Typography style={{ marginTop: 20 }} color="inherit" variant="subtitle1">
+                        <Translate
+                            id="slides.wouldyourather.instruction"
+                            data={{ sips: state.sips }}
+                        />
                     </Typography>
                 </div>
             </div>

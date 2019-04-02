@@ -1,25 +1,17 @@
-import {
-    createStyles,
-    IconButton,
-    ListItemIcon,
-    Menu,
-    MenuItem,
-    WithStyles,
-    withStyles,
-} from "@material-ui/core";
+import { createStyles, IconButton, ListItemIcon, Menu, MenuItem, WithStyles, withStyles } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 import DonutLargeIcon from "@material-ui/icons/DonutLarge";
-import FeedbackIcon from "@material-ui/icons/Feedback";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import SettingsIcon from "@material-ui/icons/Settings";
 import FullscreenIcon from "@material-ui/icons/Fullscreen";
 import FullscreenExitIcon from "@material-ui/icons/FullscreenExit";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import SettingsIcon from "@material-ui/icons/Settings";
+import Fullscreen from "@utils/fullscreen";
 import { RootState } from "DrinctetTypes";
 import React, { Component, ComponentType } from "react";
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
-import { compose } from "redux";
 import { connect } from "react-redux";
 import { RouteComponentProps, withRouter } from "react-router";
-import Fullscreen from "@utils/fullscreen";
+import { compose } from "redux";
 
 const styles = createStyles({
     button: {
@@ -85,9 +77,14 @@ class GameOptions extends Component<Props, State> {
 
         this.handleClose();
     };
+    
+    handleExit = () => {
+        this.handleClose();
+        this.props.history.push("/play");
+    };
 
     render() {
-        const { classes, selectedCard } = this.props;
+        const { classes } = this.props;
         const { anchorEl, isFullscreen } = this.state;
         const isOpen = anchorEl !== null;
 
@@ -122,17 +119,23 @@ class GameOptions extends Component<Props, State> {
                         </ListItemIcon>
                         <Translate id="game.options.insights" />
                     </MenuItem>
-                    <MenuItem onClick={this.handleClose} disabled={selectedCard === null}>
+                    {/* <MenuItem onClick={this.handleClose} disabled={selectedCard === null}>
                         <ListItemIcon>
                             <FeedbackIcon />
                         </ListItemIcon>
                         <Translate id="game.options.reportCard" />
-                    </MenuItem>
+                    </MenuItem> */}
                     <MenuItem onClick={this.toggleFullscreen}>
                         <ListItemIcon>
                             {isFullscreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
                         </ListItemIcon>
                         <Translate id={isFullscreen ? "game.options.exitFullscreen" : "game.options.fullscreen"} />
+                    </MenuItem>
+                    <MenuItem onClick={this.handleExit}>
+                        <ListItemIcon>
+                            <CloseIcon />
+                        </ListItemIcon>
+                        <Translate id="game.options.exit" />
                     </MenuItem>
                 </Menu>
             </div>

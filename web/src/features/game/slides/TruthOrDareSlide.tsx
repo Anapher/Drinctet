@@ -3,15 +3,8 @@ import { TextCard } from "@core/cards/text-card";
 import { PlayerInfo } from "@core/player-info";
 import { PlayerSelectionInsights } from "@core/selection/insights";
 import { MelinaAlgorithm } from "@core/selection/melina-algorithm";
-import {
-    Button,
-    createStyles,
-    Paper,
-    Theme,
-    Typography,
-    WithStyles,
-    withStyles,
-} from "@material-ui/core";
+import { Button, createStyles, Paper, Theme, Typography, WithStyles, withStyles } from "@material-ui/core";
+import { cardMarkdownOptions } from "@utils/material-markdown";
 import { RootAction, RootState } from "DrinctetTypes";
 import { Translator } from "GameModels";
 import Markdown from "markdown-to-jsx";
@@ -19,15 +12,15 @@ import * as React from "react";
 import { ReactNode } from "react";
 import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
 import { connect } from "react-redux";
+import { animated, useSpring } from "react-spring";
 import { compose } from "redux";
 import * as actions from "../actions";
 import * as gameEngine from "../game-engine";
 import { getRandomSelectionAlgorithm } from "../game-engine";
 import { toTranslator } from "../utils";
-import { defaultMarkdownOptions, getContentStyles, getRootStyles } from "./base/helper";
+import * as baseStyles from "./base/helper";
 import { SlidePresenter } from "./base/slide-presenter";
 import { formatText, selectText } from "./base/text-slide-presenter";
-import { useSpring, animated } from "react-spring";
 import colors from "./colors";
 
 const mapStateToProps = (state: RootState) => ({
@@ -44,18 +37,17 @@ const dispatchProps = {
 const styles = (theme: Theme) =>
     createStyles({
         root: {
-            ...getRootStyles(),
+            ...baseStyles.rootStyle(),
             cursor: "default",
         },
         clickableRoot: {
-            ...getRootStyles()
+            ...baseStyles.rootStyle(),
         },
-        content: getContentStyles(theme),
+        content: baseStyles.contentStyle(theme),
         header: {
-            color: "white",
             marginBottom: 15,
             [theme.breakpoints.down("sm")]: {
-                fontSize: "1.5rem",
+                fontSize: "1.5em",
             },
         },
         spaceHeader: {
@@ -63,9 +55,9 @@ const styles = (theme: Theme) =>
             marginTop: 15,
         },
         questionPaper: {
-            padding: theme.spacing.unit * 2,
+            padding: theme.spacing.unit,
             [theme.breakpoints.up("sm")]: {
-                padding: theme.spacing.unit * 3,
+                padding: theme.spacing.unit * 2,
                 width: theme.spacing.unit * 50,
             },
         },
@@ -73,6 +65,10 @@ const styles = (theme: Theme) =>
             display: "flex",
             justifyContent: "flex-end",
             marginTop: theme.spacing.unit,
+        },
+        refuseMessage: {
+            opacity: 0.8,
+            marginTop: 10,
         },
     });
 
@@ -103,7 +99,7 @@ function QuestionComponent(props: Props) {
     return (
         <animated.div style={springProps}>
             <Paper className={classes.questionPaper}>
-                <Typography variant="h6" component="h6">
+                <Typography style={{fontSize: 17, fontWeight: 500}}>
                     <Translate
                         id="slides.truthordare.playerTruthordare"
                         data={{ name: player.name }}
@@ -131,7 +127,7 @@ function DareComponent(props: Props) {
     const { classes, nextSlide, state } = props;
 
     const header = (
-        <Typography className={classes.header} variant="h4">
+        <Typography className={classes.header} variant="h5" color="inherit">
             <Translate id="slides.truthordare.truth" /> <Translate id="slides.truthordare.or" />{" "}
             <b>
                 <Translate id="slides.truthordare.dare" />
@@ -143,7 +139,10 @@ function DareComponent(props: Props) {
         <div className={classes.clickableRoot} onClick={() => nextSlide(toTranslator(props))}>
             <div className={classes.content}>
                 {header}
-                <Markdown children={state.markdownContent!} options={defaultMarkdownOptions} />
+                <Markdown children={state.markdownContent!} options={cardMarkdownOptions} />
+                <Typography className={classes.refuseMessage} color="inherit">
+                    <Translate id="slides.truthordare.refuseDare" />
+                </Typography>
                 <div className={classes.spaceHeader}>{header}</div>
             </div>
         </div>
@@ -153,7 +152,7 @@ function DareComponent(props: Props) {
 function TruthComponent(props: Props) {
     const { classes, nextSlide, state } = props;
     const header = (
-        <Typography className={classes.header} variant="h4">
+        <Typography className={classes.header} variant="h4" color="inherit">
             <b>
                 <Translate id="slides.truthordare.truth" />
             </b>{" "}
@@ -165,7 +164,10 @@ function TruthComponent(props: Props) {
         <div className={classes.clickableRoot} onClick={() => nextSlide(toTranslator(props))}>
             <div className={classes.content}>
                 {header}
-                <Markdown children={state.markdownContent!} options={defaultMarkdownOptions} />
+                <Markdown children={state.markdownContent!} options={cardMarkdownOptions} />
+                <Typography className={classes.refuseMessage} color="inherit">
+                    <Translate id="slides.truthordare.refuseTruth" />
+                </Typography>
                 <div className={classes.spaceHeader}>{header}</div>
             </div>
         </div>

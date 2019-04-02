@@ -12,7 +12,7 @@ const styles = (theme: Theme) =>
             display: "flex",
             flexDirection: "column",
             height: "100%",
-            maxWidth: 500,
+            maxWidth: 800,
         },
         headerMargin: {
             paddingTop: theme.spacing.unit * 2,

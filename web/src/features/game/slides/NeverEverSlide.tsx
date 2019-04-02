@@ -1,26 +1,21 @@
-import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
-import {
-    getRootStyles,
-    defaultMarkdownOptions,
-    getContentStyles,
-    spaceHeaderStyles,
-    getHeaderStyles,
-} from "./base/helper";
+import { TextCard } from "@core/cards/text-card";
+import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
+import { createStyles, Theme, Typography, WithStyles, withStyles } from "@material-ui/core";
+import { cardMarkdownOptions } from "@utils/material-markdown";
 import { RootState } from "DrinctetTypes";
-import { requestSlideAsync } from "../actions";
-import { ReactNode } from "react";
-import { compose } from "redux";
-import { connect } from "react-redux";
-import { createStyles, Theme, WithStyles, Typography, withStyles } from "@material-ui/core";
-import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
+import { SelectedPlayer, Translator } from "GameModels";
 import Markdown from "markdown-to-jsx";
 import * as React from "react";
+import { ReactNode } from "react";
+import { LocalizeContextProps, Translate, withLocalize } from "react-localize-redux";
+import { connect } from "react-redux";
+import { animated, useSpring } from "react-spring";
+import { compose } from "redux";
 import { NeverEverCard } from "src/impl/cards/never-ever-card";
-import { SelectionAlgorithm } from "@core/selection/selection-algorithm";
-import { SelectedPlayer, Translator } from "GameModels";
-import { TextCard } from "@core/cards/text-card";
+import { requestSlideAsync } from "../actions";
 import { toTranslator } from "../utils";
-import { useSpring, animated } from "react-spring";
+import * as baseStyles from "./base/helper";
+import { TextSlidePresenter, TextSlideState } from "./base/text-slide-presenter";
 import colors from "./colors";
 
 const mapStateToProps = (state: RootState) => ({
@@ -33,16 +28,10 @@ const dispatchProps = {
 
 const styles = (theme: Theme) =>
     createStyles({
-        root: getRootStyles(),
-        content: getContentStyles(theme),
-        header: {
-            ...getHeaderStyles(theme),
-            marginBottom: 15,
-        },
-        instruction: {
-            color: "white",
-        },
-        spaceHeader: spaceHeaderStyles(theme),
+        root: baseStyles.rootStyle(),
+        content: baseStyles.contentStyle(theme),
+        header: baseStyles.smallHeaderStyle(theme),
+        hidden: baseStyles.hidden(),
     });
 
 type Props = ReturnType<typeof mapStateToProps> &
@@ -57,7 +46,7 @@ function NeverEverComponent(props: Props) {
     }
 
     const header = (
-        <Typography className={classes.header} variant="h5">
+        <Typography className={classes.header} variant="h6" color="inherit">
             <Translate id="slides.neverever.title" />
         </Typography>
     );
@@ -72,15 +61,9 @@ function NeverEverComponent(props: Props) {
         <div className={classes.root} onClick={() => nextSlide(toTranslator(props))}>
             <animated.div style={springProps} className={classes.content}>
                 {header}
-                <Typography variant="h5" className={classes.instruction}>
-                    <Markdown children={state.markdownContent} options={defaultMarkdownOptions} />
-                </Typography>
+                <Markdown children={state.markdownContent} options={cardMarkdownOptions} />
                 <div style={{ position: "relative" }}>
-                    <Typography
-                        style={{ marginTop: 20 }}
-                        className={classes.instruction}
-                        variant="h6"
-                    >
+                    <Typography style={{ marginTop: 20 }} color="inherit" variant="subtitle1">
                         <Translate id="slides.neverever.instruction" data={{ sips: state.sips }} />
                     </Typography>
                 </div>

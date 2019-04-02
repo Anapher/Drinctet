@@ -541,14 +541,14 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
         }
 
         // --- --- --- ||| --- --- --- ---
-        // 0.5 .75 .75  1  .25 .15 .05 .05
+        // 0.5 .75 .75  1  .15  0   0   0
 
         if (cardWillPower === willPower) {
             return 1;
         }
 
         if (cardWillPower > willPower) {
-            const result = 0.35 - (cardWillPower - willPower) * 0.1;
+            const result = 0.15 - (cardWillPower - willPower) * 0.1;
             return result < 0 ? 0 : result;
         }
 

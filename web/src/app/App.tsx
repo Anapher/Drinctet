@@ -16,6 +16,7 @@ import PlayRoute from "../routes/PlayRoute";
 import SourcesRoute from "../routes/SourcesRoute";
 import ConfigurationRoute from "../routes/ConfigurationRoute";
 import GameComponent from "../features/game/components/GameComponent";
+import DrinkingGameRoute from "../routes/DrinkingGameRoute";
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -78,6 +79,10 @@ function App(props: Props) {
                                                 path="/configuration"
                                                 component={ConfigurationRoute}
                                             />
+                                            <Route
+                                                path="/drinkingGames"
+                                                component={DrinkingGameRoute}
+                                            />
                                         </Switch>
                                     </div>
                                 </main>
@@ -88,16 +93,6 @@ function App(props: Props) {
             </div>
         </BrowserRouter>
     );
-}
-
-{
-    /* <Switch>
-<Route exact path="/" component={WelcomeView} />
-<Route
-    path="/game"
-    render={() => (!isStarted ? <Redirect to="/" /> : (<GameComponent />))}
-/>
-</Switch> */
 }
 
 export default compose(

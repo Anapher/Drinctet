@@ -1,16 +1,16 @@
 export const socialMediaPlatforms = ["Snapchat", "Instagram", "Facebook"];
 
 export const defaultSources = [
-    "cards/bullshitfact.xml",
     "cards/ichundderalkohol.xml",
+    "cards/bullshitfact.xml",
     "cards/ConversationStartersWorld.NeverHaveIEver.xml",
     "cards/Bevil.xml",
     "cards/ConversationStartersWorld.TruthOrDareDare.xml",
     "cards/ConversationStartersWorld.TruthOrDareTruth.xml",
     "cards/ConversationStartersWorld.Wyr.xml",
     "cards/common.xml",
-    "cards/Picolo/Picolo.xml",
-    "cards/Picolo/Picolo.Silly.xml",
+    "cards/picolo/Picolo.xml",
+    "cards/picolo/Picolo.Silly.xml",
     "cards/realfacts.xml",
 ];
 
