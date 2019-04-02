@@ -746,7 +746,7 @@
     <Text lang="de">Lass dir etwas auf die Stirn schreiben.</Text>
 </TaskCard>
 <TaskCard id="XYcYZ" willPower="1">
-    <Text lang="de">[Player], lass dir etwas auf die Wange schreiben.</Text>
+    <Text lang="de">Lass dir etwas auf die Wange schreiben.</Text>
 </TaskCard>
 <DrinkCard id="EXcoK" willPower="3">
     <Text lang="de">[Player], pfeiff mit vollem Mund ein Lied, die anderen müssen raten, der Gewinner verteilt [sips]</Text>
