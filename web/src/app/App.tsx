@@ -17,6 +17,7 @@ import SourcesRoute from "../routes/SourcesRoute";
 import ConfigurationRoute from "../routes/ConfigurationRoute";
 import GameComponent from "../features/game/components/GameComponent";
 import DrinkingGameRoute from "../routes/DrinkingGameRoute";
+import AboutRoute from "../routes/AboutRoute";
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -83,6 +84,7 @@ function App(props: Props) {
                                                 path="/drinkingGames"
                                                 component={DrinkingGameRoute}
                                             />
+                                            <Route path="/about" component={AboutRoute} />
                                         </Switch>
                                     </div>
                                 </main>

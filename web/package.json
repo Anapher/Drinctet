@@ -38,8 +38,9 @@
     "typescript": "3.3.3333"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "start": "npm run prebuild && react-app-rewired start",
+    "build": "npm run prebuild && react-app-rewired build",
+    "prebuild": "@powershell -NoProfile -ExecutionPolicy Unrestricted -Command ./prebuild.ps1",
     "test": "react-app-rewired test --env=jsdom",
     "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "eject": "react-scripts eject",

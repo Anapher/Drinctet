@@ -50,6 +50,13 @@
     "welcome": {
         "startGame": ["Start Game", "Spiel starten"]
     },
+    "about": {
+        "title": ["About", "Über"],
+        "version": ["Version", "Version"],
+        "aboutText": ["Drinctet is a free web application that makes a great start in a good party night. This is a free time project, there will never be advertisments or a fee. The project was primarily created to prepare myself for React, Flux/Redux and Material UI for my workplace.", "Drinctet ist eine kostenlose Webanwendung, die euch den Start in den Abend deutlich erleichtert. Ich verfolge keinerlei kommerzielle Interessen, es wird niemals Werbung noch eine Gebühr geben. Das Projekt ist primär entstanden, damit ich mich auf React, Flux/Redux und Material UI für meine Arbeit vorbereiten kann."],
+        "installation": ["Installation", "Installation"],
+        "installationText": ["To use Drinctet as comfortable as possible, the app can be downloaded as a PWA (Progressive Web App) to your Android smartphone. The app is then almost indistinguishable from a website. Just tap on the context menu in the top right corner of the Google Chrome browser (the three dots vertically below each other) and then on \"Add to Home Screen\".", "Um die Nutzung von Drinctet so komfortabel wie möglich zu gestalten, kann die App als PWA (Progressive Web App) auf dein Android Smartphone heruntergeladen werden. Die App ist dann kaum noch von einer Website zu unterscheiden. Dazu tipp einfach in dem Google Chrome Browser oben rechts auf das Kontextmenü (die drei Punkte vertikal untereinander) und dann auf \"Zum Startbildschirm hinzufügen\"."]
+    },
     "game": {
         "textFormatter": {
             "sips": ["sips", "Schlucke"],
