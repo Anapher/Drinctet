@@ -63,6 +63,13 @@ const games: DrinkingGame[] = [
             { lang: "de", name: "U-Boot" },
         ],
     },
+    {
+        name: "beer-bowling",
+        translations: [
+            { lang: "en", name: "Beer Bowling" },
+            { lang: "de", name: "Beer Bowling" },
+        ],
+    },
 ];
 
 export default games;
