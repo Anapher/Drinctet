@@ -11,6 +11,7 @@ import { NoIdeaLosesSlide } from './slides/NoIdeaLosesSlide';
 import { GroupGameSlide } from './slides/GroupGameSlide';
 import { TaskSlide } from './slides/TaskSlide';
 import { OpeningSlide } from './slides/OpeningSlide';
+import { GameFinishedSlide } from './slides/GameFinishedSlide';
 
 export type SlideComponents = { [type: string]: new(translator: Translator) => SlidePresenter };
 
@@ -26,4 +27,5 @@ export const slideComponents: SlideComponents = {
     GroupGameSlide,
     TaskSlide,
     OpeningSlide,
+    GameFinishedSlide
 };

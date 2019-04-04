@@ -66,10 +66,10 @@ function nextSlide(translator: Translator): RootAction[] {
         willPowerActions.push(actions.addWillPowerMemory(memory));
     }
 
-    const slideType = selection.selectNextSlide(slides);
+    let slideType = selection.selectNextSlide(slides);
     if (slideType === undefined) {
         // TODO: end game
-        throw new Error("Game Finished");
+        slideType = "GameFinishedSlide";
     }
 
     const factory = slideComponents[slideType];

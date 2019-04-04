@@ -387,10 +387,14 @@ export class MelinaAlgorithm extends SelectionAlgorithmBase {
                 factor = Math.min(cardTypeRatings[cardType], factor);
             }
 
+            if (factor === 0) {
+                continue;
+            }
+
             weightedSlides.push({ weight: factor * slideSettings.weight, value: slide });
         }
 
-        if (weightedSlides.length > 2 && this.status.slidesHistory.length > 0) {
+        if (weightedSlides.length > 2 && availableSlides.length > 2 && this.status.slidesHistory.length > 0) {
             const lastSlideType = this.status.slidesHistory[0];
             const lastSlide = weightedSlides.find(x => x.value.slideType === lastSlideType);
             if (lastSlide !== undefined) {
