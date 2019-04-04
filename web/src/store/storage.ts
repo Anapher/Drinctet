@@ -24,3 +24,7 @@ export function loadState(): Partial<RootState> {
     const state = settings !== null ? JSON.parse(settings) : {};
     return { settings: state };
 }
+
+export function deleteSettings(): void {
+    localStorage.clear();
+}

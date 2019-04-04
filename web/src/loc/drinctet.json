@@ -44,7 +44,9 @@
             "Bei ${count} Slides hat man von "
         ],
         "tags": ["Tags", "Tags"],
-        "tags.none": ["None of your cards have tags.", "Keine deiner Karten hat Tags."]
+        "tags.none": ["None of your cards have tags.", "Keine deiner Karten hat Tags."],
+        "resetWeights": ["Reset Weights", "Gewichtungen zurücksetzen"],
+        "reset": ["Reset all", "Alles zurücksetzen"]
     },
     "add": ["Add", "Hinzufügen"],
     "welcome": {

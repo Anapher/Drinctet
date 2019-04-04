@@ -34,3 +34,6 @@ export const setSocialMediaPlatform = createStandardAction("SET_SOCIAL_MEDIA_PLA
 export const setSlideWeight = createStandardAction("SET_SLIDE_WEIGHT")<Weighted<string>>();
 
 export const setTagWeight = createStandardAction("SET_TAG_WEIGHT")<Weighted<string>>();
+
+export const resetWeights = createStandardAction("RESET_WEIGHTS")();
+export const resetAll = createStandardAction("RESET_ALL")();

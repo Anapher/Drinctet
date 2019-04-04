@@ -34,7 +34,11 @@ export default combineReducers<SettingsState, RootAction>({
                               cards: action.payload.cards,
                               errorMessage: null,
                               isLoading: false,
-                              tags: _.uniq(_.flatten(action.payload.cards.map(x => x.tags)).map(x => (x as string).toLowerCase()))
+                              tags: _.uniq(
+                                  _.flatten(action.payload.cards.map(x => x.tags)).map(x =>
+                                      (x as string).toLowerCase(),
+                                  ),
+                              ),
                           }
                         : item,
                 );
@@ -64,6 +68,8 @@ export default combineReducers<SettingsState, RootAction>({
         switch (action.type) {
             case getType(actions.setSlideWeight):
                 return state.map(x => (x.value === action.payload.value ? action.payload : x));
+            case getType(actions.resetWeights):
+                return GetSlideWeightedArray();
             default:
                 return state;
         }
@@ -76,17 +82,22 @@ export default combineReducers<SettingsState, RootAction>({
         return state;
     },
     tags: (state = [], action) => {
-        if (action.type === getType(actions.setTagWeight)) {
-            const value = action.payload.value.toLowerCase();
-            const existingTag = state.find(x => x.value === value);
-            if (existingTag !== undefined) {
-                return state.map(x => x.value === value ? {value, weight: action.payload.weight} : x);
-            } else {
-                return [...state, action.payload];
-            }
+        switch (action.type) {
+            case getType(actions.setTagWeight):
+                const value = action.payload.value.toLowerCase();
+                const existingTag = state.find(x => x.value === value);
+                if (existingTag !== undefined) {
+                    return state.map(x =>
+                        x.value === value ? { value, weight: action.payload.weight } : x,
+                    );
+                } else {
+                    return [...state, action.payload];
+                }
+            case getType(actions.resetWeights):
+                return state.map(x => ({ ...x, weight: 0.5 }));
+            default:
+                return state;
         }
-
-        return state;
     },
 });
 

@@ -1,9 +1,10 @@
 import { RootAction, RootState, Services } from "DrinctetTypes";
 import { Epic } from "redux-observable";
 import { from, of } from "rxjs";
-import { catchError, filter, map, mergeMap } from "rxjs/operators";
+import { catchError, filter, map, mergeMap, ignoreElements, tap } from "rxjs/operators";
 import { isActionOf } from "typesafe-actions";
-import { loadSourceAsync } from "./actions";
+import { loadSourceAsync, resetAll } from "./actions";
+import { deleteSettings } from "../../store/storage";
 
 export const loadSourceEpic: Epic<RootAction, RootAction, RootState, Services> = (
     action$,
@@ -21,3 +22,12 @@ export const loadSourceEpic: Epic<RootAction, RootAction, RootState, Services> =
             ),
         ),
     );
+
+export const resetAllEpic: Epic<RootAction, RootAction, RootState, Services> = (
+    action$, _state$, _services
+) => action$.pipe(
+    filter(isActionOf(resetAll)),
+    tap(() => deleteSettings()),
+    tap(() => window.location.reload()),
+    ignoreElements()
+)

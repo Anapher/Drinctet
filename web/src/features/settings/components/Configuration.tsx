@@ -5,6 +5,7 @@ import { Grid } from "@material-ui/core";
 import SocialMediaPlatform from "./configuration/SocialMediaPlatform";
 import SlidePreferences from "./configuration/SlidePreferences";
 import TagsPerferences from "./configuration/TagsPerferences";
+import ResetSettings from "./configuration/ResetSettings";
 
 class Configuration extends React.Component {
     render() {
@@ -25,6 +26,9 @@ class Configuration extends React.Component {
                     </Grid>
                     <Grid item>
                         <TagsPerferences />
+                    </Grid>
+                    <Grid item>
+                        <ResetSettings />
                     </Grid>
                 </Grid>
             </Grid>
