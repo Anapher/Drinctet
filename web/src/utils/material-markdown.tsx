@@ -45,7 +45,7 @@ const SizedBlock = (fontSize: string) => ({ children, ...props }: any) => (
         </Typography>)
 ;
 
-const BlockQuote = ({children, ...props}: any) => <div {...props} style={{borderLeft: "1px solid white", paddingLeft: 5}}>{children}</div>
+const BlockQuote = ({children, ...props}: any) => <div {...props} style={{borderLeft: "1px solid white", paddingLeft: 16}}>{children}</div>
 
 export const markdownOptions: ParsingOptions = {
     overrides: {
