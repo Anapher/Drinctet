@@ -31,5 +31,83 @@
     <Text lang="en">If you lift a kangeroo's tail off the ground it can't hop.</Text>
 </FactCard>
 <FactCard id="DLO" is="true">
-    <Text lang="de"> Zu jedem Zeitpunkt sind ca. 0.7% der Weltbevölkerung betrunken.</Text>
+    <Text lang="de">Zu jedem Zeitpunkt sind ca. 0.7% der Weltbevölkerung betrunken.</Text>
+</FactCard>
+<!-- https://list25.com/25-odd-and-bizarre-facts-about-sex-you-probably-didnt-know/ -->
+<FactCard id="jRO" is="true">
+    <Text lang="de">Der durchschnittliche weibliche Orgasmus dauert zwanzig Sekunden - vierzehn Sekunden länger als der männliche Orgasmus.</Text>
+    <Text lang="en">The average female orgasm lasts twenty seconds—fourteen seconds longer than the male orgasm.</Text>
+</FactCard>
+<FactCard id="wyB" is="true">
+    <Text lang="de">Beim Geschlechtsverkehr schwillt neben den Genitalien und Brüsten auch die innere Nase an.</Text>
+    <Text lang="en">During sexual intercourse, in addition to the genitals and breasts, the inner nose also swells.</Text>
+</FactCard>
+<FactCard id="a8j" is="true">
+    <Text lang="de">-160 °C ist die Temperatur, bei der die Samenbanken Spendersamen speichern. Bei dieser Temperatur kann das Sperma auf unbestimmte Zeit gelagert werden.</Text>
+    <Text lang="en">-321° F is the temperature at which sperm banks store donor semen. At this temperature semen can be stored indefinitely.</Text>
+</FactCard>
+<FactCard id="367" is="true">
+    <Text lang="de">Es braucht zwei Esslöffel Blut, um den durchschnittlichen Penis errigieren zu lassen.</Text>
+    <Text lang="en">It takes two tablespoons of blood to get the average penis erect.</Text>
+</FactCard>
+<FactCard id="oe" is="true">
+    <Text lang="de">Eine Teelöffel Sperma hat ungefähr fünf Kalorien. Eine halbe Stunde intensiver Sex verbrennt durchschnittlich ein bis zwei hundert Kalorien.</Text>
+    <Text lang="en">A teaspoon of semen contains approximately five calories. Half an hour of intense sex burns off an average of one hundred to two hundred calories.</Text>
+</FactCard>
+<FactCard id="NzW" is="true">
+    <Text lang="de">Während des Ersten Weltkriegs entdeckten Mitglieder des britischen Geheimdienstes (MI6), dass man Sperma als unsichtbare Tinte verwenden kann. Sie hörten auf, es zu benutzen, nachdem sie bemerkt hatten, wie stark es roch, als es alt wurde.</Text>
+    <Text lang="en">During World War I members of the British Secret Intelligence Service (MI6) discovered you could use semen as invisible ink. They stopped using it after they realized how badly it smelled when it got old.</Text>
+</FactCard>
+<FactCard id="1dq" is="true">
+    <Text lang="de">Im alten Griechenland war der Umgangssprachgebrauch für Oralsex "Flötenspiel".</Text>
+    <Text lang="en">In ancient Greece the common slang for oral sex was “playing the flute.”</Text>
+</FactCard>
+<FactCard id="3JP" is="true">
+    <Text lang="de">Eine Teelöffel Sperma hat ungefähr fünf Kalorien. Eine halbe Stunde intensiver Sex verbrennt durchschnittlich ein bis zwei hundert Kalorien.</Text>
+    <Text lang="en">A teaspoon of semen contains approximately five calories. Half an hour of intense sex burns off an average of one hundred to two hundred calories.</Text>
+</FactCard>
+<FactCard id="QzM" is="true">
+    <Text lang="de">Die Zunge ist der stärkste Muskel im Körper</Text>
+</FactCard>
+<FactCard id="7Jr" is="true">
+    <Text lang="de">Elefanten sind die einzigen Tiere, die nicht springen können.</Text>
+</FactCard>
+<FactCard id="pDg" is="true">
+    <Text lang="de">Ein Kamel kann in 15 Minuten 200 Liter Wasser trinken.</Text>
+</FactCard>
+<FactCard id="Ja" is="true">
+    <Text lang="de">Schmetterlinge lecken an ihren eigenen Flügeln.</Text>
+</FactCard>
+<FactCard id="QQ1" is="false">
+    <Text lang="de">Frauen essen in ihrem Leben durchschnittlich 10 Kilogramm Lippenstift.</Text>
+</FactCard>
+<FactCard id="5NX" is="false">
+    <Text lang="de">Wenn du eine Stunde lang deinen Kopf gegen die Wand haust, verbrauchst du 500 Kalorien.</Text>
+</FactCard>
+<FactCard id="a3j" is="true">
+    <Text lang="de">Homer J. Simpson heißt mit vollem Namen „Homer Jay Simpson“.</Text>
+</FactCard>
+<FactCard id="D6r" is="true">
+    <Text lang="de">Parmesan ist das meist geklaute Produkt in italienischen Supermärkten. Eines von zehn Käsestücken verschwindet.</Text>
+</FactCard>
+<FactCard id="Zje" is="true">
+    <Text lang="de">Dreifarbige Katzen sind fast immer weiblich.</Text>
+</FactCard>
+<FactCard id="le" is="true">
+    <Text lang="de">Bei Burger King in Shanghai gibt es eine VIP-Kasse.</Text>
+</FactCard>
+<FactCard id="0JY" is="true">
+    <Text lang="de">Kaffeepause heißt auf Finnisch „Kahvipaussi“.</Text>
+</FactCard>
+<FactCard id="n2z" is="true">
+    <Text lang="de">Eine normale Tafel Schokolade enthält acht Insektenbeine.</Text>
+</FactCard>
+<FactCard id="Ob1" is="true">
+    <Text lang="de">Es ist nicht möglich mit offenen Augen zu niesen!</Text>
+</FactCard>
+<FactCard id="9JE" is="false">
+    <Text lang="de">Im Durchschnitt ersticken jährlich zwei Menschen an Kugelschreibern.</Text>
+</FactCard>
+<FactCard id="5d" is="true">
+    <Text lang="de">Weltweit werden 23 Prozent aller Schäden an Druckern von Leuten verursacht, die darauf sitzen, um ihren Hintern zu kopieren.</Text>
 </FactCard>

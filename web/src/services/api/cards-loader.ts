@@ -7,6 +7,11 @@ const parserFactory = new DefaultCardParserFactory();
 const loader = new CardsLoader(requestFile, parserFactory);
 
 async function requestFile(url: string) : Promise<string> {
+    if (url.startsWith("/")) {
+        // relative url
+        url = url + `?version=${process.env.REACT_APP_GIT_COMMIT}`
+    }
+
     const response = await axios.get(url);
     return response.data;
 }

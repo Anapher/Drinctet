@@ -125,11 +125,11 @@
             ],
             "singleplayer.true": [
                 "[Player], drink [sips] if you thought the fact was wrong.",
-                "[Player], trinke [sips], wenn du dachtest, dass der Fakt falsch war. Ansonsten verteil sie."
+                "[Player], trinke [sips], wenn du dachtest, dass der Fakt falsch sei. Ansonsten verteil sie."
             ],
             "singleplayer.false": [
                 "[Player], drink [sips] if you thought the fact was right.",
-                "[Player], trinke [sips], wenn du dachtest, dass der Fakt richtig war. Ansonsten verteil sie."
+                "[Player], trinke [sips], wenn du dachtest, dass der Fakt richtig sei. Ansonsten verteil sie."
             ],
             "multiplayer.true": [
                 "[Player1] and [Player2], drink both [sips] if your thought the fact was wrong.",
@@ -158,7 +158,7 @@
             "or": ["or", "oder"],
             "refuseTruth": [
                 "If you refuse to tell the truth, down your drink.",
-                "Wenn du dich weigerst die Wahrheit zusagen, ex dein Getränk."
+                "Wenn du dich weigerst, die Wahrheit zusagen, ex dein Getränk."
             ],
             "refuseDare": [
                 "If you don't want to do it, down your drink.",

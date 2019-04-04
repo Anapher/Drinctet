@@ -49,7 +49,10 @@ function AboutRoute({ classes }: Props) {
                             <Typography variant="h6" className={classes.header}>
                                 <Translate id="about.version" />
                             </Typography>
-                            <Typography>{process.env.REACT_APP_GIT_INFO}</Typography>
+                            <Typography inline>{process.env.REACT_APP_GIT_COMMIT}</Typography>
+                            <Typography inline color="textSecondary">
+                                {process.env.REACT_APP_GIT_INFO}
+                            </Typography>
                         </CardContent>
                     </Card>
                 </Grid>

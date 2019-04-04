@@ -46,6 +46,15 @@ const SizedBlock = (fontSize: string) => ({ children, ...props }: any) => (
 ;
 
 const BlockQuote = ({children, ...props}: any) => <div {...props} style={{borderLeft: "1px solid white", paddingLeft: 16}}>{children}</div>
+const ListItem = ({children, ...props}: any) => <li {...props}><Typography>{children}</Typography></li>
+
+const SizedHeaderBlock = (fontSize: string) => ({ children, ...props }: any) => {
+    return (
+        <Typography color="inherit" {...props} variant="h6" style={{ fontSize, marginTop: 16 }}>
+            {children}
+        </Typography>
+    );
+};
 
 export const markdownOptions: ParsingOptions = {
     overrides: {
@@ -54,25 +63,29 @@ export const markdownOptions: ParsingOptions = {
             props: {},
         },
         h1: {
-            component: Header("h5"),
+            component: SizedHeaderBlock("1.4em"),
             props: {},
         },
         h2: {
-            component: Header("h6"),
+            component: SizedHeaderBlock("1.3em"),
             props: {},
         },
         h3: {
-            component: SizedHeader("1.2em"),
+            component: SizedHeaderBlock("1.2em"),
             props: {},
         },
         h4: {
-            component: SizedHeader("1.1em"),
+            component: SizedHeaderBlock("1.1em"),
             props: {},
         },
         code: {
             component: Code,
             props: {}
-        }
+        },
+        li: {
+            component: ListItem,
+            props: {}
+        },
     },
 };
 
