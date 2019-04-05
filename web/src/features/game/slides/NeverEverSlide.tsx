@@ -45,6 +45,16 @@ function NeverEverComponent(props: Props) {
         return <div className={classes.root} />;
     }
 
+    if (state.isFollowUp) {
+        return (
+            <div className={classes.root} onClick={() => nextSlide(toTranslator(props))}>
+                <div className={classes.content}>
+                    <Markdown children={state.markdownContent} options={cardMarkdownOptions} />
+                </div>
+            </div>
+        );
+    }
+
     const header = (
         <Typography className={classes.header} variant="h6" color="inherit">
             <Translate id="slides.neverever.title" />
@@ -83,6 +93,7 @@ const Component = compose(
 
 interface State extends TextSlideState {
     sips: number;
+    isFollowUp: boolean;
 }
 
 export class NeverEverSlide extends TextSlidePresenter<State, NeverEverCard> {
@@ -105,6 +116,7 @@ export class NeverEverSlide extends TextSlidePresenter<State, NeverEverCard> {
         return {
             markdownContent: markdownContent,
             sips: selection.getSips(2), // at least two sips so the text can be plural
+            isFollowUp: false,
         };
     }
 
@@ -116,6 +128,7 @@ export class NeverEverSlide extends TextSlidePresenter<State, NeverEverCard> {
         return {
             markdownContent: markdownContent,
             sips: 0,
+            isFollowUp: true,
         };
     }
 }

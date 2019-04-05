@@ -43,6 +43,16 @@ function WouldYouRatherSlideComponent(props: Props) {
         return <div className={classes.root} />;
     }
 
+    if (state.isFollowUp) {
+        return (
+            <div className={classes.root} onClick={() => nextSlide(toTranslator(props))}>
+                <div className={classes.content}>
+                    <Markdown children={state.markdownContent} options={cardMarkdownOptions} />
+                </div>
+            </div>
+        );
+    }
+
     const header = (
         <Typography className={classes.header} variant="h6" color="inherit">
             <Translate id="slides.wouldyourather.title" />
@@ -78,6 +88,7 @@ const Component = compose(
 
 interface WouldYouRatherSlideState extends TextSlideState {
     sips: number;
+    isFollowUp: boolean;
 }
 
 export class WouldYouRatherSlide extends TextSlidePresenter<
@@ -106,6 +117,7 @@ export class WouldYouRatherSlide extends TextSlidePresenter<
         return {
             markdownContent: markdownContent,
             sips: selection.getSips(2), // at least two sips so the text can be plural
+            isFollowUp: false,
         };
     }
 
@@ -113,6 +125,7 @@ export class WouldYouRatherSlide extends TextSlidePresenter<
         return {
             markdownContent: markdownContent,
             sips: 0,
+            isFollowUp: true,
         };
     }
 }
