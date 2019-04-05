@@ -31,6 +31,8 @@ export default combineReducers<PlayState, RootAction>({
                 return [...state, action.payload];
             case getType(actions.removePlayerArrangment):
                 return state.filter(x => x.p1 !== action.payload);
+            case getType(actions.removePlayer):
+                return state.filter(x => x.p1 !== action.payload && x.p2 !== action.payload);
             default:
                 return state;
         }

@@ -33,6 +33,6 @@ export const slideWeights: { [key: string]: number } = {
 export const higherArrangementPropabilityTags = ["sexual"];
 
 // everyone uses what he can do best to get females
-export const automaticArrangements = {
-    "Vincent": ["Melina"],
-}
+export const automaticArrangements: { [name: string]: string[] } = {
+    Vincent: ["Melina"],
+};
