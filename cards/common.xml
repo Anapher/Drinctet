@@ -86,3 +86,7 @@
 <TaskCard id="78R" willPower="4">
     <Text lang="de">Kneif [Player:f] in die Brustwarzen.</Text>
 </TaskCard>
+<WyrCard id="Byra">
+    <Text lang="de">eine problemfreie Welt haben, oder selber der Herrscher der Welt sein?</Text>
+    <Text lang="en">have a problem-free world, or be the ruler of the world?</Text>
+</WyrCard>
