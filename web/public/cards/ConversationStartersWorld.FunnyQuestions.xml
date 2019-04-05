@@ -1,0 +1,56 @@
+﻿<DrinkCard id="7JCN">
+  <Text lang="en">[Player], drink [sips] and answer this question: What is the sexiest and least sexy name?</Text>
+  <Text lang="de">[Player], trink [sips] und beantworte folgende Frage: Was ist der sexieste und am wenigsten sexy Name?</Text>
+</DrinkCard>
+<DrinkCard id="lzCj">
+  <Text lang="en">[Player], drink [sips] and answer this question: What sport would be the funniest to add a mandatory amount of alcohol to?</Text>
+  <Text lang="de">[Player], trink [sips] und beantworte folgende Frage: Welcher Sport wäre am lustigsten, wenn man eine verbindliche Menge Alkohol hinzufügen würde?</Text>
+</DrinkCard>
+<DrinkCard id="zZC9">
+  <Text lang="en">[Player], drink [sips] and answer this question: What is something that everyone looks stupid doing?</Text>
+  <Text lang="de">[Player], trink [sips] und beantworte folgende Frage: Was ist etwas, bei dem jeder dämlich aussieht, wenn er es tut?</Text>
+</DrinkCard>
+<DrinkCard id="83CO">
+  <Text lang="en">[Player], drink [sips] and answer this question: What is something that is really popular now, but in 5 years everyone will look back on and be embarrassed by?</Text>
+  <Text lang="de">[Player], trink [sips] und beantworte folgende Frage: Was ist momentan wirklich angesagt, aber in 5 Jahren wird jeder zurückblicken und sich dafür schämen?</Text>
+</DrinkCard>
+<DrinkCard id="JoCG">
+  <Text lang="en">[Player], drink [sips] and answer this question: What inanimate object do you wish you could eliminate from existence?</Text>
+  <Text lang="de">[Player], trink [sips] und beantworte folgende Frage: Bei welchem Object wünscht du dir es würde nicht existieren?</Text>
+</DrinkCard>
+<DrinkCard id="O1CK">
+  <Text lang="en">[Player], drink [sips] and answer this question: If you were arrested with no explanation, what would your friends and family assume you had done?</Text>
+  <Text lang="de">[Player], trink [sips] und beantworte folgende Frage: Was würde deine Familie und was würden deine Freunde denken was du getan hast, wenn du ohne weiter Erklärung verhaftet wirst?</Text>
+</DrinkCard>
+<DrinkCard id="9nCV">
+  <Text lang="en">[Player], drink [sips] and answer this question: What are the unwritten rules of where you work?</Text>
+  <Text lang="de">[Player], trink [sips] und beantworte folgende Frage: Was sind ungeschriebene Regeln bei deiner Arbeit/Univestität/Ausbildung/Schule/Kindergarten? (Wenn du noch in den Kindergarten gehst solltest du vielleicht nicht trinken)</Text>
+</DrinkCard>
+<DrinkCard id="x6C2">
+  <Text lang="en">[Player], drink [sips] and answer this question: What’s the best type of cheese?</Text>
+  <Text lang="de">[Player], trink [sips] und beantworte folgende Frage: Was ist die beste Käsesorte?</Text>
+</DrinkCard>
+<DrinkCard id="R5Cz" willPower="1">
+  <Text lang="en">What are some fun and interesting alternatives to war that countries could settle their differences with?</Text>
+  <Text lang="de">[Player], trink [sips] und beantworte folgende Frage: Was sind einige lustige und interessante Alternativen zum Krieg, mit denen die Länder ihre Konflikte austragen könnten?</Text>
+</DrinkCard>
+<DrinkCard id="aRCJ" willPower="2">
+  <Text lang="en">[Player], drink [sips] and answer this question: What would the world be like if it was filled with male and female copies of you?</Text>
+  <Text lang="de">[Player], trink [sips] und beantworte folgende Frage: Wie wäre die Welt, wenn sie mit männlichen und weiblichen Kopien von dir gefüllt wäre?</Text>
+</DrinkCard>
+<DrinkCard id="DPCj">
+  <Text lang="en">[Player], drink [sips] and answer this question: Is a hotdog a sandwich?</Text>
+  <Text lang="de">[Player], trink [sips] und beantworte folgende Frage: Ist ein Hotdog ein Sandwich?</Text>
+</DrinkCard>
+<DrinkCard id="BeC2p">
+  <Text lang="en">[Player], drink [sips] and answer this question: What’s invisible but you wish people could see?</Text>
+  <Text lang="de">[Player], trink [sips] und beantworte folgende Frage: Was ist unsichtbar, aber du wünschst dir, die Leute könnten es sehen?</Text>
+</DrinkCard>
+<DrinkCard id="O1C0K">
+  <Text lang="en">[Player], drink [sips] and answer this question: What would some fairytales be like if they took place in the present and included modern technology and culture?</Text>
+  <Text lang="de">[Player], trink [sips] und beantworte folgende Frage: Wie würde ein Märchen aussehen, wenn es sich in der Gegenwart abspielen und moderne Technik und Kultur einbeziehen würde?</Text>
+</DrinkCard>
+<DrinkCard id="YgCj7">
+  <Text lang="en">[Player], drink [sips] and answer this question: Is cereal soup?</Text>
+  <Text lang="de">[Player], trink [sips] und beantworte folgende Frage: Ist Müsli Suppe?</Text>
+</DrinkCard>
