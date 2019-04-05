@@ -181,8 +181,8 @@
         "task": {
             "title": ["Task", "Aufgabe"],
             "instruction": [
-                "If you don't do it, down your drink.",
-                "Wenn du dich weigerst, ex dein Getränk."
+                "If you don't do it, down your drink (if the other person doesn't want it, he/she must down it).",
+                "Wenn du dich weigerst, ex dein Getränk (sollte sich die andere Person weigern, muss sie exxen)."
             ]
         },
         "gamefinished": {
