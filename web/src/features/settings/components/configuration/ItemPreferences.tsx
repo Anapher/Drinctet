@@ -6,11 +6,12 @@ import * as React from "react";
 interface Props {
     items: Weighted<string>[];
     onChangeWeight: (item: Weighted<string>) => void;
+    getLabel?: (name: string) => string;
 }
 
 class ItemPreferences extends React.Component<Props> {
     render() {
-        const { items, onChangeWeight } = this.props;
+        const { items, onChangeWeight, getLabel } = this.props;
 
         return (
             <table>
@@ -23,7 +24,7 @@ class ItemPreferences extends React.Component<Props> {
                                         opacity: x.weight === 0 ? 0.5 : 1,
                                     }}
                                 >
-                                    {x.value}
+                                    {getLabel !== undefined ? getLabel(x.value): x.value}
                                 </Typography>
                             </td>
                             <td style={{width: "100%"}}>

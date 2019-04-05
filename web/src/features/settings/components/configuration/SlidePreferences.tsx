@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import * as React from "react";
 import _ from "lodash";
 import { percentageFixedTotal } from "@utils/statistics";
+import { trimEnd } from "@utils/string-extensions";
 
 const mapStateToProps = (state: RootState) => ({
     slides: state.settings.slides,
@@ -27,7 +28,7 @@ function SlidePreferences({ slides, setSlideWeight }: Props) {
             <Typography gutterBottom variant="h5">
                 <Translate id="settings.configuration.slides" />
             </Typography>
-            <ItemPreferences items={slides} onChangeWeight={x => setSlideWeight(x)} />
+            <ItemPreferences items={slides} onChangeWeight={x => setSlideWeight(x)} getLabel={x => trimEnd(x, "Slide")} />
             <Typography>
                 <Translate
                     id="settings.configuration.slidesProjection"
@@ -35,7 +36,7 @@ function SlidePreferences({ slides, setSlideWeight }: Props) {
                 />
                 {slidePercentages.map((x, i) => (
                     <React.Fragment key={x.value.value}>
-                        <b style={{fontWeight: "bolder"}}>{x.value.value}</b>: {x.part}
+                        <b style={{fontWeight: "bolder"}}>{trimEnd(x.value.value, "Slide")}</b>: {x.part}
                         {i < slidePercentages.length - 1 ? ", " : null}
                     </React.Fragment>
                 ))}
