@@ -15,15 +15,15 @@ export const defaultSources = [
 ];
 
 export const slideWeights: { [key: string]: number } = {
-    FactSlide: 0.4,
-    DownSlide: 0.2,
+    FactSlide: 0.3,
+    DownSlide: 0.1,
     NeverEverSlide: 0.5,
     TruthOrDareSlide: 0.35,
     WouldYouRatherSlide: 0.5,
-    DrinkSlide: 0.5,
-    VirusSlide: 0.25,
-    NoIdeaLosesSlide: 0.5,
-    GroupGameSlide: 0.4,
+    DrinkSlide: 0.6,
+    VirusSlide: 0.2,
+    NoIdeaLosesSlide: 0.3,
+    GroupGameSlide: 0.3,
     TaskSlide: 0.2,
 };
 
