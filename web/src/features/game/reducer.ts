@@ -131,18 +131,24 @@ export default combineReducers<GameState, RootAction>({
         return state;
     },
     isWillPowerLocked: (state = false, action) => {
-        if (action.type === getType(actions.setWillPowerLocked)) {
-            return action.payload;
+        switch (action.type) {
+            case getType(actions.setWillPowerLocked):
+                return action.payload;
+            case getType(actions.startGame):
+                return false;
+            default:
+                return state;
         }
-
-        return state;
     },
     currentWillPower: (state = 1, action) => {
-        if (action.type === getType(actions.setWillPower)) {
-            return action.payload;
+        switch (action.type) {
+            case getType(actions.setWillPower):
+                return action.payload;
+            case getType(actions.startGame):
+                return 1;
+            default:
+                return state;
         }
-
-        return state;
     },
     willPowerMemory: (state = [], action) => {
         switch (action.type) {
