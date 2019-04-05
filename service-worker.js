@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/Drinctet/precache-manifest.d818a48a39a0f95d208d0b5640c1ed85.js"
+  "/Drinctet/precache-manifest.0a47e944d3f1abea3ed6dd56d111d24e.js"
 );
 
 workbox.clientsClaim();
