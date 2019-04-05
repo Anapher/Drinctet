@@ -50,7 +50,7 @@ function InsightsDialog({ fullScreen, classes, history }: Props) {
             <Dialog
                 fullScreen={fullScreen}
                 open={true}
-                onClose={() => history.push("/play/game")}
+                onClose={() => history.goBack()}
                 TransitionComponent={Transition}
                 fullWidth={true}
                 maxWidth="md"
@@ -60,7 +60,7 @@ function InsightsDialog({ fullScreen, classes, history }: Props) {
                         <Typography variant="h6" color="inherit" className={classes.flex}>
                             <Translate id="game.options.insights" />
                         </Typography>
-                        <Button color="inherit" onClick={() => history.push("/play/game")}>
+                        <Button color="inherit" onClick={() => history.goBack()}>
                             <Translate id="close" />
                         </Button>
                     </Toolbar>

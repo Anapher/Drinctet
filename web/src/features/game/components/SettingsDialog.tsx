@@ -54,7 +54,7 @@ function SettingsDialog({ fullScreen, classes, history }: Props) {
             <Dialog
                 fullScreen={fullScreen}
                 open={true}
-                onClose={() => history.push("/play/game")}
+                onClose={() => history.goBack()}
                 TransitionComponent={Transition}
                 fullWidth={true}
                 maxWidth="md"
