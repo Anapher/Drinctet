@@ -6,8 +6,7 @@
          "useJSXTextNode": true
       },
       "ecmaVersion": 2018,
-      "sourceType": "module",
-      "project": "./tsconfig.json"
+      "sourceType": "module"
    },
    "extends": [
       "airbnb-typescript",
@@ -15,8 +14,8 @@
       "plugin:@typescript-eslint/recommended",
       "plugin:jest/recommended",
       "prettier",
-      "prettier/@typescript-eslint",
-      "plugin:prettier/recommended"
+      "plugin:prettier/recommended",
+      "plugin:import/recommended"
    ],
    "plugins": ["react", "react-hooks", "@typescript-eslint", "jest"],
    "env": {

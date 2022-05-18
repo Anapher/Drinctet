@@ -5,6 +5,7 @@ import { store } from './app/store';
 import App from './App';
 import { CssBaseline } from '@mui/material';
 import reportWebVitals from './reportWebVitals';
+import './services/i18n';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
